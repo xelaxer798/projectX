@@ -41,6 +41,7 @@ export const mailFolderListItems = (
 
 export const otherMailFolderListItems = (
   <div>
+    
     <ListItem button>
       <ListItemIcon>
         <MailIcon />
@@ -60,6 +61,10 @@ export const otherMailFolderListItems = (
     <ListItem button>
     <StarIcon />
     <ListItemText onClick={()=>{window.location='/user/data/room'}} primary="View All" />
+    </ListItem>
+    <ListItem button>
+    <StarIcon />
+    <ListItemText onClick={()=>{}} primary="Sign Out" />
     </ListItem>
 
   </div>

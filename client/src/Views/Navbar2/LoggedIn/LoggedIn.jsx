@@ -25,8 +25,8 @@ const loggedIn = (props) => {
       <a href='/dashboard' ><Button style={{color:'white'}}> {props.User.firstName} {props.User.lastName}</Button> </a>
   
   <Menu
-    {...props}
-    onClick={() => { props.closeMenuFunction() }}
+  
+    
     // iconButtonElement={  
     // // // <MoreVertIcon />
     // }
@@ -36,8 +36,7 @@ const loggedIn = (props) => {
           open={props.menu}
           onClose={props.closeMenuFunction}
 
-    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+  
   >
   {console.log}
  

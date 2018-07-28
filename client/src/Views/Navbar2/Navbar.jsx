@@ -86,7 +86,7 @@ handleMenuClose = () => {
       <div styles={styles.list}>
    <List>{mailFolderListItems}</List>
         <Divider />
-        <List>{otherMailFolderListItems}</List>
+        <List >{otherMailFolderListItems}</List>
       </div>
     );
 
@@ -110,7 +110,7 @@ handleMenuClose = () => {
             onClick={this.toggleDrawer('left', false)}
             onKeyDown={this.toggleDrawer('left', false)}
           >
-            {sideList}
+            {sideList }
           </div>
         </Drawer>
         <Toolbar>
@@ -128,7 +128,7 @@ handleMenuClose = () => {
 </Typography>
 
 {this.props.logged? <LoggedIn color="inherit" User={this.props.theUser} toggleMenuFunc={this.toggleMenu}  menu={this.state.menu}closeMenuFunction={this.handleMenuClose } anchorel={anchorEl} userdata={this.props.userdata} photoSource={this.props.photoSource}  logout={this.props.logoutfunction} >Login</LoggedIn> : <LoginIn />}
-          <Button onClick={this.handleClickOpen} color="inherit">Sign Up</Button>
+      {!this.props.logged?   <Button onClick={this.handleClickOpen} color="inherit">Sign Up</Button>: <div></div>}
         </Toolbar>
       </AppBar>
     </div>
