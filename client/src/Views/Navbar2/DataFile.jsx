@@ -62,10 +62,7 @@ export const otherMailFolderListItems = (
     <StarIcon />
     <ListItemText onClick={()=>{window.location='/user/data/room'}} primary="View All" />
     </ListItem>
-    <ListItem button>
-    <StarIcon />
-    <ListItemText onClick={()=>{}} primary="Sign Out" />
-    </ListItem>
+ 
 
   </div>
 );

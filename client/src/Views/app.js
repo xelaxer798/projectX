@@ -8,6 +8,7 @@ import Navbar from './Navbar2/Navbar'
 import './app.scss'
 import axios from "axios";
 import Dashboard from './DashBoard/DashBoard'
+
 class App extends Component {
   state = {
     logged: false,
@@ -61,6 +62,7 @@ class App extends Component {
     this.setState({ logged: false });
     sessionStorage.removeItem('auth');
     localStorage.clear();
+    window.location='/'
 }
     render(){
         const RoutedDashBoard = (props) => {

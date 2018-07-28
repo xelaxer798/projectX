@@ -20,6 +20,11 @@ import List from '@material-ui/core/List';
 import { withStyles } from '@material-ui/core/styles';
 import LoginIn from './LoginButton/Login'
 import LoggedIn from './LoggedIn/LoggedIn'
+
+import ListItem from '@material-ui/core/ListItem';
+
+import ListItemText from '@material-ui/core/ListItemText';
+import StarIcon from '@material-ui/icons/Star';
 import { mailFolderListItems, otherMailFolderListItems } from './DataFile';
 const styles = {
     root: {
@@ -87,6 +92,11 @@ handleMenuClose = () => {
    <List>{mailFolderListItems}</List>
         <Divider />
         <List >{otherMailFolderListItems}</List>
+        {this.props.logged?   <ListItem button>
+    <StarIcon />
+    <ListItemText onClick={()=>{this.props.logoutfunction()}} primary="Sign Out" />
+    </ListItem> :<div/>}
+      
       </div>
     );
 
