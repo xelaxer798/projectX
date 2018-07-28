@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS `example2_db`;
+CREATE DATABASE `example2_db`;

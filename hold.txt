@@ -1,0 +1,50 @@
+  db.Carts.findAll({
+      where:{
+        UserId: req.params.user
+      }
+    }).then(data=>{
+     myArray.push(data[0].dataValues)
+  
+      // for(let i =0;i<data.length;i++){
+       
+        db.Products.findOne({
+          where:{
+            id:data[0].dataValues.ProductInfo
+          }
+        }).then(cartData=>{
+
+console.log(cartData.dataValues);
+
+ const  createdOn=getDbDate(cartData.dataValues.createdAt);
+ 
+let theProduct={
+  id:cartData.dataValues.id,
+  userId:cartData.dataValues.userId,
+  productName:cartData.dataValues.productName,
+  serialNumber:cartData.dataValues.serialNumber,
+  category:cartData.dataValues.category,
+  price:cartData.dataValues.price,
+  productDescription:cartData.dataValues.productDescription,
+  condition:cartData.dataValues.condition,
+  warranty:cartData.dataValues.warranty,
+  packaging:cartData.dataValues.packaging,
+  userUploadImage1:cartData.dataValues.userUploadImage1,
+  userUploadImage2:cartData.dataValues.userUploadImage2,
+  status:cartData.dataValues.status,
+  verified:cartData.dataValues.verified,
+  createdAt:createdOn
+};
+myArray.push(theProduct);
+// array has 1 of the products in it here
+console.log(myArray)
+        }).then(() => {
+          console.log(myArray);
+        }).catch(err =>console.log(err));
+        
+      // }
+  
+
+
+   
+    }).catch(err =>console.log(err));
+ 

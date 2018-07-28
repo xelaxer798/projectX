@@ -1,0 +1,29 @@
+{ "userId":"a3e7f6c0-51b4-45c0-b618-23b18b082743",
+"category":"video-Cards",
+"tags":"videocard,navida,fast",
+"computerInfo":"null",
+"product_name":"gtx-1080",
+"product_description":"fast",
+"serialNum":"2892828928",
+"userUploadImage1":"gtx.jpg",
+"userUploadImage2":"1080.jpg",
+"condition":"barley used",
+"price":"500",
+"warranty":"expired",
+"status":"verified",
+"packingStat":"good"
+}
+    admin user
+    id of admin user is a3e7f6c0-51b4-45c0-b618-23b18b082743
+ {"email": "techcheck12345@gmail.com",
+"password": "tech",
+"firstName": "leslie",
+"lastName": "chow",
+"profilePic": "https://s-media-cache-ak0.pinimg.com/originals/db/b0/8a/dbb08a5befed0632b1c774688fa5701b.jpg",
+"phoneNumber": "818-431-1234",
+"address": "212 gone ave 9871",
+"dateOfBirth":"11-09-1982"
+}
+localhost:3000/api/users/
+localhost:3000/api/users/reset/david.horn689@gmail.com
+localhost:3000/api/products

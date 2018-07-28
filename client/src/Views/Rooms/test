@@ -1,0 +1,6 @@
+let amPm;
+if(hourToNUm>13){
+return amPm='AM'
+}else if(hourToNUm <12){
+ return  amPm='PM'
+}
