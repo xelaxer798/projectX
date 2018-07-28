@@ -12,24 +12,19 @@ import ReportIcon from '@material-ui/icons/Report';
 
 export const mailFolderListItems = (
   <div>
-    <ListItem button>
+    <ListItem button on>
       <ListItemIcon>
         <InboxIcon />
       </ListItemIcon>
-      <ListItemText primary="Home" />
+      <ListItemText onClick={()=>{window.location='/'}} primary="Home" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText primary="My Rooms" />
+      <ListItemText onClick={()=>{window.location='/user/rooms'}} primary="My Rooms" />
     </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <SendIcon />
-      </ListItemIcon>
-      <ListItemText primary="My Fields" />
-    </ListItem>
+    
     <ListItem button>
       <ListItemIcon>
         <DraftsIcon />
@@ -46,13 +41,13 @@ export const otherMailFolderListItems = (
       <ListItemIcon>
         <MailIcon />
       </ListItemIcon>
-      <ListItemText primary="Account" />
+      <ListItemText primary="Account" onClick={()=>{window.location='/user/account'}} />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <DeleteIcon />
       </ListItemIcon>
-      <ListItemText primary="Help" />
+      <ListItemText primary="Help" onClick={()=>{window.location='/help'}}/>
     </ListItem>
     <ListItem button>
     <InboxIcon />
