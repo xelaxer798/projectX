@@ -127,7 +127,7 @@ handleMenuClose = () => {
           </IconButton>
           {/* {CompanyName} top left hand side of screen */}
           <Typography onClick={()=>{window.location='/'}} variant="title" color="inherit" style={styles.flex}>
-            Leaf Lift Systems
+            GrowAi
           </Typography>
           <Typography variant="title" color="inherit" style={styles.flex}>
        
