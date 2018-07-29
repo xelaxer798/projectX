@@ -3,6 +3,9 @@ import React, {Component} from 'react';
 import axios from "axios";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import './Home.css';
+import Logo from './logo.png'
 class Home extends Component {
   state={
     email: 'jeff@gmail.com',
@@ -63,52 +66,61 @@ onSubmit = () => {
   window.location='/dashboard'
     }
     return(
-      <div className='home'>
-      {console.log(this.state)}
-      <TextField
-      autoFocus
-      margin="dense"
-      id="email"
-      name='email'
-      label="Email Address"
-      type="email"
-      value={this.state.email}
-      onChange={this.onChange}
-      
-    />
-    <br/><br/>
-     <TextField
-      autoFocus
-      margin="dense"
-     
-      label="Password"
-      name='password'
-      type="passwordgit"
-      value={this.state.password}
-      onChange={this.onChange}
-    />
-  
+        <div id='home'>
+        <Grid container spacing={24}>
+          <Grid item md={12}>
+            <img 
+              src={Logo} 
+              id="logo"
+              alt='logo'
+            />
+          </Grid>
+          <Grid item md={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Username"
+              id="email"
+              name='email'
+              type="email"
+              value={this.state.email}
+              onChange={this.onChange}
+            />
+          </Grid>
 
-    <Button onClick={this.onSubmit} color="primary">
-    Sign In
-    </Button>
-    <br/>
-    <Button onClick={this.handleClose} color="primary">
-    Sign Up
-    </Button>
-    <br/>
-    <Button onClick={this.handleClose} color="primary">
-      Forgot Password
-    </Button>
-    <br/>
-    <Button onClick={this.handleClose} color="primary">
-      Cancel
-    </Button>
+          <Grid item md={12}>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Password"
+              name='password'
+              type="passwordgit"
+              value={this.state.password}
+              onChange={this.onChange}
+            />
+          </Grid>
 
-    </div>
-    )
-  
+          <Grid item md={6}>
+            <div id="remember-me">
+              <input type="checkbox" />
+              <span>Remember Me</span>
+            </div>
+          </Grid>
+          <Grid item md={6}>
+            <a href="/forgot" id="forgot-pass">Forgot Password</a>
+          </Grid>
+
+          <Grid item md={12}>
+            <Button variant="contained" onClick={this.onSubmit} color="primary">
+              Log in
+            </Button>
+          </Grid>
+
+        </Grid>
+      </div>
+    );
   }
+}
 
+export default Home;
 
-}export default Home

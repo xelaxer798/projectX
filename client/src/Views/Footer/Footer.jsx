@@ -32,10 +32,11 @@ const ExtLink = styled.a`
 const footer = () => {
   return (
     <div style={{backgroundColor: '#3F51B5',position:'relative',
-    left:0,
-    bottom:0,
-    right:0}}>
-      <Container >
+    left:'0',
+    bottom:'10',
+    right:'0',
+    top:470}}>
+      <Container style={{}} >
         <Row className='FooterRowOne'>
           <Col sm={4} style={{ display: 'inline-block', margin: 'auto'}}>
 

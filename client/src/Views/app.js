@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // Link
+import Grid from '@material-ui/core/Grid';
 import Rooms from './Rooms/Rooms'
 import Room2 from './Rooms/Rooms2'
 import Home from "./Home/index"
@@ -93,12 +94,17 @@ class App extends Component {
         }
       return (
         <BrowserRouter>
-        <div className="app">
-      
+       
+        <div className="app" style={{display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh'}}>
+        <Grid>
           <Navbar theUser={this.state.userDataObj} logged={this.state.logged} logoutfunction={this.logOutHandler}>
 
           </Navbar>
-   
+   <div style={{ flex: '1 0 auto',
+    padding:' var(--space) var(--space) 0',
+    width: '100%'}}>
 
           <Switch>
           <Route exact path='/' render={RoutedHome} />
@@ -106,8 +112,10 @@ class App extends Component {
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
                         </Switch>
+</div>
 
-      <Footer/>
+                        <Footer />
+                        </Grid>
         </div>
       </BrowserRouter>
       )

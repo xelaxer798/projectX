@@ -1,0 +1,42 @@
+html {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Raleway', sans-serif;
+  }
+  
+  body {
+    background-color: whitesmoke;
+  }
+  
+  #home {
+      display: block;
+      width: 250px;
+      background-color: #fff;
+      margin: auto;
+      border: 1px solid #e0dede;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translatex(-50%) translateY(-50%);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 0px #000; 
+  }
+  
+  #logo {
+    width: 120px;
+    margin: 10px 0;
+  }
+  
+  #remember-me span{
+    font-size: 13px;
+  }
+  
+  #forgot-pass {
+      text-decoration: none;
+      font-size: 13px;
+  } 
+  
+  .MuiGrid-spacing-xs-24-25 > .MuiGrid-item-2 {
+      margin: auto;
+  }
