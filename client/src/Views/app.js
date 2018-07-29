@@ -8,7 +8,7 @@ import Navbar from './Navbar2/Navbar'
 import './app.scss'
 import axios from "axios";
 import Dashboard from './DashBoard/DashBoard'
-
+import Footer from './Footer/Footer'
 class App extends Component {
   state = {
     logged: false,
@@ -106,8 +106,9 @@ class App extends Component {
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
                         </Switch>
-      
-      
+      <div style={{height:'200px'}}>
+      </div>
+      <Footer/>
         </div>
       </BrowserRouter>
       )
