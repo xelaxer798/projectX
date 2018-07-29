@@ -59,7 +59,7 @@ const footer = () => {
         <Row style={{padding: '15px 0px'}}>
           <Col sm={12}>
             <Copyright css="padding-right: 0.5em"><b>&copy; 2017</b></Copyright>
-            <ExtLink href="/">LGrowAI</ExtLink>
+            <ExtLink href="/">GrowAI</ExtLink>
             <Separator>|</Separator>
             <ExtLink href="/privacy">Privacy Policy</ExtLink>
           </Col>
