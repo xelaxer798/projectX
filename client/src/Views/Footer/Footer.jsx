@@ -31,7 +31,7 @@ const ExtLink = styled.a`
 
 const footer = () => {
   return (
-    <div style={{backgroundColor: '#3F51B5',position:'absolute',
+    <div style={{backgroundColor: '#3F51B5',position:'relative',
     left:0,
     bottom:0,
     right:0}}>

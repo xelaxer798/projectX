@@ -106,8 +106,7 @@ class App extends Component {
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
                         </Switch>
-      <div style={{height:'200px'}}>
-      </div>
+
       <Footer/>
         </div>
       </BrowserRouter>
