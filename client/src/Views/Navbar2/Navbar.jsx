@@ -137,7 +137,7 @@ handleMenuClose = () => {
        
 </Typography>
 
-{this.props.logged? <LoggedIn color="inherit" User={this.props.theUser} toggleMenuFunc={this.toggleMenu}  menu={this.state.menu}closeMenuFunction={this.handleMenuClose } anchorel={anchorEl} userdata={this.props.userdata} photoSource={this.props.photoSource}  logout={this.props.logoutfunction} >Login</LoggedIn> : <LoginIn />}
+{this.props.logged? <LoggedIn color="inherit" User={this.props.theUser} toggleMenuFunc={this.toggleMenu}  menu={this.state.menu}closeMenuFunction={this.handleMenuClose } anchorel={anchorEl} userdata={this.props.userdata} photoSource={this.props.photoSource}  logout={this.props.logoutfunction} >Login</LoggedIn> : <div />}
       {!this.props.logged?   <Button onClick={this.handleClickOpen} color="inherit">Sign Up</Button>: <div></div>}
         </Toolbar>
       </AppBar>
