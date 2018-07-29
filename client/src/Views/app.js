@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { BrowserRouter, Route, Link,Switch } from 'react-router-dom';
-import Test from './Home/HomeComponets/Carousel'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+// Link
 import Rooms from './Rooms/Rooms'
 import Room2 from './Rooms/Rooms2'
 import Home from "./Home/index"
@@ -16,7 +16,7 @@ class App extends Component {
     theId: '',
   } 
   componentDidMount = () => {
-    let theuser;
+    // let theuser;
        if (sessionStorage.auth != null) {
            // console.log('auth')
 
@@ -30,7 +30,7 @@ class App extends Component {
            }).then(user => {
                if (user != null) {
                    //console.log(user)
-            console.log(user)
+        
            
                    this.setState({
                        logged: true,
@@ -78,17 +78,30 @@ class App extends Component {
                 />
             )
         }
+        const RoutedHome = (props) => {
+            
+            return ( 
+                <Home
+                logged={this.state.logged}
+                    component={Home}
+                 
+                    theUser={this.state.userDataObj}
+                    {...props}
+                    
+                />
+            )
+        }
       return (
         <BrowserRouter>
         <div className="app">
-        {console.log(this.state)}
+      
           <Navbar theUser={this.state.userDataObj} logged={this.state.logged} logoutfunction={this.logOutHandler}>
 
           </Navbar>
    
 
           <Switch>
-          <Route exact path='/' component={Home} />
+          <Route exact path='/' render={RoutedHome} />
           <Route exact path='/dashboard' render={RoutedDashBoard}/>
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>

@@ -10,6 +10,15 @@ class Home extends Component {
             doesntMatch: false,
             noUser: false
   }
+  componentDidMount = () => {
+   
+  }
+  componentDidUpdate =()=>{
+    console.log(this.props)
+    if(this.props.logged === true ){
+  window.location='/dashboard'
+    }
+  }
   onChange = (e) => {
        
     this.setState({
@@ -49,6 +58,10 @@ onSubmit = () => {
       //   this.setState({ noMatch: !currentState });
   }
   render(){
+    console.log(this.props)
+    if(this.props.logged === true ){
+  window.location='/dashboard'
+    }
     return(
       <div className='home'>
       {console.log(this.state)}

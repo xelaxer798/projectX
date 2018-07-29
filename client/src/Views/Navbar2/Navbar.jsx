@@ -5,20 +5,16 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-import TextField from '@material-ui/core/TextField';
-import PropTypes from 'prop-types';
-import axios from "axios";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+// import withMobileDialog from '@material-ui/core/withMobileDialog';
+// import TextField from '@material-ui/core/TextField';
+// import PropTypes from 'prop-types';
+// import axios from "axios";
+
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
-import { withStyles } from '@material-ui/core/styles';
-import LoginIn from './LoginButton/Login'
+// import { withStyles } from '@material-ui/core/styles';
+// import LoginIn from './LoginButton/Login'
 import LoggedIn from './LoggedIn/LoggedIn'
 
 import ListItem from '@material-ui/core/ListItem';
@@ -32,7 +28,8 @@ const styles = {
     },
     flex: {
       flexGrow: 1,
-    },
+      cursor: 'pointer'
+    }, 
     menuButton: {
       marginLeft: -12,
       marginRight: 20,
@@ -85,7 +82,7 @@ handleMenuClose = () => {
   };
    render(){
     const { anchorEl } = this.state;
-    const { fullScreen } = this.props;
+    // const { fullScreen } = this.props;
     // importing buttons for the drawer list
     const sideList = (
       <div styles={styles.list}>
@@ -100,13 +97,13 @@ handleMenuClose = () => {
       </div>
     );
 
-    const fullList = (
-      <div style={styles.fullList}>
+    // const fullList = (
+    //   <div style={styles.fullList}>
        
-        <Divider />
+    //     <Divider />
        
-      </div>
-       );
+    //   </div>
+    //    );
   return (
     <div style={styles.root}>
     <AppBar position="static"  >
@@ -129,7 +126,7 @@ handleMenuClose = () => {
             <MenuIcon />
           </IconButton>
           {/* {CompanyName} top left hand side of screen */}
-          <Typography style={{cursor: 'pointer'}}onClick={()=>{window.location='/'}} variant="title" color="inherit" style={styles.flex}>
+          <Typography onClick={()=>{window.location='/'}} variant="title" color="inherit" style={styles.flex}>
             Leaf Lift Systems
           </Typography>
           <Typography variant="title" color="inherit" style={styles.flex}>
@@ -146,7 +143,7 @@ handleMenuClose = () => {
 
 }
 }
-Navbar.propTypes = {
-  fullScreen: PropTypes.bool.isRequired,
-};
+// Navbar.propTypes = {
+//   fullScreen: PropTypes.bool.isRequired,
+// };
 export default Navbar;

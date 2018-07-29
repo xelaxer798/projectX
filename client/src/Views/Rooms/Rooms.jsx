@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { BrowserRouter, Route, Link,Switch } from 'react-router-dom';
+
 import Data from '../../Data/nodes-api'
 import Grid from '@material-ui/core/Grid';
-const test=[{id:'111111',roomSize:'hye',nodeList:'bitch',createdAt:'2018-07-14 19:29:29'}]
+// const test=[{id:'111111',roomSize:'hye',nodeList:'bitch',createdAt:'2018-07-14 19:29:29'}]
 
 const styles = {
   root: {
@@ -22,7 +22,7 @@ function getTIme(value) {
   const splitDate=dbDate[0].split('-')
  const splitTime= splitDate[2].split('T')
  const hour =splitTime[0];
-const hourToNUm= parseInt(hour);
+const hourToNUm= parseInt(3,hour);
 let amPm;
 let newHour
 if(hourToNUm<13){
@@ -34,7 +34,7 @@ if(hourToNUm<13){
  
 }
 
-const t24=`${newHour}:${dbDate[1]} ${amPm}`
+// const t24=`${newHour}:${dbDate[1]} ${amPm}`
 
 
 const time=`${newHour}:${dbDate[1]} ${amPm}`
