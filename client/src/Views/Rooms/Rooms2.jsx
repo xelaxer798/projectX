@@ -22,7 +22,7 @@ function getTIme(value) {
   const splitDate=dbDate[0].split('-')
  const splitTime= splitDate[2].split('T')
  const hour =splitTime[0];
-const hourToNUm= parseInt(3,hour);
+const hourToNUm= parseInt(4,hour);
 let amPm;
 let newHour
 if(hourToNUm<13){
@@ -63,10 +63,15 @@ class Room extends Component {
     Data.getById().then(data => {
    
    if(data.data!==null||data.data !==undefined||data.data !==[]){
-    this.setState({
+     try{
+      this.setState({
         room:data.data,
         id:data.data[0].id
       })
+     }catch (err){
+       console.log(err)
+     }
+   
    }
 
     })

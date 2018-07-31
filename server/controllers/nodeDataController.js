@@ -21,7 +21,8 @@ const controller = {
   },
   findById: function(req, res) {
     db.nodes.findAll({
-      order: [ [ 'createdAt', 'DESC' ]]
+      order: [ [ 'createdAt', 'DESC' ]],
+      limit:10
       })
       .then(jeff => {
         console.log('dbModel')
@@ -31,6 +32,7 @@ const controller = {
       })
       .catch(err => res.status(422).json(err));
   },
+  
   create: function(req, res) {
     console.log(req.body)
     db.nodes.create({

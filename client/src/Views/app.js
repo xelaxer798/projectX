@@ -95,16 +95,12 @@ class App extends Component {
       return (
         <BrowserRouter>
        
-        <div className="app" style={{display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh'}}>
-        <Grid>
+        <div className="app">
+        
           <Navbar theUser={this.state.userDataObj} logged={this.state.logged} logoutfunction={this.logOutHandler}>
 
           </Navbar>
-   <div style={{ flex: '1 0 auto',
-    padding:' var(--space) var(--space) 0',
-    width: '100%'}}>
+   
 
           <Switch>
           <Route exact path='/' render={RoutedHome} />
@@ -112,10 +108,10 @@ class App extends Component {
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
                         </Switch>
-</div>
 
-                        <Footer />
-                        </Grid>
+
+                        {/*<Footer />*/}
+                       
         </div>
       </BrowserRouter>
       )
