@@ -107,7 +107,7 @@ class Room extends Component {
     }
     else
     {
-        window.alert('nothing was deleted')
+       
     }
   
   }

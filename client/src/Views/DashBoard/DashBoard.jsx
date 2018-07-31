@@ -54,8 +54,9 @@ console.log(luxArray)
   
 This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
 
-<div style={{paddingLeft:'10px',color:'black'}}>
 
+<div style={{paddingLeft:'10px',color:'black'}}>
+<h1> Lux Graph</h1>
  <BarChart
     axes
     interpolate={'cardinal'}
