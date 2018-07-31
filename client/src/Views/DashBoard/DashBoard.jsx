@@ -59,12 +59,14 @@ This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastNa
 <h1> Lux Graph</h1>
  <BarChart
     axes
-    interpolate={'cardinal'}
+  
     y2Type="linear"
     axisLabels={{x: 'My x Axis', y: 'My y Axis'}}
     colorBars
     grid
+    yDomainRange={[0, 700]}
     barWidth={10}
+    height={250}
     width={1000}
     data={this.state.data}
   />
