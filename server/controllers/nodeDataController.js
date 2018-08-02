@@ -35,7 +35,10 @@ const controller = {
   
   create: function(req, res) {
     console.log(req.body)
-  const CurrentTime = moment().format("hh:mm:ss ");
+  const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm:ss ");
+  let time =moment()
+  console.log(time)
+  console.log({CurrentTime})
     db.nodes.create({
         nodeId: req.body.nodeId,
         userId: req.body.userId,
