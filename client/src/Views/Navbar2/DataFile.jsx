@@ -11,18 +11,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import ReportIcon from '@material-ui/icons/Report';
 import './Datafile.css'
 export const mailFolderListItems = (
-  <div style={{textDecoration: 'none'}}>
-  <a href='/' >  <ListItem button on>
-      <ListItemIcon>
-        <InboxIcon />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItem> </a>
-   <a href='/user/rooms'> <ListItem button>
+  <div >
+  
+   <a href='/user/rooms' > <ListItem button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText  primary="My Rooms" />
+      <ListItemText style={{color:'black'}} primary="My Rooms" />
     </ListItem></a>
     
     

@@ -17,10 +17,7 @@ class Home extends Component {
    
   }
   componentDidUpdate =()=>{
-    console.log(this.props)
-    if(this.props.logged === true ){
-  window.location='/dashboard'
-    }
+
   }
   onChange = (e) => {
        
@@ -61,10 +58,7 @@ onSubmit = () => {
       //   this.setState({ noMatch: !currentState });
   }
   render(){
-    console.log(this.props)
-    if(this.props.logged === true ){
-  window.location='/dashboard'
-    }
+ 
     return(
         <div id='home'>
         <Grid container spacing={24}>

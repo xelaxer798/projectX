@@ -9,14 +9,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 // import TextField from '@material-ui/core/TextField';
 // import PropTypes from 'prop-types';
 // import axios from "axios";
-
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 // import { withStyles } from '@material-ui/core/styles';
 // import LoginIn from './LoginButton/Login'
 import LoggedIn from './LoggedIn/LoggedIn'
-
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ListItem from '@material-ui/core/ListItem';
 
 import ListItemText from '@material-ui/core/ListItemText';
@@ -39,6 +39,12 @@ const styles = {
     fullList: {
       width: 'auto',
     },
+    homeButton:{
+      color:'white'
+    },
+    signOut:{
+      color:'grey'
+    }
   };
 
 class Navbar extends Component{
@@ -84,14 +90,37 @@ handleMenuClose = () => {
     const { anchorEl } = this.state;
     // const { fullScreen } = this.props;
     // importing buttons for the drawer list
+const homeLink=(
+ <div>
+   {this.props.logged? <a href='/dashboard' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
+  GrowAi
+</Typography></a>: <a href='/' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
+  GrowAi
+</Typography></a>}
+</div>
+)
+  
+
     const sideList = (
       <div styles={styles.list}>
+      {!this.props.logged? <a href='/' >  <ListItem button on>
+      <ListItemIcon>
+        <InboxIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItem> </a>:<a href='/dashboard' >  <ListItem button on>
+      <ListItemIcon>
+        <InboxIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItem> </a>}
+     
    <List>{mailFolderListItems}</List>
         <Divider />
         <List >{otherMailFolderListItems}</List>
-        {this.props.logged?   <ListItem button>
+        {this.props.logged?   <ListItem button style={styles.signOut}>
     <StarIcon />
-    <ListItemText onClick={()=>{this.props.logoutfunction()}} primary="Sign Out" />
+    <ListItemText style={styles.signOut} onClick={()=>{this.props.logoutfunction()}} primary="Sign Out" />
     </ListItem> :<div/>}
       
       </div>
@@ -126,9 +155,7 @@ handleMenuClose = () => {
             <MenuIcon />
           </IconButton>
           {/* {CompanyName} top left hand side of screen */}
-          <Typography onClick={()=>{window.location='/'}} variant="title" color="inherit" style={styles.flex}>
-            GrowAi
-          </Typography>
+       {homeLink}
           <Typography variant="title" color="inherit" style={styles.flex}>
        
        

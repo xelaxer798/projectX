@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch,Redirect  } from 'react-router-dom';
 // Link
 import Grid from '@material-ui/core/Grid';
 import Rooms from './Rooms/Rooms'
@@ -10,6 +10,7 @@ import './app.scss'
 import axios from "axios";
 import Dashboard from './DashBoard/DashBoard'
 import Footer from './Footer/Footer'
+
 class App extends Component {
   state = {
     logged: false,
@@ -45,7 +46,7 @@ class App extends Component {
 
 
                    },)
-                 
+                   this.checkUserStatus()
                    // console.log(this.state.userDataObj)
                    // console.log(this.state.theId);
                } else {
@@ -58,7 +59,15 @@ class App extends Component {
        
   
    }
+checkUserStatus=()=>{
+    const url = window.location.toString().split('/');
+    <Redirect to='/dashboard' />
+    if(this.state.logged===true){
+        console.log(this.state.logged)
+        
 
+    }
+}
    logOutHandler = () => {
     this.setState({ logged: false });
     sessionStorage.removeItem('auth');
@@ -66,6 +75,7 @@ class App extends Component {
     window.location='/'
 }
     render(){
+        this.checkUserStatus
         const RoutedDashBoard = (props) => {
             
             return ( 
@@ -100,10 +110,16 @@ class App extends Component {
           <Navbar theUser={this.state.userDataObj} logged={this.state.logged} logoutfunction={this.logOutHandler}>
 
           </Navbar>
-   
+      
 
           <Switch>
-          <Route exact path='/' render={RoutedHome} />
+          <Route exact path='/' render= {()=>(
+              this.state.logged?(
+                <Redirect to='/dashboard' />
+              ):(
+               <RoutedHome/>
+              )
+          )}/>
           <Route exact path='/dashboard' render={RoutedDashBoard}/>
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
