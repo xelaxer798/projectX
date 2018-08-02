@@ -48,8 +48,8 @@ console.log(data.data)
           for (let i = 0; i < data.data.length; i++) {
             let lux = {
 
-              x: min(data.data[i].createdAt),
-              y: JSON.parse(data.data[i].humidity
+                x: data.data[i].currentTime  ,
+              y: JSON.parse(data.data[i].temperature
               )
 
             }
@@ -80,7 +80,7 @@ console.log(data.data)
           <h1> Humidity Graph</h1>
           <LineChart
             axes
-
+            xType={'text'}
             y2Type="linear"
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars

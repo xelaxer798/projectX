@@ -39,7 +39,7 @@ class TemperatureGraph extends Component {
   componentDidMount = () => {
 
     Data.getById().then(data => {
-console.log(data.data)
+console.log(parseFloat(data.data[1].currentTime))
 
 
       if (data.data !== null || data.data !== undefined || data.data !== []) {
@@ -48,7 +48,7 @@ console.log(data.data)
           for (let i = 0; i < data.data.length; i++) {
             let lux = {
 
-              x: min(data.data[i].createdAt),
+              x: data.data[i].currentTime  ,
               y: JSON.parse(data.data[i].temperature
               )
 
@@ -80,7 +80,7 @@ console.log(data.data)
           <h1> Temperature Graph</h1>
           <LineChart
             axes
-
+            xType={'text'}
             y2Type="linear"
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars
