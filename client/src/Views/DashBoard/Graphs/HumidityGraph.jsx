@@ -49,7 +49,7 @@ console.log(data.data)
             let lux = {
 
                 x: data.data[i].currentTime  ,
-              y: JSON.parse(data.data[i].temperature
+              y: JSON.parse(data.data[i].humidity
               )
 
             }
