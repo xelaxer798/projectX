@@ -58,6 +58,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
+    currentTime:{
+      type:DataTypes.STRING
+    }
    
   });
   return nodes;

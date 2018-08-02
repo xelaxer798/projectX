@@ -22,7 +22,7 @@ const controller = {
   findById: function(req, res) {
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      limit:10
+      limit:18
       })
       .then(jeff => {
         console.log('dbModel')

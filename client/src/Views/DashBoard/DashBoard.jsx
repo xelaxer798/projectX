@@ -1,81 +1,27 @@
-import React,{Component} from 'react';
-import {BarChart} from 'react-easy-chart';
-import Data from '../../Data/nodes-api';
+import React, { Component } from 'react';
+import TemperatureGraph from './Graphs/TemperatureGraph'
+import HumidityGraph from './Graphs/HumidityGraph'
 
-function getDbDate (value) {
-  const split=JSON.stringify(value);
-const dbDate = split.split(':')
-const splitDate=dbDate[0].split('-')
-const dayCreated =splitDate[2].split('T')
-const removed=splitDate[0].split('"')
-console.log(dbDate)
-const dates=splitDate[1]+'-'+dayCreated[0]+'-'+removed[1] +' ' +dbDate[1]
-console.log(dates)
-return dates
- };
 class Dashboard extends Component {
-    state={
-      data:[]
-    }
-    componentDidMount = () => {
-
-      Data.getById().then(data => {
-     
-     if(data.data!==null||data.data !==undefined||data.data !==[]){
-       try{
-      const  luxArray=[]
-         for(let i=0;i<data.data.length;i++){
-           let lux={
-
-            x: getDbDate(data.data[i].createdAt),
-          y:  data.data[i].lux
-
-           }
-        luxArray.push(lux)
-         }
-console.log(luxArray)
-        this.setState({
-          data:luxArray,
-         
-        })
-       }catch (err){
-         console.log(err)
-       }
-     
-     }
   
-      })
-      
-    }
-    
-    render(){
-      return(
-        <div className='home' style={{backgroundColor:'white'}}>
-  
-This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
+  componentDidMount = () => {
 
+   
 
-<div style={{paddingLeft:'10px',color:'black'}}>
-<h1> Lux Graph</h1>
- <BarChart
-    axes
-  
-    y2Type="linear"
-    axisLabels={{x: 'My x Axis', y: 'My y Axis'}}
-    colorBars
-    grid
-    yDomainRange={[0, 700]}
-    barWidth={10}
-    height={250}
-    width={1000}
-    data={this.state.data}
-  />
-</div>
+  }
+
+  render() {
+    return (
+      <div className='home' style={{ backgroundColor: 'white' }}>
+
+        This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
+
+<TemperatureGraph/>
+       <HumidityGraph /> 
       </div>
-      )
-    
-    }
-  
-  
-  }export default Dashboard;
-  
+    )
+
+  }
+
+
+} export default Dashboard;
