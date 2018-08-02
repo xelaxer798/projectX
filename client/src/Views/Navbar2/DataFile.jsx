@@ -9,54 +9,54 @@ import StarIcon from '@material-ui/icons/Star';
 import MailIcon from '@material-ui/icons/Mail';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import ReportIcon from '@material-ui/icons/Report';
-
+import './Datafile.css'
 export const mailFolderListItems = (
-  <div>
-    <ListItem button on>
+  <div style={{textDecoration: 'none'}}>
+  <a href='/' >  <ListItem button on>
       <ListItemIcon>
         <InboxIcon />
       </ListItemIcon>
-      <ListItemText onClick={()=>{window.location='/'}} primary="Home" />
-    </ListItem>
-    <ListItem button>
+      <ListItemText primary="Home" />
+    </ListItem> </a>
+   <a href='/user/rooms'> <ListItem button>
       <ListItemIcon>
         <StarIcon />
       </ListItemIcon>
-      <ListItemText onClick={()=>{window.location='/user/rooms'}} primary="My Rooms" />
-    </ListItem>
+      <ListItemText  primary="My Rooms" />
+    </ListItem></a>
     
-    <ListItem button>
-      <ListItemIcon>
-        <DraftsIcon />
-      </ListItemIcon>
-      <ListItemText primary="My Data" />
-    </ListItem>
+    
   </div>
 );
 
 export const otherMailFolderListItems = (
   <div>
     
-    <ListItem button>
+  <a href='/user/account'>  <ListItem button>
       <ListItemIcon>
         <MailIcon />
       </ListItemIcon>
-      <ListItemText primary="Account" onClick={()=>{window.location='/user/account'}} />
-    </ListItem>
+      <ListItemText primary="Account"  />
+    </ListItem></a>
+    <a href='/help'>
     <ListItem button>
       <ListItemIcon>
         <DeleteIcon />
       </ListItemIcon>
-      <ListItemText primary="Help" onClick={()=>{window.location='/help'}}/>
-    </ListItem>
+      <ListItemText primary="Help"/>
+    </ListItem></a>
+    <a href='/user/rooms'>
     <ListItem button>
     <InboxIcon />
-    <ListItemText onClick={()=>{window.location='/user/rooms'}} primary="View One" />
+    <ListItemText primary="View One" />
     </ListItem>
+    </a>
+    <a href='/user/data/room'>
     <ListItem button>
     <StarIcon />
-    <ListItemText onClick={()=>{window.location='/user/data/room'}} primary="View All" />
+    <ListItemText primary="View All" />
     </ListItem>
+    </a>
  
 
   </div>
