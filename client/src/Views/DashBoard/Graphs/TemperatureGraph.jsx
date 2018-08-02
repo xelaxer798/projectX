@@ -85,6 +85,7 @@ console.log(parseFloat(data.data[1].currentTime))
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars
             grid
+            lineColors={['green']}
             yDomainRange={[0, 125]}
             barWidth={10}
             height={250}

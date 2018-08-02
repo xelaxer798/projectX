@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import TemperatureGraph from './Graphs/TemperatureGraph'
 import HumidityGraph from './Graphs/HumidityGraph'
-import moment from 'moment'
+import moment from 'moment';
+import RGB from './Cards/DataCard'
+import DataCard from './Cards/DataCard';
 class Dashboard extends Component {
   
   componentDidMount = () => {
@@ -21,6 +23,7 @@ class Dashboard extends Component {
 
 <TemperatureGraph/>
        <HumidityGraph /> 
+       <DataCard/>
       </div>
     )
 

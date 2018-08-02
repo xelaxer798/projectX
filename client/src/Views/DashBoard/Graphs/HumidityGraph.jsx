@@ -80,6 +80,7 @@ console.log(data.data)
           <h1> Humidity Graph</h1>
           <LineChart
             axes
+            lineColors={['green']}
             xType={'text'}
             y2Type="linear"
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
