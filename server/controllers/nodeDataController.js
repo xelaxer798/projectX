@@ -1,5 +1,5 @@
 import db from "../models";
-
+import moment from 'moment'
 // Defining methods for the booksController
 const controller = {
   findAll: (req, res) => {
@@ -35,6 +35,7 @@ const controller = {
   
   create: function(req, res) {
     console.log(req.body)
+  const CurrentTime = moment().format("hh:mm:ss ");
     db.nodes.create({
         nodeId: req.body.nodeId,
         userId: req.body.userId,
@@ -49,6 +50,7 @@ const controller = {
         visible: req.body.visible,
         ir: req.body.ir,
         roomId: req.body.roomId,
+        currentTime:CurrentTime
       })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

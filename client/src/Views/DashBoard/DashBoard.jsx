@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import TemperatureGraph from './Graphs/TemperatureGraph'
 import HumidityGraph from './Graphs/HumidityGraph'
-
+import moment from 'moment'
 class Dashboard extends Component {
   
   componentDidMount = () => {
 
-   
+    var CurrentDate = moment().format("hh:mm:ss ");
+  const  string =CurrentDate._d
+    console.log(CurrentDate)
+
 
   }
 

@@ -40,7 +40,7 @@ class TemperatureGraph extends Component {
 
     Data.getById().then(data => {
 console.log(data.data)
-min(data.data[13].createdAt)
+
 
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         try {
