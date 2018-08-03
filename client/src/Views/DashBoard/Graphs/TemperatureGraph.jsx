@@ -37,12 +37,13 @@ class TemperatureGraph extends Component {
     data: []
   }
   componentDidMount = () => {
- setInterval(this.GetData, 1000);
+  setInterval(this.GetData, 1000);
  
 
   }
 GetData=()=>{
-  Data.getById().then(data => {
+  Data.getById(this.props.userid).then(data => {
+    console.log(this.props.userId)
     if (data.data !== null || data.data !== undefined || data.data !== []) {
       try {
         const luxArray = []

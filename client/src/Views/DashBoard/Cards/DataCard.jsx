@@ -28,11 +28,11 @@ time:''
         }
     
         componentDidMount = () => {
-          setInterval(this.getData, 1000);
+          setInterval(this.getData, 10000);
           
         }
         getData=()=>{
-          Data.getAll().then(data => {
+          Data.getAll(this.props.userid).then(data => {
             console.log(data.data[0].r)
             this.setState({
                 r:data.data[0].r,

@@ -3,16 +3,17 @@ import moment from 'moment'
 // Defining methods for the booksController
 const controller = {
   findAll: (req, res) => {
+  console.log(req.params)
     db.nodes.findAll({
       limit: 1,
-      where: {
-        //your where conditions, or without them if you need ANY entry
-      },
+      where:{
+        userId:req.params.id
+              },
       order: [ [ 'createdAt', 'DESC' ]]
       })
       .then(dbModel => {
   
-        res.json(dbModel)
+        res.json(dbModel);
       }
   
     )
@@ -20,12 +21,16 @@ const controller = {
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
+   
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      limit:18
+      limit:18,
+      where:{
+userId:req.params.id
+      }
       })
       .then(jeff => {
-        console.log('dbModel')
+       
           res.send(jeff);
       
   

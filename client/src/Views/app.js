@@ -82,7 +82,7 @@ checkUserStatus=()=>{
                 <Dashboard
                 logged={this.state.logged}
                     component={Dashboard}
-                 
+                 userId={this.state.theId}
                     theUser={this.state.userDataObj}
                     {...props}
                     

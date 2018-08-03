@@ -24,10 +24,10 @@ class Dashboard extends Component {
 
         This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
 
-<TemperatureGraph/>
-       <HumidityGraph /> 
-       <DataCard/>
-       <Temp/>
+<TemperatureGraph userid={this.props.userId}/>
+       <HumidityGraph userid={this.props.userId}/> 
+       <DataCard userid={this.props.userId}/>
+       <Temp userid={this.props.userId}/>
       </div>
     )
 
