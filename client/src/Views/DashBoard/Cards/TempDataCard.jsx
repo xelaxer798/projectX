@@ -23,13 +23,13 @@ const styles = {
         state={
 lux:0,
 ir:0,
-visable:0,
+visible:0,
 full:0,
 time:''
         }
     
         componentDidMount = () => {
-          setInterval(this.getData, 3000);
+          setInterval(this.getData, 1000);
           
         }
         getData=()=>{
@@ -38,7 +38,7 @@ time:''
             this.setState({
                 lux:data.data[0].lux,
                 ir:data.data[0].ir,
-                visable:data.data[0].visable,
+                visible:data.data[0].visible,
 full:data.data[0].full,
                 time:data.data[0].currentTime
             })
@@ -53,16 +53,16 @@ full:data.data[0].full,
                 
                   <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">
-                  Lux, Infrared, Visable, Full
+                  Lux, Infrared, Visible, Full
                     </Typography>
                     <Typography component="p">
                       Lux: {this.state.lux}
                     </Typography>
                     <Typography component="p">
-                    Infrared: {this.state.it}
+                    Infrared: {this.state.ir}
                     </Typography>
                     <Typography component="p">
-                   Visable: {this.state.visable }
+                   Visible: {this.state.visible }
                     </Typography>
                     <Typography component="p">
                     Full: {this.state.full }

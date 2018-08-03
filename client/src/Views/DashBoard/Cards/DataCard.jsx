@@ -28,7 +28,7 @@ time:''
         }
     
         componentDidMount = () => {
-          setInterval(this.getData, 3000);
+          setInterval(this.getData, 1000);
           
         }
         getData=()=>{

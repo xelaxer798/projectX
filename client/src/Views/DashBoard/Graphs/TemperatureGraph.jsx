@@ -37,7 +37,7 @@ class TemperatureGraph extends Component {
     data: []
   }
   componentDidMount = () => {
- setInterval(this.GetData, 3000);
+ setInterval(this.GetData, 1000);
  
 
   }

@@ -114,10 +114,11 @@ checkUserStatus=()=>{
 
           <Switch>
           <Route exact path='/' render= {()=>(
-              this.state.logged?(
-                <Redirect to='/dashboard' />
+              !this.state.logged?(
+                <RoutedHome/>
+                
               ):(
-               <RoutedHome/>
+                <Redirect to='/dashboard' />
               )
           )}/>
           <Route exact path='/dashboard' render={()=>(
