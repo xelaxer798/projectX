@@ -120,7 +120,13 @@ checkUserStatus=()=>{
                <RoutedHome/>
               )
           )}/>
-          <Route exact path='/dashboard' render={RoutedDashBoard}/>
+          <Route exact path='/dashboard' render={()=>(
+            !this.state.logged?(
+              <Redirect to='/' />
+            ):(
+             <RoutedDashBoard/>
+            )
+        )}/>
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
                         </Switch>
