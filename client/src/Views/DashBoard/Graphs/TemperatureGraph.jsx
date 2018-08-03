@@ -14,63 +14,61 @@ function getDbDate(value) {
   return dates
 };
 
-function min(value,){
+function min(value, ) {
   // const split = JSON.stringify(value);
-  const dbDate = value.split(':') 
-  console.log( dbDate[1])
- 
-  const check0 =dbDate[1].split('');
-let temp;
+  const dbDate = value.split(':')
+  console.log(dbDate[1])
 
-if(check0[0]==='0'){
-  temp= '1'+check0[1]
-  return JSON.parse(temp)
-}else{
-  return JSON.parse(dbDate[1])
-}
- 
+  const check0 = dbDate[1].split('');
+  let temp;
 
- 
+  if (check0[0] === '0') {
+    temp = '1' + check0[1]
+    return JSON.parse(temp)
+  } else {
+    return JSON.parse(dbDate[1])
+  }
+
+
+
 }
 class TemperatureGraph extends Component {
   state = {
     data: []
   }
   componentDidMount = () => {
-
-    Data.getById().then(data => {
-console.log(parseFloat(data.data[1].currentTime))
-
-
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
-        try {
-          const luxArray = []
-          for (let i = 0; i < data.data.length; i++) {
-            let lux = {
-
-              x: data.data[i].currentTime  ,
-              y: JSON.parse(data.data[i].temperature
-              )
-
-            }
-            // console.log(lux)
-            luxArray.push(lux)
-          }
-          console.log(luxArray)
-          this.setState({
-            data: luxArray,
-
-          })
-        } catch (err) {
-          console.log(err)
-        }
-
-      }
-
-    })
+ setInterval(this.GetData, 3000);
+ 
 
   }
+GetData=()=>{
+  Data.getById().then(data => {
+    if (data.data !== null || data.data !== undefined || data.data !== []) {
+      try {
+        const luxArray = []
+        for (let i = 0; i < data.data.length; i++) {
+          let lux = {
 
+            x: data.data[i].currentTime,
+            y: JSON.parse(data.data[i].temperature
+            )
+          }
+         
+          luxArray.push(lux)
+        }
+      
+        this.setState({
+          data: luxArray,
+
+        })
+      } catch (err) {
+        console.log(err)
+      }
+
+    }
+
+  })
+}
   render() {
     return (
       <div >
@@ -90,8 +88,8 @@ console.log(parseFloat(data.data[1].currentTime))
             barWidth={10}
             height={250}
             width={750}
-          
-             data={[this.state.data]}
+
+            data={[this.state.data]}
 
           />
         </div>

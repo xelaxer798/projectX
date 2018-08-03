@@ -37,40 +37,41 @@ class HumidityGraph extends Component {
     data: []
   }
   componentDidMount = () => {
-
-    Data.getById().then(data => {
-console.log(data.data)
-
-
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
-        try {
-          const luxArray = []
-          for (let i = 0; i < data.data.length; i++) {
-            let lux = {
-
-                x: data.data[i].currentTime  ,
-              y: JSON.parse(data.data[i].humidity
-              )
-
-            }
-            // console.log(lux)
-            luxArray.push(lux)
-          }
-          console.log(luxArray)
-          this.setState({
-            data: luxArray,
-
-          })
-        } catch (err) {
-          console.log(err)
-        }
-
-      }
-
-    })
+    setInterval(this.getData, 3000);
+   
 
   }
-
+getData=()=>{
+  Data.getById().then(data => {
+    
+    
+          if (data.data !== null || data.data !== undefined || data.data !== []) {
+            try {
+              const luxArray = []
+              for (let i = 0; i < data.data.length; i++) {
+                let lux = {
+    
+                    x: data.data[i].currentTime  ,
+                  y: JSON.parse(data.data[i].humidity
+                  )
+    
+                }
+                // console.log(lux)
+                luxArray.push(lux)
+              }
+              
+              this.setState({
+                data: luxArray,
+    
+              })
+            } catch (err) {
+              console.log(err)
+            }
+    
+          }
+    
+        })
+}
   render() {
     return (
       <div >

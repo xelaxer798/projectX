@@ -61,7 +61,7 @@ class Room extends Component {
   componentDidMount = () => {
 
     Data.getById().then(data => {
-   
+   console.log(data.data)
    if(data.data!==null||data.data !==undefined||data.data !==[]){
      try{
       this.setState({

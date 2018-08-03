@@ -4,14 +4,17 @@ import HumidityGraph from './Graphs/HumidityGraph'
 import moment from 'moment';
 import RGB from './Cards/DataCard'
 import DataCard from './Cards/DataCard';
+import Temp from './Cards/TempDataCard'
 class Dashboard extends Component {
-  
+  state={
+    r:0,
+    g:0,
+    b:0,
+    time:''
+            }
   componentDidMount = () => {
 
-    var CurrentDate = moment().format("hh:mm:ss ");
-  const  string =CurrentDate._d
-    console.log(CurrentDate)
-
+ 
 
   }
 
@@ -24,6 +27,7 @@ class Dashboard extends Component {
 <TemperatureGraph/>
        <HumidityGraph /> 
        <DataCard/>
+       <Temp/>
       </div>
     )
 

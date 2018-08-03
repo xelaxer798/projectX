@@ -19,11 +19,12 @@ const styles = {
 };
 
 
-    class CardData extends Component{
+    class TempCardData extends Component{
         state={
-r:0,
-g:0,
-b:0,
+lux:0,
+ir:0,
+visable:0,
+full:0,
 time:''
         }
     
@@ -33,11 +34,12 @@ time:''
         }
         getData=()=>{
           Data.getAll().then(data => {
-            console.log(data.data[0].r)
+            console.log(data.data)
             this.setState({
-                r:data.data[0].r,
-                g:data.data[0].g,
-                b:data.data[0].b,
+                lux:data.data[0].lux,
+                ir:data.data[0].ir,
+                visable:data.data[0].visable,
+full:data.data[0].full,
                 time:data.data[0].currentTime
             })
                         })
@@ -51,16 +53,19 @@ time:''
                 
                   <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">
-                  RGB
+                  Lux, Infrared, Visable, Full
                     </Typography>
                     <Typography component="p">
-                      R: {this.state.r}
+                      Lux: {this.state.lux}
                     </Typography>
                     <Typography component="p">
-                     G: {this.state.g}
+                    Infrared: {this.state.it}
                     </Typography>
                     <Typography component="p">
-                     B: {this.state.b}
+                   Visable: {this.state.visable }
+                    </Typography>
+                    <Typography component="p">
+                    Full: {this.state.full }
                     </Typography>
                     <Typography component="p">
                      TIme: {this.state.time}
@@ -77,7 +82,7 @@ time:''
    
       
 
-    CardData.propTypes = {
+        TempCardData.propTypes = {
         classes: PropTypes.object.isRequired,
       };
-export default withStyles(styles)(CardData);
+export default withStyles(styles)( TempCardData);
