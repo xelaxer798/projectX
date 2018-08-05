@@ -37,13 +37,24 @@ userId:req.params.id
       })
       .catch(err => res.status(422).json(err));
   },
-  
+  warnings: function(req, res) {
+    console.log(req.params)
+    db.warnings.findAll({
+      where:{
+
+        userId: req.params.id
+      
+      }
+      })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   create: function(req, res) {
-    console.log(req.body)
+ 
   const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm:ss ");
   let time =moment()
-  console.log(time)
-  console.log({CurrentTime})
+  // console.log(time)
+  // console.log({CurrentTime})
     db.nodes.create({
         nodeId: req.body.nodeId,
         userId: req.body.userId,
@@ -60,7 +71,28 @@ userId:req.params.id
         roomId: req.body.roomId,
         currentTime:CurrentTime
       })
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        console.log(dbModel.dataValues)
+       if(dbModel.dataValues.temperature>=120||dbModel.dataValues.temperature<=60){
+if(dbModel.dataValues.temperature>=120){
+  db.warnings.create({
+    userId:req.body.userId,
+    nodeId: req.body.nodeId,
+    warning:'high',
+    time:CurrentTime
+  })
+  console.log('to high')
+}else if(dbModel.dataValues.temperature<=60){
+  db.warnings.create({
+    userId:req.body.userId,
+    nodeId: req.body.nodeId,
+    warning:'low',
+    time:CurrentTime
+  })
+}
+       }
+        res.json(dbModel)
+      })
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {

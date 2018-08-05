@@ -33,7 +33,7 @@ time:''
         }
         getData=()=>{
           Data.getAll(this.props.userid).then(data => {
-            console.log(data.data[0].r)
+            
             this.setState({
                 r:data.data[0].r,
                 g:data.data[0].g,

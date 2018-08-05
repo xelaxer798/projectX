@@ -34,7 +34,7 @@ time:''
         }
         getData=()=>{
           Data.getAll(this.props.userid).then(data => {
-            console.log(data.data)
+           
             this.setState({
                 lux:data.data[0].lux,
                 ir:data.data[0].ir,

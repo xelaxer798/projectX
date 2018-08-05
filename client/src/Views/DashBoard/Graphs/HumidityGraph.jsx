@@ -47,13 +47,14 @@ getData=()=>{
     
           if (data.data !== null || data.data !== undefined || data.data !== []) {
             try {
+             
               const luxArray = []
               for (let i = 0; i < data.data.length; i++) {
+                console.log(data.data[i].humidity)
                 let lux = {
     
                     x: data.data[i].currentTime  ,
-                  y: JSON.parse(data.data[i].humidity
-                  )
+                  y: JSON.parse(data.data[i].humidity)
     
                 }
                 // console.log(lux)
