@@ -41,6 +41,7 @@ userId:req.params.id
     console.log(req.params)
     db.warnings.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
+      limit:4,
       where:{
 
         userId: req.params.id
