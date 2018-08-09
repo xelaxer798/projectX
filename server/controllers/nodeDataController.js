@@ -40,7 +40,7 @@ userId:req.params.id
   warnings: function(req, res) {
     console.log(req.params)
     db.warnings.findAll({
-      order: [ [ 'createdAt', 'DESC' ]],
+      order: [ [ 'time', 'DESC' ]],
       limit:4,
       where:{
 
@@ -76,11 +76,11 @@ userId:req.params.id
       .then(dbModel => {
         console.log(dbModel.dataValues)
        if(dbModel.dataValues.temperature>=120||dbModel.dataValues.temperature<=60){
-if(dbModel.dataValues.temperature>=120){
+if(dbModel.dataValues.temperature>=102){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:'high',
+    warning:`high ${req.body.temperature}`,
     time:CurrentTime
   })
   console.log('to high')
@@ -88,7 +88,7 @@ if(dbModel.dataValues.temperature>=120){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:'low',
+    warning:`high ${req.body.temperature}`,
     time:CurrentTime
   })
 }
