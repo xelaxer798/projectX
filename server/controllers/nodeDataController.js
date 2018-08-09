@@ -76,7 +76,7 @@ userId:req.params.id
       .then(dbModel => {
         console.log(dbModel.dataValues)
        if(dbModel.dataValues.temperature>=120||dbModel.dataValues.temperature<=60){
-if(dbModel.dataValues.temperature>=102){
+if(dbModel.dataValues.temperature>=110){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
@@ -88,7 +88,7 @@ if(dbModel.dataValues.temperature>=102){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:`high ${req.body.temperature}`,
+    warning:`low ${req.body.temperature}`,
     time:CurrentTime
   })
 }
