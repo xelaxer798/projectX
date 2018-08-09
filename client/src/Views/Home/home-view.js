@@ -88,7 +88,7 @@ onSubmit = () => {
               margin="dense"
               label="Password"
               name='password'
-              type="passwordgit"
+              type="password"
               value={this.state.password}
               onChange={this.onChange}
             />
