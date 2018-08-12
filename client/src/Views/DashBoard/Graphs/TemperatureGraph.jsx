@@ -80,6 +80,8 @@ GetData=()=>{
           <LineChart
             axes
             xType={'text'}
+            dataPoints
+            interpolate={'cardinal'}
             y2Type="linear"
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars

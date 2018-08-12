@@ -83,9 +83,11 @@ getData=()=>{
             axes
             lineColors={['green']}
             xType={'text'}
-            y2Type="linear"
+            y2Type={"linear"}
+            interpolate={'cardinal'}
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars
+            dataPoints
             grid
             yDomainRange={[0, 100]}
             barWidth={10}
