@@ -33,10 +33,9 @@ if(check0[0]==='0'){
  
 }
 class RGBGraph extends Component {
+    
   state = {
-    R: [],
-    G:[],
-    B:[],
+    
     data:[]
   }
   componentDidMount = () => {
@@ -46,7 +45,7 @@ class RGBGraph extends Component {
   }
 getData=()=>{
   Data.getById(this.props.userid).then(data => {
-    console.log(data.data)
+
     
           if (data.data !== null || data.data !== undefined || data.data !== []) {
             try {
@@ -88,12 +87,10 @@ getData=()=>{
               const reverseG =gArray.reverse()
               const reverseB =bArray.reverse()
               const thedata=[reverseR,reverseG,reverseB]
-              console.log(thedata)
+            
            
               this.setState({
-                R: reverseR,
-                G:reverseG,
-                B:reverseB,
+              
                 data:thedata
     
               })
@@ -127,7 +124,7 @@ getData=()=>{
             yDomainRange={[1, 100000]}
             barWidth={10}
             height={250}
-            width={750}
+            width={1000}
           
              data={this.state.data}
 

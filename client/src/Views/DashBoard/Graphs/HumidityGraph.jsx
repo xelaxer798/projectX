@@ -92,7 +92,7 @@ getData=()=>{
             yDomainRange={[0, 100]}
             barWidth={10}
             height={250}
-            width={750}
+            width={1000}
           
              data={[this.state.data]}
 

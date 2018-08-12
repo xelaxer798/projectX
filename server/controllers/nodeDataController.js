@@ -24,7 +24,7 @@ const controller = {
   findById: function(req, res) {
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      limit:18,
+      limit:24,
       where:{
 userId:req.params.id
       }
@@ -54,7 +54,7 @@ userId:req.params.id
   create: function(req, res) {
  
   const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
-  let time =moment()
+  
   // console.log(time)
   // console.log({CurrentTime})
     db.nodes.create({
