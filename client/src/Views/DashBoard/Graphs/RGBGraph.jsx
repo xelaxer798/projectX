@@ -32,9 +32,12 @@ if(check0[0]==='0'){
 
  
 }
-class HumidityGraph extends Component {
+class RGBGraph extends Component {
   state = {
-    data: []
+    R: [],
+    G:[],
+    B:[],
+    data:[]
   }
   componentDidMount = () => {
     setInterval(this.getData, 1000);
@@ -43,25 +46,55 @@ class HumidityGraph extends Component {
   }
 getData=()=>{
   Data.getById(this.props.userid).then(data => {
-    
+    console.log(data.data)
     
           if (data.data !== null || data.data !== undefined || data.data !== []) {
             try {
-              const luxArray = []
+              const rArray = [];
               for (let i = 0; i < data.data.length; i++) {
-                let lux = {
+                let R = {
     
                     x: data.data[i].currentTime  ,
-                  y: JSON.parse(data.data[i].humidity
+                  y: JSON.parse(data.data[i].r
                   )
     
                 }
-                // console.log(lux)
-                luxArray.push(lux)
+                // console.log(R)
+                rArray.push(R)
               }
-              const reversed =luxArray.reverse()
+              const gArray = [];
+              for (let i = 0; i < data.data.length; i++) {
+                let G = {
+    
+                    x: data.data[i].currentTime  ,
+                  y: JSON.parse(data.data[i].g)
+    
+                }
+                // console.log(G)
+                gArray.push(G)
+              }
+              const bArray = [];
+              for (let i = 0; i < data.data.length; i++) {
+                let B = {
+    
+                    x: data.data[i].currentTime  ,
+                  y: JSON.parse(data.data[i].b )
+    
+                }
+                // console.log(B)
+                bArray.push(B)
+              }
+              const reverseR=rArray.reverse();
+              const reverseG =gArray.reverse()
+              const reverseB =bArray.reverse()
+              const thedata=[reverseR,reverseG,reverseB]
+              console.log(thedata)
+           
               this.setState({
-                data: reversed,
+                R: reverseR,
+                G:reverseG,
+                B:reverseB,
+                data:thedata
     
               })
             } catch (err) {
@@ -78,21 +111,23 @@ getData=()=>{
 
 
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-          <h1> Humidity Graph</h1>
+          <h1> RGB Graph</h1>
           <LineChart
             axes
-            lineColors={['green']}
+            lineColors={['red','green','blue']}
             xType={'text'}
-            y2Type="linear"
+            // y2Type="linear"
+            interpolate={'cardinal'}
+            
             axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
             colorBars
             grid
-            yDomainRange={[0, 100]}
+            yDomainRange={[1, 100000]}
             barWidth={10}
             height={250}
             width={750}
           
-             data={[this.state.data]}
+             data={this.state.data}
 
           />
         </div>
@@ -102,4 +137,4 @@ getData=()=>{
   }
 
 
-} export default HumidityGraph ;
+} export default RGBGraph ;

@@ -57,9 +57,9 @@ GetData=()=>{
          
           luxArray.push(lux)
         }
-      
+     const reversed =luxArray.reverse()
         this.setState({
-          data: luxArray,
+          data: reversed,
 
         })
       } catch (err) {

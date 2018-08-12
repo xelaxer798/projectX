@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import TemperatureGraph from './Graphs/TemperatureGraph'
 import HumidityGraph from './Graphs/HumidityGraph'
 import moment from 'moment';
-import RGB from './Cards/DataCard'
+import RGB from './Graphs/RGBGraph'
+
 import DataCard from './Cards/DataCard';
 import Temp from './Cards/TempDataCard';
 import Data from '../../Data/nodes-api';
@@ -51,7 +52,7 @@ getWarnings=()=>{
         <h1>Tempature Warnings</h1>
 {this.state.getWarnings.map((tile) => (
   <div key={tile.num}>
-  <li >{tile.warning}</li>
+  <li >The Tempature {tile.warning}</li>
   <li >{tile.time}</li>
   </div>
   
@@ -60,6 +61,7 @@ getWarnings=()=>{
 </div>
 <TemperatureGraph userid={this.props.userId}/>
        <HumidityGraph userid={this.props.userId}/> 
+       <RGB userid={this.props.userId}/> 
        <DataCard userid={this.props.userId}/>
        <Temp userid={this.props.userId}/>
       </div>

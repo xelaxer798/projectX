@@ -20,8 +20,8 @@ const controller = {
 
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
    
+  findById: function(req, res) {
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
       limit:18,
@@ -53,7 +53,7 @@ userId:req.params.id
   },
   create: function(req, res) {
  
-  const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm:ss ");
+  const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
   let time =moment()
   // console.log(time)
   // console.log({CurrentTime})
