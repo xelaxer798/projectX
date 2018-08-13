@@ -96,12 +96,16 @@ class RGBGraph extends Component {
 
         <div style={{ paddingLeft: '10px', color: 'black' }}>
           <h1> RGB Graph</h1>
+          
           <Button>Last Hour</Button>
           <LineChart
             axes
             lineColors={['red', 'green', 'blue']}
             xType={'text'}
             // y2Type="linear"
+            xTicks={10}
+            
+
             interpolate={'cardinal'}
             dataPoints
 
