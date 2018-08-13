@@ -20,17 +20,77 @@ const controller = {
 
       .catch(err => res.status(422).json(err));
   },
-   
+  findByDate: (req, res) => {
+    console.log(req.params)
+    let start= '2018-08-12T21:00:46.000Z';
+    let end='endTime';
+      db.nodes.findAll({
+        order: [ [ 'createdAt', 'DESC' ]],
+        limit: 24,
+        where:{
+          userId:req.params.id,
+          createdAt:{
+            $between: [start, end]
+          }
+                }
+     
+        })
+        .then(dbModel => {
+    
+          res.json(dbModel);
+        }
+    
+      )
+  
+        .catch(err => res.status(422).json(err));
+    },
+     
   findById: function(req, res) {
+    const CurrentTime = moment().tz("America/Los_Angeles").format("hh a");
+    const endTime = moment().tz("America/Los_Angeles").format("hh:mm a");
+  console.log('heyyyy',moment('2018-08-13T22:11:06.000Z').format('MMMM Do YYYY, h:mm:ss a'))
+  const split=  CurrentTime.split(' ');
+  let change =false;
+  if(split[0].includes("0")){
+    console.log({endTime},'hey')
+    console.log(split[1])
+    console.log(split[0])
+    change=split[0].split('');
+    console.log(change[1])
+  }
+  let number;
+  let timeStart;
+  if(change != false){
+ 
+    number =Number(change[1])-1
+    timeStart=`0${number}:00 ${split[1]} `
+  }else {
+   number =Number(split[0])-1
+   timeStart=`0${number}:00 ${split[1]} `
+  }
+  console.log(timeStart)
+
+    let start= timeStart;
+    let end=endTime;
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      limit:24,
+      
+      
       where:{
 userId:req.params.id
-      }
+// currentTime: {
+//     $between: [start, end]
+  
+
+// }
+ 
+
+
+    
+    }
       })
       .then(jeff => {
-       
+     
           res.send(jeff);
       
   

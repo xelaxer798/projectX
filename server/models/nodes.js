@@ -60,7 +60,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     currentTime:{
       type:DataTypes.STRING
-    }
+    },
+    date:{
+      type: DataTypes.DATEONLY,
+    },
+ 
    
   });
   return nodes;
