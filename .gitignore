@@ -18,6 +18,7 @@
 .env.production.local
 sendgrid.js
 awskey.js
+info
 theDb.txt
 awssecret.js
 jwtSecret.js
