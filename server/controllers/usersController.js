@@ -1,7 +1,11 @@
 import db from "../models";
-import bcrypt from'bcrypt'
-import jwt, { verify } from 'jsonwebtoken'
-const secret = process.env.jwt||'5454554545'
+import bcrypt from'bcrypt';
+import jwt, { verify } from 'jsonwebtoken';
+import sgMail from '@sendgrid/mail';
+// import sengridoToken from '../../sendgrid'
+const secret = process.env.jwt||'5454554545';
+const sengrido =process.env.sendgrid 
+sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
 const saltRounds =10;
 function getDbDate (data) {
@@ -178,17 +182,17 @@ else{
         }
         }).then(newUser=>{
           console.log(newUser.dataValues.id)
-        //   const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
-        //   const msg = {
-        //     to: req.body.email,
-        //     from: 'TechCheck@donotreply.com',
-        //     subject: 'Reqister Your Email With TechChecks ',
-        //     text: 'click me ',
-        //      html: name +' <br> <a href='+'https://techcheck.herokuapp.com/api/users/verification/' +newUser.dataValues.id +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>',
-        //   };
+          const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
+          const msg = {
+            to: req.body.email,
+            from: 'LeafLiftSystems@donotreply.com',
+            subject: 'Reqister Your Email With Leaf Lift Systems ',
+            text: 'Click me ',
+             html: name +` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='+'https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
+          };
   
-        //   sgMail.send(msg);
-          res.send('user Created')
+          sgMail.send(msg);
+          res.send(newUser.dataValues.id)
         })
 
    })
@@ -198,6 +202,32 @@ else{
     })
 
   },
+  verification: function (req, res) {
+   
+        db.users.update({
+          verified:true
+        }, {
+            where: {
+              id: req.params.id,
+              inactive: false
+            }
+          })
+          .then(dbModel => {
+           
+            db.users.findOne({
+              where:{
+                id:req.params.id
+              }
+            }).then(verify=>{
+             
+           const name =verify.dataValues.firstName+ ' '+verify.dataValues.lastName
+      
+              res.send(name)
+            })
+    
+          })
+          .catch(err => res.status(422).json(err));
+      },
   update: function(req, res) {
     db.nodeData.update({
         name: req.body.name,

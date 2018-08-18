@@ -79,6 +79,7 @@ class RGBGraph extends Component {
           const reverseR = rArray.reverse();
           const reverseG = gArray.reverse()
           const reverseB = bArray.reverse()
+          // const test=[{x:'12:00 am'},{x:'10:00 am'},{x:'12:00 pm'},{x:'5:00 pm'},{x:'11:59 pm'}]
           const thedata = [reverseR, reverseG, reverseB]
           this.setState({
             data: thedata
@@ -98,29 +99,31 @@ class RGBGraph extends Component {
           <h1> RGB Graph</h1>
           
           <Button>Last Hour</Button>
+          <div >
           <LineChart
             axes
             lineColors={['red', 'green', 'blue']}
             xType={'text'}
-            // y2Type="linear"
+            tickTimeDisplayFormat={'"%H:%M:%S"'}
             xTicks={10}
-            
-
+          
+        
             interpolate={'cardinal'}
             dataPoints
-
-            y2Type="linear"
-            axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
+            style={{ '.label': { fill: 'black' },paddingLeft: '10px' }}
+            axisLabels={{x: 'Time', y: 'Light Level'}}
             colorBars
             grid
+            // xDomainRange={[`12:00 am`, `11:00 pm`]}
             yDomainRange={[1, 100000]}
             barWidth={10}
             height={250}
             width={1050}
-
-            data={this.state.data}
+           
+             data={this.state.data}
 
           />
+          </div>
         </div>
       </div>
     )

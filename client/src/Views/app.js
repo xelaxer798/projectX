@@ -10,7 +10,8 @@ import './app.scss'
 import axios from "axios";
 import Dashboard from './DashBoard/DashBoard'
 import Footer from './Footer/Footer'
-
+import SignUp from './UserPages/SignUp/SignUp';
+import Verification from './UserPages/Verification/Verification';
 class App extends Component {
   state = {
     logged: false,
@@ -131,6 +132,8 @@ checkUserStatus=()=>{
         )}/>
           <Route exact path='/user/rooms' component={Rooms}/>
           <Route exact path='/user/data/room' component={Room2}/>
+          <Route exact path='/signup' component={SignUp}/>
+          <Route exact path='/verification/:id' component={Verification}/>
                         </Switch>
 
 

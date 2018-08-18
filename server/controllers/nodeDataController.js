@@ -74,7 +74,7 @@ const controller = {
     let end=endTime;
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      
+      limit:24,
       
       where:{
 userId:req.params.id
