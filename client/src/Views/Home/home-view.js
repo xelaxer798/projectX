@@ -8,8 +8,8 @@ import './Home.css';
 import Logo from '../../Images/Leaf.png'
 class Home extends Component {
   state={
-    email: 'growai798@gmail.com',
-            password: 'projectgreen',
+    email: '',
+            password: '',
             doesntMatch: false,
             noUser: false
   }
@@ -60,7 +60,11 @@ onSubmit = () => {
   render(){
  
     return(
+      <div>
+      <p>  email growai798@gmail.com</p>
+      <p> password  projectgreen</p>
         <div id='home'>
+        
         <Grid container spacing={24}>
           <Grid item md={12}>
             <img 
@@ -111,6 +115,7 @@ onSubmit = () => {
           </Grid>
 
         </Grid>
+      </div>
       </div>
     );
   }
