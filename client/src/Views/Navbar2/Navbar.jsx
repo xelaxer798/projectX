@@ -93,9 +93,9 @@ class Navbar extends Component {
     const homeLink = (
       <div>
         {this.props.logged ? <a href='/dashboard' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
-          GrowAi
+         Leaf Lift Systems
 </Typography></a> : <a href='/' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
-            GrowAi
+           Leaf Lift Systems
 </Typography></a>}
       </div>
     )

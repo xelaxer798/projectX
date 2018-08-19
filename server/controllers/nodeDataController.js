@@ -187,13 +187,13 @@ if(req.body.temperature>=110){
   TempHighLow= 'spike'
 }
 else if(req.body.temperature<=60){
-  TempHighLow='drop'
+  TempHighLow='dropped'
 }
 if(req.body.humidity>=85){
   HumidityHighLow='spike'
 }
 else if(req.body.humidity<=30){
-  HumidityHighLow='drop'
+  HumidityHighLow='dropped'
 }
 if(Tempature !== null&&Humidity !== null){
   const msg = {
