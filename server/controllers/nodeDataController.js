@@ -1,6 +1,7 @@
 import db from "../models";
 import moment from 'moment';
 import sgMail from '@sendgrid/mail';
+
 const sengrido =process.env.sendgrid 
 sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
@@ -196,8 +197,12 @@ else if(req.body.humidity<=30){
   HumidityHighLow='dropped'
 }
 if(Tempature !== null&&Humidity !== null){
+  for(let i=0;i<20;i++){
+    
+  }
   const msg = {
     to: user.dataValues.email,
+    cc:'growai798@gmail.com',
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',

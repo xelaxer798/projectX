@@ -8,7 +8,7 @@ import './Home.css';
 import Logo from '../../Images/Leaf.png'
 class Home extends Component {
   state={
-    email: 'jeff@gmail.com',
+    email: 'growai798@gmail.com',
             password: 'projectgreen',
             doesntMatch: false,
             noUser: false
