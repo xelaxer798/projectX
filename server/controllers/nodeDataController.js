@@ -185,13 +185,13 @@ if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.d
 let TempHighLow;
 let HumidityHighLow;
 if(req.body.temperature>=110){
-  TempHighLow= 'spike'
+  TempHighLow= 'spiked'
 }
 else if(req.body.temperature<=60){
   TempHighLow='dropped'
 }
 if(req.body.humidity>=85){
-  HumidityHighLow='spike'
+  HumidityHighLow='spiked'
 }
 else if(req.body.humidity<=30){
   HumidityHighLow='dropped'
