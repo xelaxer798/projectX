@@ -81,11 +81,13 @@ getWarnings=()=>{
    catch(err){
 
    }
-  
+  const tempReversed= tempatureWarnings.reverse();
+  const humidityWarningsReversed=humidityWarnings.reverse();
+  const RGBWarningsReversed =RGBWarnings.reverse();
     this.setState({
-      tempatureWarnings:tempatureWarnings,
-      humidityWarnings:humidityWarnings,
-      RGBWarnings:RGBWarnings
+      tempatureWarnings:tempReversed,
+      humidityWarnings:humidityWarningsReversed,
+      RGBWarnings:RGBWarningsReversed
     })
   }
      })

@@ -135,7 +135,10 @@ userId:req.params.id
     let Tempature=null;
     let Humidity=null;
     let RGB=null;
-
+    let ccEmail=''
+if(user.dataValues.email !=='growai798@gmail.com'){
+ccEmail= 'growai798@gmail.com'
+}
 if(dbModel.dataValues.temperature>=110){
   db.warnings.create({
     userId:req.body.userId,
@@ -200,9 +203,10 @@ if(Tempature !== null&&Humidity !== null){
   for(let i=0;i<20;i++){
     
   }
+
   const msg = {
     to: user.dataValues.email,
-    cc:'growai798@gmail.com',
+    cc:ccEmail,
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
@@ -216,7 +220,7 @@ if(Tempature !== null&&Humidity !== null){
 else if( Tempature !== null&&Humidity === null){
   const msg = {
     to: user.dataValues.email,
-    cc:'growai798@gmail.com',
+    cc:ccEmail,
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
@@ -230,7 +234,7 @@ else if( Tempature !== null&&Humidity === null){
 else if(Humidity !== null&&Tempature === null){
   const msg = {
     to: user.dataValues.email,
-    cc:'growai798@gmail.com',
+    cc:ccEmail,
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',

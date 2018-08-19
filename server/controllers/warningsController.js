@@ -22,7 +22,7 @@ const controller = {
     warnings: function(req, res) {
 
         db.warnings.findAll({
-          order: [ [ 'time', 'DESC' ]],
+          order: [ [ 'createdAt', 'DESC' ]],
           limit:15,
           where:{
     
