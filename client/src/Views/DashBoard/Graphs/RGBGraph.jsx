@@ -104,7 +104,7 @@ class RGBGraph extends Component {
             axes
             lineColors={['red', 'green', 'blue']}
             xType={'text'}
-            tickTimeDisplayFormat={'"%H:%M:%S"'}
+            tickTimeDisplayFormat={"%H:%M:%S ."}
             xTicks={10}
           
         

@@ -10,7 +10,7 @@ router.get("/warnings/:id", nodeData.warnings);
 router.get("/the/room/:id", nodeData.findById);
 router.post("/rooms/", nodeData.create);
 router.put("/:id", nodeData.update);
-router.delete("/", nodeData.remove);
+router.delete("/:userid", nodeData.remove);
 router.delete("/die/:id", nodeData.removeOne);
 
 // Export routes for server.js to use.

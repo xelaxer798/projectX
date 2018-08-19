@@ -34,14 +34,18 @@ time:''
         }
         getData=()=>{
           Data.getAll(this.props.userid).then(data => {
-           
+           try{
             this.setState({
-                lux:data.data[0].lux,
-                ir:data.data[0].ir,
-                visible:data.data[0].visible,
+              lux:data.data[0].lux,
+              ir:data.data[0].ir,
+              visible:data.data[0].visible,
 full:data.data[0].full,
-                time:data.data[0].currentTime
-            })
+              time:data.data[0].currentTime
+          })
+           }catch(err){
+             
+           }
+          
                         })
         }
         render(){

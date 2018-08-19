@@ -60,37 +60,27 @@ class Room extends Component {
   
   componentDidMount = () => {
 
-    Data.getById().then(data => {
-   console.log(data.data)
-   if(data.data!==null||data.data !==undefined||data.data !==[]){
-     try{
-      this.setState({
-        room:data.data,
-        id:data.data[0].id
-      })
-     }catch (err){
-       console.log(err)
-     }
-   
-   }
-
-    })
+    setInterval(this.getData, 1000);
     
   }
   
- livereload = () => {
-  // setInterval(function(){
-  //       }) }, 9000);
-  
-      
-        setInterval(function(){    Data.getAll().then(data => {
-          this.setState({
-            room:data.data
-          })
-              })}, 5000);
-            
-  
-  }
+getData=()=>{
+  Data.getById().then(data => {
+    console.log(data.data)
+    if(data.data!==null||data.data !==undefined||data.data !==[]){
+      try{
+       this.setState({
+         room:data.data,
+         id:data.data[0].id
+       })
+      }catch (err){
+        console.log(err)
+      }
+    
+    }
+ 
+     })
+}
   deleteAll=()=>{
     let yesOrNo=  window.confirm("Are You Sure you want to Delete everything in the Db!?!");
     if(yesOrNo ===true){

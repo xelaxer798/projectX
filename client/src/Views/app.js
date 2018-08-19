@@ -130,8 +130,8 @@ checkUserStatus=()=>{
                 <Redirect to='/' />
             )
         )}/>
-          <Route exact path='/user/rooms' component={Rooms}/>
-          <Route exact path='/user/data/room' component={Room2}/>
+          <Route exact path='/user/rooms' userId={this.state.theId} component={Rooms}/>
+          <Route exact path='/user/data/room' userId={this.state.theId} component={Room2}/>
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/verification/:id' component={Verification}/>
                         </Switch>

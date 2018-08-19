@@ -3,7 +3,7 @@ import TemperatureGraph from './Graphs/TemperatureGraph'
 import HumidityGraph from './Graphs/HumidityGraph'
 import moment from 'moment';
 import RGB from './Graphs/RGBGraph'
-
+import Button from '@material-ui/core/Button';
 import DataCard from './Cards/DataCard';
 import Temp from './Cards/TempDataCard';
 import Data from '../../Data/nodes-api';
@@ -13,11 +13,21 @@ class Dashboard extends Component {
     g:0,
     b:0,
     time:'',
-    getWarnings:[]
+    getWarnings:[],
+    userId:''
             }
   componentDidMount = () => {
   
     setInterval(this.getWarnings, 1000);
+  }
+  
+  deleteAllUserNodes=()=>{
+    let yesOrNo=  window.confirm(`Are You Sure you want to Delete this users node data with a user Id of ${this.props.userId}!?!`);
+    if(yesOrNo ===true){
+      Data.delete(this.props.userId)
+    }
+    
+
   }
 getWarnings=()=>{
   
@@ -48,6 +58,7 @@ getWarnings=()=>{
       <div className='home' style={{ backgroundColor: 'white' }}>
 
         This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
+        <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <div>
         <h1>Tempature Warnings</h1>
 {this.state.getWarnings.map((tile) => (

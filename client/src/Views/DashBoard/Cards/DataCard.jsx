@@ -33,13 +33,17 @@ time:''
         }
         getData=()=>{
           Data.getAll(this.props.userid).then(data => {
-            
-            this.setState({
+            try{
+              this.setState({
                 r:data.data[0].r,
                 g:data.data[0].g,
                 b:data.data[0].b,
                 time:data.data[0].currentTime
             })
+            }catch(err){
+              
+            }
+        
                         })
         }
         render(){

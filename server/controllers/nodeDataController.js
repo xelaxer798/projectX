@@ -3,7 +3,7 @@ import moment from 'moment'
 // Defining methods for the booksController
 const controller = {
   findAll: (req, res) => {
-  console.log(req.params)
+  // console.log(req.params)
     db.nodes.findAll({
       limit: 1,
       where:{
@@ -21,7 +21,7 @@ const controller = {
       .catch(err => res.status(422).json(err));
   },
   findByDate: (req, res) => {
-    console.log(req.params)
+    // console.log(req.params)
     let start= '2018-08-12T21:00:46.000Z';
     let end='endTime';
       db.nodes.findAll({
@@ -48,15 +48,15 @@ const controller = {
   findById: function(req, res) {
     const CurrentTime = moment().tz("America/Los_Angeles").format("hh a");
     const endTime = moment().tz("America/Los_Angeles").format("hh:mm a");
-  console.log('heyyyy',moment('2018-08-13T22:11:06.000Z').format('MMMM Do YYYY, h:mm:ss a'))
+  // console.log('heyyyy',moment('2018-08-13T22:11:06.000Z').format('MMMM Do YYYY, h:mm:ss a'))
   const split=  CurrentTime.split(' ');
   let change =false;
   if(split[0].includes("0")){
-    console.log({endTime},'hey')
-    console.log(split[1])
-    console.log(split[0])
+    // console.log({endTime},'hey')
+    // console.log(split[1])
+    // console.log(split[0])
     change=split[0].split('');
-    console.log(change[1])
+    // console.log(change[1])
   }
   let number;
   let timeStart;
@@ -68,13 +68,13 @@ const controller = {
    number =Number(split[0])-1
    timeStart=`0${number}:00 ${split[1]} `
   }
-  console.log(timeStart)
+
 
     let start= timeStart;
     let end=endTime;
     db.nodes.findAll({
       order: [ [ 'createdAt', 'DESC' ]],
-      limit:24,
+      // limit:24,
       
       where:{
 userId:req.params.id
@@ -98,7 +98,7 @@ userId:req.params.id
       .catch(err => res.status(422).json(err));
   },
   warnings: function(req, res) {
-    console.log(req.params)
+
     db.warnings.findAll({
       order: [ [ 'time', 'DESC' ]],
       limit:4,
@@ -134,7 +134,7 @@ userId:req.params.id
         currentTime:CurrentTime
       })
       .then(dbModel => {
-        console.log(dbModel.dataValues)
+    
        if(dbModel.dataValues.temperature>=120||dbModel.dataValues.temperature<=60){
 if(dbModel.dataValues.temperature>=110){
   db.warnings.create({
@@ -143,7 +143,7 @@ if(dbModel.dataValues.temperature>=110){
     warning:`high ${req.body.temperature}`,
     time:CurrentTime
   })
-  console.log('to high')
+
 }else if(dbModel.dataValues.temperature<=60){
   db.warnings.create({
     userId:req.body.userId,
@@ -171,9 +171,10 @@ if(dbModel.dataValues.temperature>=110){
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
+    console.log(req.params.userid)
     db.nodes.destroy({
      where:{
-   
+   userId:req.params.userid
      }
       })
       .then(dbModel => res.json(dbModel))

@@ -188,7 +188,7 @@ else{
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Reqister Your Email With Leaf Lift Systems ',
             text: 'Click me ',
-             html: name +` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='+'https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
+             html: name +` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
           };
   
           sgMail.send(msg);
