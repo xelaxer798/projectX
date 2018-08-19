@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import users from '../../../Data/nodes-api'
-
+import Logo from '../../../Images/Leaf.png'
 
 class verify extends Component{
 state = {
@@ -20,6 +20,8 @@ state = {
   render() {
     return (
       <div className="verification">
+     <img src={Logo} alt='Logo'/>
+     <br/>
      {this.state.name}, You have been verified.   
       </div>
     )

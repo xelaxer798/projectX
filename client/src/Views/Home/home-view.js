@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
-import Logo from './logo.png'
+import Logo from '../../Images/Leaf.png'
 class Home extends Component {
   state={
     email: 'jeff@gmail.com',

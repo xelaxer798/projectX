@@ -13,5 +13,6 @@ router.put("/verification/:id",users.verification)
 router.put("/:id", users.update);
 router.delete("/:id", users.remove);
 
+
 // Export routes for server.js to use.
 export default router;

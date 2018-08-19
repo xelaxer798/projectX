@@ -1,5 +1,8 @@
 import db from "../models";
-import moment from 'moment'
+import moment from 'moment';
+import sgMail from '@sendgrid/mail';
+const sengrido =process.env.sendgrid 
+sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
 const controller = {
   findAll: (req, res) => {
@@ -97,24 +100,17 @@ userId:req.params.id
       })
       .catch(err => res.status(422).json(err));
   },
-  warnings: function(req, res) {
-
-    db.warnings.findAll({
-      order: [ [ 'time', 'DESC' ]],
-      limit:4,
-      where:{
-
-        userId: req.params.id
-      
-      }
-      })
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  create: function(req, res) {
+  
+  create: async function(req, res) {
  
   const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
-  
+ let user=await  db.users.findOne({
+    where: {
+      id: req.body.userId
+    }
+  })
+
+  console.log(user.dataValues)
   // console.log(time)
   // console.log({CurrentTime})
     db.nodes.create({
@@ -134,25 +130,85 @@ userId:req.params.id
         currentTime:CurrentTime
       })
       .then(dbModel => {
-    
-       if(dbModel.dataValues.temperature>=120||dbModel.dataValues.temperature<=60){
+    console.log(dbModel.dataValues,"heyyyyyyyyyynhmn\bhjbj")
+    let Tempature=null;
+    let Humidity=null;
+    let RGB=null;
+
 if(dbModel.dataValues.temperature>=110){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:`high ${req.body.temperature}`,
-    time:CurrentTime
+    warning:`Temperature high ${req.body.temperature}`,
+    time:`at ${CurrentTime}`
   })
+ Tempature=req.body.temperature
 
-}else if(dbModel.dataValues.temperature<=60){
+}
+else if(dbModel.dataValues.temperature<=60){
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:`low ${req.body.temperature}`,
-    time:CurrentTime
+    warning:`Temperature was low ${req.body.temperature}`,
+    time:`at ${CurrentTime}`
   })
+  Tempature=req.body.temperature
 }
-       }
+if(dbModel.dataValues.humidity>=85){
+  db.warnings.create({
+    userId:req.body.userId,
+    nodeId: req.body.nodeId,
+    warning:`Humidity was high ${req.body.humidity}`,
+    time:`at ${CurrentTime}`
+  })
+  Humidity=req.body.Humidity
+}
+else if(dbModel.dataValues.humidity<=30){
+  db.warnings.create({
+    userId:req.body.userId,
+    nodeId: req.body.nodeId,
+    warning:`Humidity was low ${req.body.humidity}`,
+    time:`at ${CurrentTime}`
+  })
+  Humidity=req.body.Humidity
+}
+if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.dataValues.b&&dbModel.dataValues.b===dbModel.dataValues.r){
+  db.warnings.create({
+    userId:req.body.userId,
+    nodeId: req.body.nodeId,
+    warning:`RGB was the same with a value of ${req.body.r}`,
+    time:`at ${CurrentTime}`
+  })
+  RGB=req.body.r
+}
+let TempHighLow;
+let HumidityHighLow;
+if(req.body.temperature>=110){
+  TempHighLow= 'spike'
+}
+else if(req.body.temperature<=60){
+  TempHighLow='drop'
+}
+if(req.body.humidity>=85){
+  HumidityHighLow='spike'
+}
+else if(req.body.humidity<=30){
+  HumidityHighLow='drop'
+}
+if(Tempature !== null&&Humidity !== null){
+  const msg = {
+    to: user.dataValues.email,
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature ${req.body.temperature} °.
+     Your farm also had a humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     `,
+  };
+  
+  sgMail.send(msg);
+}
+
         res.json(dbModel)
       })
       .catch(err => res.status(422).json(err));
@@ -180,6 +236,7 @@ if(dbModel.dataValues.temperature>=110){
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
   removeOne: function(req, res) {
     console.log(req.params.id)
     db.nodes.destroy({
