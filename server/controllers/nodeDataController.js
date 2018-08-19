@@ -206,7 +206,7 @@ if(Tempature !== null&&Humidity !== null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature ${req.body.temperature} °.
+     html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
      `,
   };
@@ -220,7 +220,7 @@ else if( Tempature !== null&&Humidity === null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature ${req.body.temperature} °.
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      
      `,
   };
