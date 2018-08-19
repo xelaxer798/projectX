@@ -207,7 +207,34 @@ if(Tempature !== null&&Humidity !== null){
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
      html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature ${req.body.temperature} °.
-     Your farm also had a humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     `,
+  };
+  
+  sgMail.send(msg);
+}
+else if( Tempature !== null&&Humidity === null){
+  const msg = {
+    to: user.dataValues.email,
+    cc:'growai798@gmail.com',
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature ${req.body.temperature} °.
+     
+     `,
+  };
+  
+  sgMail.send(msg);
+} 
+else if(Humidity !== null&&Tempature === null){
+  const msg = {
+    to: user.dataValues.email,
+    cc:'growai798@gmail.com',
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
      `,
   };
   
