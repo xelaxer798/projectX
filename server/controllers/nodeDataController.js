@@ -183,6 +183,18 @@ if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.d
     warning:`Node is detecting the RGB was the same with a value of ${req.body.r}`,
     time:`at ${CurrentTime}`
   })
+  const msg = {
+    to: user.dataValues.email,
+    cc:ccEmail,
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The RGB was reporting the same value. This value was ${dbModel.dataValues.r}.
+     
+     `,
+  };
+  
+  sgMail.send(msg);
   RGB=req.body.r
 }
 let TempHighLow;
