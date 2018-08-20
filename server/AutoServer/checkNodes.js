@@ -70,7 +70,7 @@ const checkNodes = async (id) => {
               // |users[i].dataValues.email
               const msg = {
                 to: 'growai798@gmail.com',
-                cc: ccEmail,
+            
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
