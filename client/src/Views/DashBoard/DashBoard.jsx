@@ -19,6 +19,7 @@ class Dashboard extends Component {
     tempatureWarnings:[],
     humidityWarnings:[],
     RGBWarnings:[],
+    deviceWarnings:[],
     userId:''
             }
   componentDidMount = () => {
@@ -46,7 +47,8 @@ getWarnings=()=>{
     const tempatureWarnings=[];
     const humidityWarnings=[];
     const RGBWarnings=[];
- 
+ const deviceWarnings=[];
+
     for(let i=0;i<data.data.length;i++){
       let num=i;
       let warningsObj;
@@ -77,6 +79,14 @@ getWarnings=()=>{
          }
          RGBWarnings.push(warningsObj)
         }
+        else if(tellwhich[0]==='Node'){
+          warningsObj= { 
+            warning:data.data[i].warning,
+            time:data.data[i].time,
+            num:num+1
+         }
+         deviceWarnings.push(warningsObj)
+        }
       }
    catch(err){
 
@@ -84,10 +94,12 @@ getWarnings=()=>{
   const tempReversed= tempatureWarnings.reverse();
   const humidityWarningsReversed=humidityWarnings.reverse();
   const RGBWarningsReversed =RGBWarnings.reverse();
+  console.log(tempatureWarnings)
     this.setState({
       tempatureWarnings:tempReversed,
       humidityWarnings:humidityWarningsReversed,
-      RGBWarnings:RGBWarningsReversed
+      RGBWarnings:RGBWarningsReversed,
+      deviceWarnings:deviceWarnings
     })
   }
      })
@@ -104,11 +116,11 @@ getWarnings=()=>{
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <br/>    <br/>   
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
-        <Grid container  spacing={16}>
-        <Grid item xs={4}>
+        <Grid container  spacing={10}>
+        <Grid item xs={3}>
      
-        <h1>Tempature Warnings</h1>
-{this.state.tempatureWarnings.map((tile) => (
+        <h3>Tempature Warnings</h3>
+{this.state.tempatureWarnings.slice(0, 5).map((tile) => (
   <div key={tile.num}>
   <li >The {tile.warning} °</li>
   <li >{tile.time}</li>
@@ -117,9 +129,9 @@ getWarnings=()=>{
 
 ))}
 </Grid>
-<Grid item xs={4}>
-        <h1>Humidity Warnings</h1>
-{this.state.humidityWarnings.map((tile) => (
+<Grid item xs={3}>
+        <h3>Humidity Warnings</h3>
+{this.state.humidityWarnings.slice(0, 5).map((tile) => (
   <div key={tile.num}>
   <li >The {tile.warning} %</li>
   <li >{tile.time}</li>
@@ -128,10 +140,22 @@ getWarnings=()=>{
 
 ))}
 </Grid>
-<Grid item xs={4}>
-        <h1>RGB Warnings</h1>
-{this.state.RGBWarnings.map((tile) => (
+<Grid item xs={3}>
+        <h3>RGB Warnings</h3>
+{this.state.RGBWarnings.slice(0, 5).map((tile) => (
   <div key={tile.num}>
+  <li >The {tile.warning}</li>
+  <li >{tile.time}</li>
+  </div>
+  
+
+))}
+</Grid>
+<Grid item xs={3}>
+        <h3>Device Warnings</h3>
+      
+{this.state.deviceWarnings.slice(0, 5).map((tile) => (
+  <div >
   <li >The {tile.warning}</li>
   <li >{tile.time}</li>
   </div>

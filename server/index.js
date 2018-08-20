@@ -11,8 +11,8 @@ export default path => {
   // Run Morgan for Logging
   app.use(logger("dev"));
   app.use(bodyParser.json());
-  autoServer.checkNodes(10);
-// setInterval(autoServer.checkNodes, 18000,10 );
+  // autoServer.checkNodes(10);
+setInterval(autoServer.checkNodes, 1800000,10 );
   app.use(express.static(`${path}/client`));
 
   // Where the node data will be sent aka www....../api/nodeData

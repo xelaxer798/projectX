@@ -23,7 +23,7 @@ const controller = {
 
         db.warnings.findAll({
           order: [ [ 'createdAt', 'DESC' ]],
-          limit:15,
+          // limit:15,
           where:{
     
             userId: req.params.id

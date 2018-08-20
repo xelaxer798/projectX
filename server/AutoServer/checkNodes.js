@@ -1,6 +1,12 @@
 
 import moment from 'moment';
-import db from '../models'
+import db from '../models';
+import sgMail from '@sendgrid/mail';
+import NodeCache from "node-cache" ;
+const sengrido =process.env.sendgrid 
+sgMail.setApiKey(sengrido);
+
+const myCache = new NodeCache();
 function timeToDecimal(t) {
 
   const arr = t.split(':');
@@ -20,11 +26,11 @@ return time;
 }
 
  const checkNodes =async (id) => {
-console.log(id)
+
+
   const theCurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
 
- let MyTime=timeToNumber(theCurrentTime,'olo ');
-console.log(MyTime)
+
  let users=await   db.users.findAll({
 
     where:{
@@ -33,8 +39,8 @@ console.log(MyTime)
     order: [ [ 'createdAt', 'DESC' ]]
     })
     
-    let lastNodeEntry;
-    console.log(users.length)
+
+  
     for(let i=0;i<users.length;i++){
     let nodes =await db.nodes.findAll({
         limit: 1,
@@ -44,16 +50,50 @@ console.log(MyTime)
         order: [ [ 'createdAt', 'DESC' ]]
         })
         try{
-       
-          lastNodeEntry  = timeToDecimal(nodes[0].dataValues.currentTime)
-         console.log(timeToNumber(nodes[0].dataValues.currentTime),'fuck')
+          myCache.get( users[i].dataValues.id,async function( err, value ){
+            if( !err ){
+              if(value == undefined){
+                
+              }else{
+                console.log( value );
+              if(nodes[0].dataValues.currentTime===value.time){
+                let warningss= await db.warnings.create({
+                  userId: users[i].dataValues.id,
+                  nodeId: nodes[0].dataValues.nodeId,
+                  warning:`Node has not updated since ${value.time}. Please check the node it may be offline`,
+                  time:`at ${theCurrentTime}`
+                })
+                let ccEmail;
+                if(users.dataValues.email !=='growai798@gmail.com'){
+                  ccEmail= 'growai798@gmail.com'
+                  }
+                  // |users[i].dataValues.email
+                const msg = {
+                  to: 'growai798@gmail.com',
+                  cc:ccEmail,
+                  from: 'LeafLiftSystems@donotreply.com',
+                  subject: 'Your Farm Has A Warning',
+                  text: 'Click me ',
+                   html: `${users.dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
+                };
+                sgMail.send(msg);
+              }
+              }
+            }
+          });
+          let  obj = { time: nodes[0].dataValues.currentTime};
+          
+          myCache.set( users[i].dataValues.id, obj, function( err, success ){
+            if( !err && success ){
+              console.log( success );
+            }
+          });
+
+      
         }catch(err){
           console.log(err)
         }
-        console.log(lastNodeEntry,MyTime)
-     if(lastNodeEntry ){
-
-     }
+     
     
     }
 
