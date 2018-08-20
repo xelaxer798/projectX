@@ -64,7 +64,7 @@ const checkNodes = async (id) => {
                 time: `${theCurrentTime}`
               })
               let ccEmail;
-              if (users.dataValues.email !== 'growai798@gmail.com') {
+              if (users[i].dataValues.email !== 'growai798@gmail.com') {
                 ccEmail = 'growai798@gmail.com'
               }
               // |users[i].dataValues.email
@@ -74,21 +74,27 @@ const checkNodes = async (id) => {
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
-                html: `${users.dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
+                html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
               sgMail.send(msg);
             }
           }
         }
       });
-      let obj = { time: nodes[0].dataValues.currentTime };
+      try{
+        console.log(nodes[0])
+        let obj = { time: nodes[0].dataValues.currentTime };
+      
+        myCache.set(users[i].dataValues.id, obj, function (err, success) {
+          if (!err && success) {
+            console.log(success);
+          }
+        });
+  
+      }catch(err){
 
-      myCache.set(users[i].dataValues.id, obj, function (err, success) {
-        if (!err && success) {
-          console.log(success);
-        }
-      });
-
+      }
+    
 
     } catch (err) {
       console.log(err)
