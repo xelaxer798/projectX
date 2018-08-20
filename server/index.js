@@ -12,7 +12,9 @@ export default path => {
   app.use(logger("dev"));
   app.use(bodyParser.json());
   // autoServer.checkNodes(10);
+  autoServer.checkNodes()
 setInterval(autoServer.checkNodes, 1800000,10 );
+
   app.use(express.static(`${path}/client`));
 
   // Where the node data will be sent aka www....../api/nodeData
