@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var nodes = sequelize.define("nodes", {
     id: {
       primaryKey: true,
@@ -6,23 +6,35 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
     },
     nodeId: {
-      primaryKey: true,
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.STRING,
+      allowNull: true
     },
     userId: {
       type: DataTypes.STRING,
       allowNull: true
-    },  
-     nodeType: {
+    },
+    nodeName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    roomId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    roomName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+
+    nodeType: {
       type: DataTypes.STRING,
       allowNull: true
     },
     temperature: {
       type: DataTypes.STRING,
       allowNull: true
-    },  
-     humidity: {
+    },
+    humidity: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -54,18 +66,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    roomId: {
-      type: DataTypes.STRING,
-      allowNull: true
+
+    currentTime: {
+      type: DataTypes.STRING
     },
-    currentTime:{
-      type:DataTypes.STRING
-    },
-    date:{
+    date: {
       type: DataTypes.DATEONLY,
     },
- 
-   
+
+
   });
   return nodes;
 };

@@ -39,9 +39,10 @@ const checkNodes = async (id) => {
     order: [['createdAt', 'DESC']]
   })
 
-
+let num=0;
 
   for (let i = 0; i < users.length; i++) {
+    console.log(num+i)
     let nodes = await db.nodes.findAll({
       limit: 1,
       where: {
@@ -55,7 +56,9 @@ const checkNodes = async (id) => {
           if (value == undefined) {
 
           } else {
-            console.log(value);
+            console.log(value.time, 'kkkklol');
+            console.log(nodes[0].dataValues.currentTime, 'fuck;;;;')
+            console.log(nodes[0].dataValues.currentTime===value.time,"die")
             if (nodes[0].dataValues.currentTime === value.time) {
               let warningss = await db.warnings.create({
                 userId: users[i].dataValues.id,
@@ -70,34 +73,34 @@ const checkNodes = async (id) => {
               // |users[i].dataValues.email
               const msg = {
                 to: 'growai798@gmail.com',
-            
+
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
-              sgMail.send(msg);
+              // sgMail.send(msg);
             }
           }
         }
       });
-      try{
-        console.log(nodes[0])
+      try {
+
         let obj = { time: nodes[0].dataValues.currentTime };
-      
+
         myCache.set(users[i].dataValues.id, obj, function (err, success) {
           if (!err && success) {
-            console.log(success);
+            console.log(success, 'hyeyeyye');
           }
         });
-  
-      }catch(err){
+
+      } catch (err) {
 
       }
-    
+
 
     } catch (err) {
-      console.log(err)
+      console.log(err, 'you mom')
     }
 
 

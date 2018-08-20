@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  var nodeList = sequelize.define("rooms", {
+  var nodeList = sequelize.define("nodeLists", {
       id: {
           primaryKey: true,
           type: DataTypes.UUID,
@@ -7,8 +7,12 @@ module.exports = function(sequelize, DataTypes) {
       },
       nodeListID: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: true
       },
+      serialNumber: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
       userID: {
           type: DataTypes.STRING,
       },
