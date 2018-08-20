@@ -180,7 +180,7 @@ if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.d
   db.warnings.create({
     userId:req.body.userId,
     nodeId: req.body.nodeId,
-    warning:`RGB was the same with a value of ${req.body.r}`,
+    warning:`Node is detecting the RGB was the same with a value of ${req.body.r}`,
     time:`at ${CurrentTime}`
   })
   RGB=req.body.r
