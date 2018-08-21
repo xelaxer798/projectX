@@ -185,8 +185,8 @@ if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.d
   })
   const msg = {
     to: user.dataValues.email,
-    cc:ccEmail,
-    Bcc:'lm@leafliftsystems.com',
+    Bcc:ccEmail,
+    cc:'lm@leafliftsystems.com',
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
