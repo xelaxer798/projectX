@@ -84,7 +84,7 @@ const checkNodes = async (id) => {
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
-              // sgMail.send(msg);
+              sgMail.send(msg);
               let obj = { time: ThenodeData.dataValues.currentTime };
 
               myCache.set(users[i].dataValues.id, obj, function (err, success) {
