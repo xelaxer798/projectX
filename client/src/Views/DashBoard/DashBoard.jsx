@@ -90,7 +90,7 @@ getWarnings=()=>{
         }
       }
    catch(err){
-
+console.log(err)
    }
    console.log(deviceWarnings)
   const tempReversed= tempatureWarnings.reverse();

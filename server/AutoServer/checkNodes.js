@@ -74,14 +74,18 @@ console.log(`${value} is undifiend`)
                 warning: `Node has not updated since ${value.time}. Please check the node it may be offline`,
                 time: `${theCurrentTime}`
               })
-              let ccEmail;
+              let ccEmail='';
               if (users[i].dataValues.email !== 'growai798@gmail.com') {
-                ccEmail = 'growai798@gmail.com'
+                ccEmail = 'growai798@gmail.com';
               }
               // |users[i].dataValues.email
+              let emailToSend='growai798@gmail.com'
+              if(users[i].dataValues.email ==='growai798@gmail.com'){
+                emailToSend='lm@leafliftsystems.com';
+              }
               const msg = {
-                to: 'growai798@gmail.com',
-
+                to: emailToSend,
+                cc:ccEmail,
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
