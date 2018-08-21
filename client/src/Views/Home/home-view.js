@@ -5,19 +5,53 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
-import Logo from '../../Images/Leaf.png'
+import Logo from '../../Images/Leaf.png';
+// import moment from 'react-moment';
+import bcrypt from'bcryptjs';
+// import 'moment-timezone';
+const saltRounds =10;
+// var bcrypt = dcodeIO.bcrypt;
 class Home extends Component {
   state={
     email: '',
             password: '',
             doesntMatch: false,
-            noUser: false
+            noUser: false,
+            checkBoxe:false
   }
   componentDidMount = () => {
-   
-  }
+    // const theCurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
+    // console.log(`${this.state.email} ${theCurrentTime}`)
+
+   if( localStorage.getItem('UserEmail',this.state.email)!==null){
+console.log(this.state)
+
+
+  
+    this.setState({
+       email:localStorage.getItem('UserEmail'),
+     
+     })
+
+
+   }
+
+}
   componentDidUpdate =()=>{
 
+  }
+  toggleCheck=()=>{
+    if(this.state.checkBoxe===false){
+      this.setState({
+        checkBoxe:true
+      })
+   
+    }
+    else if(this.state.checkBoxe===true){
+      this.setState({
+        checkBoxe:false
+      })
+    }
   }
   onChange = (e) => {
        
@@ -27,6 +61,15 @@ class Home extends Component {
 
 }
 onSubmit = () => {
+
+ 
+  if(this.state.checkBoxe===true){
+    
+    localStorage.setItem('UserEmail', this.state.email)
+  
+  }
+ 
+
   let lowerCaseEmail=this.state.email.toLowerCase()
       const self = this;
       axios({
@@ -47,9 +90,9 @@ onSubmit = () => {
               }
               else {
                
-                  sessionStorage.setItem('auth', res.data)
+                localStorage.setItem('auth', res.data)
                  
-                  window.location='/dashboard';
+                  // window.location='/dashboard';
               }
           }).catch(function (error) {
               console.log(error);
@@ -111,7 +154,7 @@ todo build admin screen
 
           <Grid item md={6}>
             <div id="remember-me">
-              <input type="checkbox" />
+              <input onClick={this.toggleCheck} type="checkbox" />
               <span>Remember Me</span>
             </div>
           </Grid>
@@ -123,6 +166,11 @@ todo build admin screen
             <Button variant="contained" onClick={this.onSubmit} color="primary">
               Log in
             </Button>
+            {this.state.noUser &&
+              <p>There is no account associated with that email</p>}
+          {this.state.doesntMatch &&
+              <p>Email or password dont match. Please try again.</p>
+          }
           </Grid>
 
         </Grid>

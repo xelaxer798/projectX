@@ -147,6 +147,7 @@ active:user.dataValues.active
     })
   },
   create: function(req, res) {
+    const saltRounds =10;
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       if (err) {
 

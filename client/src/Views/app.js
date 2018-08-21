@@ -20,14 +20,14 @@ class App extends Component {
   } 
   componentDidMount = () => {
     // let theuser;
-       if (sessionStorage.auth != null) {
+       if (localStorage.auth != null) {
            // console.log('auth')
 
            axios({
                method: 'post',
                url: '/api/users/auth',
                data: {
-                   userToken: sessionStorage.getItem('auth')
+                   userToken: localStorage.getItem('auth')
 
                },
            }).then(user => {
@@ -71,8 +71,8 @@ checkUserStatus=()=>{
 }
    logOutHandler = () => {
     this.setState({ logged: false });
-    sessionStorage.removeItem('auth');
-    localStorage.clear();
+    localStorage.removeItem('auth');
+
     window.location='/'
 }
     render(){

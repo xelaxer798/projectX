@@ -9,6 +9,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        roomName: {
+            type: DataTypes.STRING,
+            allowNull: true
+          },
         nodeList: {
             type: DataTypes.STRING,
         },

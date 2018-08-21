@@ -13,23 +13,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-    nodeName: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    roomId: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    roomName: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
+  
+    
+    
 
-    nodeType: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
     temperature: {
       type: DataTypes.STRING,
       allowNull: true
@@ -70,10 +57,7 @@ module.exports = function (sequelize, DataTypes) {
     currentTime: {
       type: DataTypes.STRING
     },
-    date: {
-      type: DataTypes.DATEONLY,
-    },
-
+  
 
   });
   return nodes;

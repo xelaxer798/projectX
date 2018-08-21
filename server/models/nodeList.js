@@ -9,6 +9,15 @@ module.exports = function(sequelize, DataTypes) {
           type: DataTypes.STRING,
           allowNull: true
       },
+      nodeName: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      
+    nodeType: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       serialNumber: {
         type: DataTypes.STRING,
         allowNull: true

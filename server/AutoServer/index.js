@@ -1,4 +1,4 @@
-import checkNodes from './checkNodes'
+import checkNodes from './checkNodes';
 const AutoServer = {
   checkNodes
 };

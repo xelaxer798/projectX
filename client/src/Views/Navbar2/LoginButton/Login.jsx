@@ -63,7 +63,7 @@ class Login extends Component {
                 }
                 else {
                  
-                    sessionStorage.setItem('auth', res.data)
+                    localStorage.setItem('auth', res.data)
                     self.handleClose();
                     window.location='/dashboard';
                 }
