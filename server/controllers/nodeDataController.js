@@ -231,7 +231,7 @@ else if(Tempature !=null&&Humidity !== null &&RGB !== null){
   
   sgMail.send(msg);
 }
-else if( Tempature !== null&&Humidity === null){
+else if( Tempature !== null&&Humidity === null&&RGB ===null){
   const msg = {
     to: user.dataValues.email,
     cc:ccEmail,
@@ -246,7 +246,7 @@ else if( Tempature !== null&&Humidity === null){
   
   sgMail.send(msg);
 } 
-else if(Humidity !== null&&Tempature === null){
+else if(Humidity !== null&&Tempature === null&&RGB ===null){
   const msg = {
     to: user.dataValues.email,
     cc:ccEmail,
