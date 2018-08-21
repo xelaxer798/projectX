@@ -52,20 +52,23 @@ const checkNodes = async (id) => {
         },
         order: [['createdAt', 'DESC']]
       })
-
+      let theTime;
       myCache.get(users[i].dataValues.id, async function (err, value) {
+       
+    theTime=ThenodeData.dataValues.currentTime
+    console.log(theTime)
         if (!err) {
           console.log(err)
           if (value == undefined) {
-
+console.log(`${value} is undifiend`)
           } else {
-            console.log(ThenodeData.dataValues.currentTime, `this is # ${testing}`)
-            console.log(users[i].dataValues.id)
-            console.log(value.time, 'kkkklol line 64');
-            console.log(ThenodeData.dataValues.currentTime, 'fuck;;;;')
-            console.log(ThenodeData.dataValues.currentTime === value.time, "die")
+            // console.log(ThenodeData.dataValues.currentTime, `this is # ${testing}`)
+            // console.log(users[i].dataValues.id,'nijdlsldklda')
+            // console.log(value.time, 'kkkklol line 64');
+            // console.log(ThenodeData.dataValues.currentTime, 'fuck;;;;')
+            // console.log(ThenodeData.dataValues.currentTime === value.time, "die")
             if (ThenodeData.dataValues.currentTime === value.time) {
-              let warningss = await db.warnings.create({
+               db.warnings.create({
                 userId: users[i].dataValues.id,
                 nodeId: ThenodeData.dataValues.nodeId,
                 warning: `Node has not updated since ${value.time}. Please check the node it may be offline`,
@@ -84,23 +87,24 @@ const checkNodes = async (id) => {
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
-              sgMail.send(msg);
-              let obj = { time: ThenodeData.dataValues.currentTime };
-
-              myCache.set(users[i].dataValues.id, obj, function (err, success) {
-                if (!err && success) {
-                  console.log(success, 'hyeyeyye');
-                }
-              });
+            sgMail.send(msg);
+              let obj = { time: theTime};
+              
+              // myCache.set(users[i].dataValues.id, obj, function (err, success) {
+              //   if (!err && success) {
+              //     console.log(success, 'hyeyeyye');
+              //     console.log(obj,"olpppp")
+              //   }
+              // });
         
             }else{
-              let obj = { time: ThenodeData.dataValues.currentTime };
+              // let obj = { time: ThenodeData.dataValues.currentTime };
 
-              myCache.set(users[i].dataValues.id, obj, function (err, success) {
-                if (!err && success) {
-                  console.log(success, 'hyeyeyye');
-                }
-              });
+              // myCache.set(users[i].dataValues.id, obj, function (err, success) {
+              //   if (!err && success) {
+              //     console.log(success, 'hyeyeyye');
+              //   }
+              // });
         
             }
           }
@@ -108,15 +112,20 @@ const checkNodes = async (id) => {
       });
 
       // console.log(`line 95.-hey fucker0 ${ThenodeData.dataValues.currentTime} ${testing}`)
-    
+      let obj = { time: theTime};
   
-
+      myCache.set(users[i].dataValues.id, obj, function (err, success) {
+        if (!err && success) {
+          console.log(success, 'hyeyeyye');
+          console.log(obj,"olpppp")
+        }
+      });
 
 
     }
   } catch (err) {
     console.log(err)
-    console.log( users[3].dataValues.firstName)
+    // console.log( users[3].dataValues.firstName)
   }
 
 

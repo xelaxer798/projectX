@@ -91,6 +91,7 @@ getWarnings=()=>{
    catch(err){
 
    }
+   console.log(deviceWarnings)
   const tempReversed= tempatureWarnings.reverse();
   const humidityWarningsReversed=humidityWarnings.reverse();
   const RGBWarningsReversed =RGBWarnings.reverse();

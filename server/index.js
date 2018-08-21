@@ -13,7 +13,7 @@ export default path => {
   app.use(bodyParser.json());
   // autoServer.checkNodes(10);
   autoServer.checkNodes();
-setInterval(autoServer.checkNodes, 18000,10 );
+setInterval(autoServer.checkNodes, 180000,10 );
 
   app.use(express.static(`${path}/client`));
 
