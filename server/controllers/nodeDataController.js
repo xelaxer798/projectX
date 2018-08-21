@@ -183,19 +183,8 @@ if(dbModel.dataValues.r===dbModel.dataValues.g&&dbModel.dataValues.g===dbModel.d
     warning:`Node is detecting the RGB was the same with a value of ${req.body.r}`,
     time:`at ${CurrentTime}`
   })
-  const msg = {
-    to: user.dataValues.email,
-    Bcc:ccEmail,
-    cc:'lm@leafliftsystems.com',
-    from: 'LeafLiftSystems@donotreply.com',
-    subject: 'Your Farm Has A Warning',
-    text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The RGB was reporting the same value. This value was ${dbModel.dataValues.r}.
-     
-     `,
-  };
   
-  sgMail.send(msg);
+
   RGB=req.body.r
 }
 let TempHighLow;
@@ -213,9 +202,7 @@ else if(req.body.humidity<=30){
   HumidityHighLow='dropped'
 }
 if(Tempature !== null&&Humidity !== null){
-  for(let i=0;i<20;i++){
-    
-  }
+ 
 
   const msg = {
     to: user.dataValues.email,
@@ -225,6 +212,20 @@ if(Tempature !== null&&Humidity !== null){
     text: 'Click me ',
      html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     `,
+  };
+  
+  sgMail.send(msg);
+}
+else if(Tempature !=null&&Humidity !== null &&RGB !== null){
+  const msg = {
+    to: user.dataValues.email,
+    cc:ccEmail,
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
+     Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
      `,
   };
   
@@ -253,6 +254,46 @@ else if(Humidity !== null&&Tempature === null){
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
      html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     `,
+  };
+  
+  sgMail.send(msg);
+}
+else if(Humidity !== null &&RGB !==null&&Tempature ==null){
+  const msg = {
+    to: user.dataValues.email,
+    cc:ccEmail,
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
+     `,
+  };
+  
+  sgMail.send(msg);
+}
+else if(Tempature !== null &&RGB !==null &&Humidity === null){
+  const msg = {
+    to: user.dataValues.email,
+    cc:ccEmail,
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
+  };
+  
+  sgMail.send(msg);
+}
+else if(RGB !==null &&Humidity === null&&Tempature ==null){
+  const msg = {
+    to: user.dataValues.email,
+    Bcc:ccEmail,
+    cc:'lm@leafliftsystems.com',
+    from: 'LeafLiftSystems@donotreply.com',
+    subject: 'Your Farm Has A Warning',
+    text: 'Click me ',
+     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.
+     
      `,
   };
   

@@ -23,14 +23,15 @@ class Dashboard extends Component {
     userId:''
             }
   componentDidMount = () => {
-  
-    setInterval(this.getWarnings, 1000);
+    this.getWarnings()
+    setInterval(this.getWarnings, 10000);
   }
   deleteUserWarnings=()=>{
     let yesOrNo=  window.confirm(`Are You Sure you want to Delete this users warnings with the user Id of ${this.props.userId}!?!`);
     if(yesOrNo ===true){
       WarningsApi.delete(this.props.userId)
     }
+    this.getWarnings()
   }
   deleteAllUserNodes=()=>{
     let yesOrNo=  window.confirm(`Are You Sure you want to Delete this users node data with the user Id of ${this.props.userId}!?!`);
