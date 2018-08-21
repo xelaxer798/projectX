@@ -292,7 +292,7 @@ else if(RGB !==null &&Humidity === null&&Tempature ==null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.
+     html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.
      
      `,
   };
