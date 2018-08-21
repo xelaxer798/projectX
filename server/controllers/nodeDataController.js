@@ -201,7 +201,7 @@ if(req.body.humidity>=85){
 else if(req.body.humidity<=30){
   HumidityHighLow='dropped'
 }
-if(Tempature !== null&&Humidity !== null){
+if(Tempature !== null&&Humidity !== null&&RGB==null){
  
 
   const msg = {
