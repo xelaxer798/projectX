@@ -2,7 +2,8 @@ import routers from "./routes";
 import express from "express";
 import bodyParser from "body-parser";  // Parses incoming data
 import logger from "morgan";
-import autoServer from './AutoServer/index'
+import autoServer from './AutoServer/index';
+
 // Exports the app so can import anywhere (exports the default)
 export default path => {
   // Create Instance of Express

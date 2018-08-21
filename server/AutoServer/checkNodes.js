@@ -39,30 +39,35 @@ const checkNodes = async (id) => {
     order: [['createdAt', 'DESC']]
   })
 
-let num=0;
+  let num = 0;
+  try {
 
-  for (let i = 0; i < users.length; i++) {
-    console.log(num+i)
-    let nodes = await db.nodes.findAll({
-      limit: 1,
-      where: {
-        userId: users[i].dataValues.id
-      },
-      order: [['createdAt', 'DESC']]
-    })
-    try {
+    for (let i = 0; i < 5; i++) {
+    let  testing = num + i
+      console.log(num + i)
+      let ThenodeData = await db.nodes.findOne({
+
+        where: {
+          userId: users[i].dataValues.id
+        },
+        order: [['createdAt', 'DESC']]
+      })
+
       myCache.get(users[i].dataValues.id, async function (err, value) {
         if (!err) {
+          console.log(err)
           if (value == undefined) {
 
           } else {
-            console.log(value.time, 'kkkklol');
-            console.log(nodes[0].dataValues.currentTime, 'fuck;;;;')
-            console.log(nodes[0].dataValues.currentTime===value.time,"die")
-            if (nodes[0].dataValues.currentTime === value.time) {
+            console.log(ThenodeData.dataValues.currentTime, `this is # ${testing}`)
+            console.log(users[i].dataValues.id)
+            console.log(value.time, 'kkkklol line 64');
+            console.log(ThenodeData.dataValues.currentTime, 'fuck;;;;')
+            console.log(ThenodeData.dataValues.currentTime === value.time, "die")
+            if (ThenodeData.dataValues.currentTime === value.time) {
               let warningss = await db.warnings.create({
                 userId: users[i].dataValues.id,
-                nodeId: nodes[0].dataValues.nodeId,
+                nodeId: ThenodeData.dataValues.nodeId,
                 warning: `Node has not updated since ${value.time}. Please check the node it may be offline`,
                 time: `${theCurrentTime}`
               })
@@ -80,31 +85,33 @@ let num=0;
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
               // sgMail.send(msg);
+            }else{
+              
             }
           }
         }
       });
-      try {
 
-        let obj = { time: nodes[0].dataValues.currentTime };
+      // console.log(`line 95.-hey fucker0 ${ThenodeData.dataValues.currentTime} ${testing}`)
+      let obj = { time: ThenodeData.dataValues.currentTime };
 
-        myCache.set(users[i].dataValues.id, obj, function (err, success) {
-          if (!err && success) {
-            console.log(success, 'hyeyeyye');
-          }
-        });
-
-      } catch (err) {
-
-      }
+      myCache.set(users[i].dataValues.id, obj, function (err, success) {
+        if (!err && success) {
+          console.log(success, 'hyeyeyye');
+        }
+      });
 
 
-    } catch (err) {
-      console.log(err, 'you mom')
+
+
+
     }
-
-
+  } catch (err) {
+    console.log(err)
+    console.log( users[3].dataValues.firstName)
   }
+
+
 
 }
 export default checkNodes;

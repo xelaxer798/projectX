@@ -3,7 +3,7 @@ import App from './server';
 
 // Requiring our models for syncing
 import db from './server/models';
-
+import regeneratorRuntime from "regenerator-runtime";
 var PORT = process.env.PORT || 3001; // Sets an initial port. We'll use this later in our listener
 
 const app = App(__dirname);
