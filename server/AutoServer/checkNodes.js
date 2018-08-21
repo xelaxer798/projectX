@@ -84,8 +84,9 @@ console.log(`${value} is undifiend`)
                 emailToSend='lm@leafliftsystems.com';
               }
               const msg = {
-                to: emailToSend,
+                to: 'growai798@gmail.com',
                 cc:ccEmail,
+              Bcc:  emailToSend,
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
