@@ -85,23 +85,31 @@ const checkNodes = async (id) => {
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
               // sgMail.send(msg);
+              let obj = { time: ThenodeData.dataValues.currentTime };
+
+              myCache.set(users[i].dataValues.id, obj, function (err, success) {
+                if (!err && success) {
+                  console.log(success, 'hyeyeyye');
+                }
+              });
+        
             }else{
-              
+              let obj = { time: ThenodeData.dataValues.currentTime };
+
+              myCache.set(users[i].dataValues.id, obj, function (err, success) {
+                if (!err && success) {
+                  console.log(success, 'hyeyeyye');
+                }
+              });
+        
             }
           }
         }
       });
 
       // console.log(`line 95.-hey fucker0 ${ThenodeData.dataValues.currentTime} ${testing}`)
-      let obj = { time: ThenodeData.dataValues.currentTime };
-
-      myCache.set(users[i].dataValues.id, obj, function (err, success) {
-        if (!err && success) {
-          console.log(success, 'hyeyeyye');
-        }
-      });
-
-
+    
+  
 
 
 
