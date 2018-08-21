@@ -239,7 +239,7 @@ else if( Tempature !== null&&Humidity === null&&RGB ===null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
+     html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      
      `,
   };
@@ -253,7 +253,7 @@ else if(Humidity !== null&&Tempature === null&&RGB ===null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+     html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
      `,
   };
   
@@ -266,7 +266,7 @@ else if(Humidity !== null &&RGB !==null&&Tempature ==null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
+     html: `${user.dataValues.firstName} Your Farm had a couple warnings  at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
      `,
   };
   
@@ -279,7 +279,7 @@ else if(Tempature !== null &&RGB !==null &&Humidity === null){
     from: 'LeafLiftSystems@donotreply.com',
     subject: 'Your Farm Has A Warning',
     text: 'Click me ',
-     html: `${user.dataValues.firstName} Your Farm had a warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
+     html: `${user.dataValues.firstName} Your Farm had couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
   };
   
   sgMail.send(msg);
