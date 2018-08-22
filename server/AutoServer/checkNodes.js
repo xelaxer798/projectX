@@ -88,7 +88,7 @@ const checkNodes = async (id) => {
               const msg = {
                 to: 'growai798@gmail.com',
                 ccEmail,
-               bcc:BccEmail
+               bcc:BccEmail,
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
