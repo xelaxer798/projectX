@@ -278,41 +278,21 @@ const controller = {
       } else {
         req.decoded = decoded;
         authenticateUser = decoded.currentUser
-        myCache.get(decoded.currentUser.forgottenUser.id, function (err, value) {
-          if (!err) {
-            if (value == undefined) {
-              // key not found
-            }
-            else if (value.Time!==CurrentTime) {
-              res.json({ AuthStatus: 'noAuth' });
-              myCache.del( decoded.currentUser.forgottenUser.id, function( err, count ){
-                if( !err ){
-                  
-                }
-              });
-            }
-            else {
-              console.log(value.Time);
-              if (value.Auth !== req.body.jwt) {
-                res.json({ AuthStatus: 'AuthOkay', userId: decoded.currentUser.forgottenUser.id, email:decoded.currentUser.forgottenUser.email,name:`${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}`})
-              } else {
-                res.json({ AuthStatus: 'noAuth' });
-              }
-
-            }
-          }
+      
        
-        });
+        
+            
+           
+                res.json({ AuthStatus: 'AuthOkay', userId: decoded.currentUser.forgottenUser.id, email:decoded.currentUser.forgottenUser.email,name:`${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}`})
+          
+         
+       
+  
 
         //if everything is good, save to request for use in other routes
 
         let obj = { Auth: authenticateUser, Time: CurrentTime };
-        myCache.set(decoded.currentUser.forgottenUser.id, obj, function (err, success) {
-          if (!err && success) {
-            console.log(success, 'hyeyeyye');
-            console.log(obj.Time, "olpppp")
-          }
-        });
+      
 
         return authenticateUser
         //console.log(decoded.currentUser.currentUser.userId)
