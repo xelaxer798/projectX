@@ -304,14 +304,14 @@ const controller = {
   },
   ChangePassword: async function (req, res) {
     console.log(req.body)
- let test= await req.body.userid
+ await req.body.userid
     bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
       if (err) {
 
 
         console.log(err)
       }
-   let update=await db.users.update({
+   await db.users.update({
     
     password:hash
    }, {
@@ -333,7 +333,7 @@ const controller = {
       };
     
       sgMail.send(msg);
-       res.json('done')
+       res.done()
 
     })
   },

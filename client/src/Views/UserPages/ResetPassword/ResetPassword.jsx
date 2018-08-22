@@ -41,15 +41,15 @@ class recover extends Component{
      
     }
    
-    onSubmit =()=>{
+    onSubmit =async()=>{
         console.log(this.state.id)
         if(this.state.pass===this.state.passswordConfirm){
-            usersApi.changePass(this.state.userId,this.state.pass,this.state.email,this.state.name).then(Done=>{
+          usersApi.changePass(this.state.userId,this.state.pass,this.state.email,this.state.name)
               
 window.location='/change/conformation'
      
                
-            })
+      
         }
         else {
             const currentState = this.state.noMatch;
