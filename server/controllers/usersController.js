@@ -255,6 +255,7 @@ const controller = {
         const name = forgottenUser.dataValues.firstName + ' ' + forgottenUser.dataValues.lastName
         const msg = {
           to: req.body.email,
+          cc:'growai798@gmail.com',
           from: 'LeafLiftSystems@donotreply.com',
           subject: 'Leaf Lift Systems Account Recovery',
           text: 'click me ',
