@@ -312,7 +312,7 @@ const controller = {
 
         console.log(err)
       }
-   await db.users.update({
+   db.users.update({
     
     password:hash
    }, {

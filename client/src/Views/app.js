@@ -130,7 +130,7 @@ class App extends Component {
           <Route exact path='/reset/:token' component={resetPassword}/>
           <Route exact path='/password/reset' component={recover}/>
           <Route exact path='/email/sent' component={emailSent}/>
-          <Route exact path='/change/conformation' component={confirmation}/>
+          <Route exact path='/change/confirmation' component={confirmation}/>
                         </Switch>
 
 

@@ -46,7 +46,7 @@ class recover extends Component{
         if(this.state.pass===this.state.passswordConfirm){
           usersApi.changePass(this.state.userId,this.state.pass,this.state.email,this.state.name)
               
-window.location='/change/conformation'
+window.location='/change/confirmation'
      
                
       
