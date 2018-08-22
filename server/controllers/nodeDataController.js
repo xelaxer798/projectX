@@ -270,8 +270,8 @@ const controller = {
         else if (Humidity !== null && RGB !== null && Tempature == null) {
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+            cc: BccEmail,
+           bcc:ccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
