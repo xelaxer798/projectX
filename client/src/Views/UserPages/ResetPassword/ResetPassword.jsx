@@ -15,9 +15,9 @@ class recover extends Component{
         Auth:true
     }
   
-    componentDidMount = () => {
+    componentDidMount =async () => {
         console.log(this.props)
-       usersApi.checkPassJwt(this.props.match.params.token).then(Auth=>{
+    let Auth=await   usersApi.checkPassJwt(this.props.match.params.token)
  console.log(Auth)
            if(Auth.data.AuthStatus==="AuthOkay"){
                this.setState({
@@ -31,7 +31,7 @@ class recover extends Component{
                 Auth:false
             })
            }
-       })
+     
     }
     
     onChange = (e) => {
