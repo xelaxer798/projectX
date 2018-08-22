@@ -211,8 +211,8 @@ const controller = {
 
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+            cc: BccEmail,
+       
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -226,8 +226,8 @@ const controller = {
         else if (Tempature != null && Humidity !== null && RGB !== null) {
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+         
+            cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -241,8 +241,8 @@ const controller = {
         else if (Tempature !== null && Humidity === null && RGB === null) {
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+        
+           cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -256,8 +256,8 @@ const controller = {
         else if (Humidity !== null && Tempature === null && RGB === null) {
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+       
+           cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -271,7 +271,7 @@ const controller = {
           const msg = {
             to: user.dataValues.email,
             cc: BccEmail,
-           bcc:ccEmail,
+        
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -284,8 +284,8 @@ const controller = {
         else if (Tempature !== null && RGB !== null && Humidity === null) {
           const msg = {
             to: user.dataValues.email,
-            cc: ccEmail,
-            Bcc: BccEmail,
+        
+          cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -297,8 +297,8 @@ const controller = {
         else if (RGB !== null && Humidity === null && Tempature == null) {
           const msg = {
             to: user.dataValues.email,
-            Bcc: ccEmail,
-            Bcc: BccEmail,
+          
+          
             cc: 'lm@leafliftsystems.com',
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
