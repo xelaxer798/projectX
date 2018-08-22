@@ -353,7 +353,7 @@ const controller = {
       };
     
       sgMail.send(msg);
-       res.json('Done')
+       res.json('done')
 
     })
   },
