@@ -1,40 +1,43 @@
 import db from "../models";
-import bcrypt from'bcrypt';
+import bcrypt from 'bcrypt';
 import jwt, { verify } from 'jsonwebtoken';
 import sgMail from '@sendgrid/mail';
+import NodeCache from "node-cache";
+import moment from 'moment';
+const myCache = new NodeCache();
 // import sengridoToken from '../../sendgrid'
-const secret = process.env.jwt||'5454554545';
-const sengrido =process.env.sendgrid 
+const secret = process.env.jwt || '5454554545';
+const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
-const saltRounds =10;
-function getDbDate (data) {
-  const split=JSON.stringify(data);
-const dbDate = split.split(':')
-const splitDate=dbDate[0].split('-')
-const dayCreated =splitDate[2].split('T')
-const removed=splitDate[0].split('"')
+const saltRounds = 10;
+function getDbDate(data) {
+  const split = JSON.stringify(data);
+  const dbDate = split.split(':')
+  const splitDate = dbDate[0].split('-')
+  const dayCreated = splitDate[2].split('T')
+  const removed = splitDate[0].split('"')
 
-const dates=splitDate[1]+' '+dayCreated[0]+' '+removed[1]
-return dates
+  const dates = splitDate[1] + ' ' + dayCreated[0] + ' ' + removed[1]
+  return dates
 }
 const controller = {
   findAll: (req, res) => {
     db.nodeData.findAll({
-        where: {
-          inactive: false
-        }
-      })
+      where: {
+        inactive: false
+      }
+    })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
+  findById: function (req, res) {
     db.nodeData.findOne({
-        where: {
-          id: req.params.id,
-          inactive: false
-        }
-      })
+      where: {
+        id: req.params.id,
+        inactive: false
+      }
+    })
       .then(dbModel => {
         if (dbModel) {
           res.json(dbModel);
@@ -49,48 +52,48 @@ const controller = {
   authUser: (req, res) => {
     // console.log(req.body)
     let authenticateUser;
-     jwt.verify(req.body.userToken, secret, function(err, decoded) {      
-     if (err) {
-       return res.json({ success: false, message: 'Failed to authenticate token.' });    
-     } else {
+    jwt.verify(req.body.userToken, secret, function (err, decoded) {
+      if (err) {
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
+      } else {
 
-      //if everything is good, save to request for use in other routes
-       req.decoded = decoded;    
-      authenticateUser= decoded.currentUser.currentUser.userId  
+        //if everything is good, save to request for use in other routes
+        req.decoded = decoded;
+        authenticateUser = decoded.currentUser.currentUser.userId
         return authenticateUser
-    //console.log(decoded.currentUser.currentUser.userId)
-      
-        
-     }
-   });
-  console.log( authenticateUser)
+        //console.log(decoded.currentUser.currentUser.userId)
+
+
+      }
+    });
+    console.log(authenticateUser)
     db.users.findOne({
       where: {
-        id:authenticateUser
+        id: authenticateUser
       }
     })
       .then(user => {
-     
-  const createdAt=getDbDate(user.dataValues.createdAt)
-         
-       const userInfo={
-id:user.dataValues.id,
-email:user.dataValues.email,
-firstName:user.dataValues.firstName,
-lastName:user.dataValues.lastName,
-profilePic:user.dataValues.profilePic,
-phoneNumber:user.dataValues.phoneNumber,
-address:user.dataValues.address,
-verified:user.dataValues.verified,
-createdAt:createdAt,
-active:user.dataValues.active
+
+        const createdAt = getDbDate(user.dataValues.createdAt)
+
+        const userInfo = {
+          id: user.dataValues.id,
+          email: user.dataValues.email,
+          firstName: user.dataValues.firstName,
+          lastName: user.dataValues.lastName,
+          profilePic: user.dataValues.profilePic,
+          phoneNumber: user.dataValues.phoneNumber,
+          address: user.dataValues.address,
+          verified: user.dataValues.verified,
+          createdAt: createdAt,
+          active: user.dataValues.active
         }
         res.json(userInfo)
       })
       .catch(err => res.status(422).json(err));
   },
-  signIn: function(req, res) {
-    
+  signIn: function (req, res) {
+
 
     console.log(req.body)
     db.users.findOne({
@@ -99,46 +102,46 @@ active:user.dataValues.active
       }
     }).then(function (userSign) {
       console.log(userSign)
-      if(userSign == null){
+      if (userSign == null) {
         res.send('noUser')
       }
-         //if the database enycrpted password and non enypyted email from the database 
-       //match create a JWT token and send it to the front end for storage
+      //if the database enycrpted password and non enypyted email from the database 
+      //match create a JWT token and send it to the front end for storage
       bcrypt.compare(req.body.password, userSign.dataValues.password).then(function (pass) {
         if (pass === true && req.body.email === userSign.email) {
 
-         const splitAddy = userSign.dataValues.address.split(' ');
-         const homeAdress = splitAddy[0] + ' ' + splitAddy[1];
-         const homeCity = splitAddy[2];
-         const homeState = splitAddy[3];
-        const  homeZipCode = splitAddy[4]
-         const fullName = userSign.dataValues.firstName + ' ' + userSign.dataValues.lastName;
+          const splitAddy = userSign.dataValues.address.split(' ');
+          const homeAdress = splitAddy[0] + ' ' + splitAddy[1];
+          const homeCity = splitAddy[2];
+          const homeState = splitAddy[3];
+          const homeZipCode = splitAddy[4]
+          const fullName = userSign.dataValues.firstName + ' ' + userSign.dataValues.lastName;
           const currentUser = {
             userId: userSign.dataValues.id,
             email: userSign.dataValues.email,
             firstName: userSign.dataValues.firstName,
             lastName: userSign.dataValues.lastName,
             fullName: fullName,
-            
+
             phoneNumber: userSign.dataValues.phone,
             address: homeAdress,
             city: homeCity,
             state: homeState,
             zipCode: homeZipCode,
-            verified:userSign.verified,
-            
+            verified: userSign.verified,
+
           }
-        
+
           const token = jwt.sign({
             auth: currentUser.userId,
             agent: req.headers['user-agent'],
-            currentUser:{ currentUser },
+            currentUser: { currentUser },
             exp: Math.floor(new Date().getTime() / 1000) + 7 * 24 * 60 * 60, // Note: in seconds!
           }, secret);
           res.send(token)
-         
-         //if the database enycrpted password and non enypyted email from the database don't match
-         //send the front end a string of noMatch telling the front end to prompt the user to retry 
+
+          //if the database enycrpted password and non enypyted email from the database don't match
+          //send the front end a string of noMatch telling the front end to prompt the user to retry 
         } else {
           res.send("noMatch");
         }
@@ -146,8 +149,8 @@ active:user.dataValues.active
 
     })
   },
-  create: function(req, res) {
-    const saltRounds =10;
+  create: function (req, res) {
+    const saltRounds = 10;
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       if (err) {
 
@@ -165,87 +168,199 @@ active:user.dataValues.active
 
 
         }
-else{
- db.users.create({
-    email: req.body.email,
-    password: hash,
-    firstName:req.body.firstName,
-    lastName:req.body.lastName,
-    address:req.body.address,
-    phone:req.body.phone,
-    subscription:req.body.subscription
-  })
-    .then(dbModel => {
- 
-      db.users.findOne({
-        where: {
-          email: req.body.email
-        }
-        }).then(newUser=>{
-          console.log(newUser.dataValues.id)
-          const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
-          const msg = {
-            to: req.body.email,
-            from: 'LeafLiftSystems@donotreply.com',
-            subject: 'Reqister Your Email With Leaf Lift Systems ',
-            text: 'Click me ',
-             html: name +` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
-          };
-  
-          sgMail.send(msg);
-          res.send(newUser.dataValues.id)
-        })
+        else {
+          db.users.create({
+            email: req.body.email,
+            password: hash,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            address: req.body.address,
+            phone: req.body.phone,
+            subscription: req.body.subscription
+          })
+            .then(dbModel => {
 
-   })
-     .catch(err => res.status(422).json(err));
-    }
-  })
+              db.users.findOne({
+                where: {
+                  email: req.body.email
+                }
+              }).then(newUser => {
+                console.log(newUser.dataValues.id)
+                const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
+                const msg = {
+                  to: req.body.email,
+                  from: 'LeafLiftSystems@donotreply.com',
+                  subject: 'Reqister Your Email With Leaf Lift Systems ',
+                  text: 'Click me ',
+                  html: name + ` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
+                };
+
+                sgMail.send(msg);
+                res.send(newUser.dataValues.id)
+              })
+
+            })
+            .catch(err => res.status(422).json(err));
+        }
+      })
     })
 
   },
   verification: function (req, res) {
-   
-        db.users.update({
-          verified:true
-        }, {
-            where: {
-              id: req.params.id,
-              inactive: false
-            }
-          })
-          .then(dbModel => {
-           
-            db.users.findOne({
-              where:{
-                id:req.params.id
-              }
-            }).then(verify=>{
-             
-           const name =verify.dataValues.firstName+ ' '+verify.dataValues.lastName
-      
-              res.send(name)
-            })
-    
-          })
-          .catch(err => res.status(422).json(err));
-      },
-  update: function(req, res) {
-    db.nodeData.update({
-        name: req.body.name,
-        description: req.body.description
-      }, {
+
+    db.users.update({
+      verified: true
+    }, {
         where: {
           id: req.params.id,
           inactive: false
         }
       })
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+
+        db.users.findOne({
+          where: {
+            id: req.params.id
+          }
+        }).then(verify => {
+
+          const name = verify.dataValues.firstName + ' ' + verify.dataValues.lastName
+
+          res.send(name)
+        })
+
+      })
       .catch(err => res.status(422).json(err));
   },
-  remove: function(req, res) {
+  ResetPassword: function (req, res) {
+    console.log(req.body)
+    
+    db.users.findOne({
+
+      where: {
+        email: req.body.email
+
+      }
+
+    })
+      .then(forgottenUser => {
+        // console.log(forgottenUser)
+        const token = jwt.sign({
+          auth: forgottenUser.userId,
+          agent: req.headers['user-agent'],
+          currentUser: { forgottenUser },
+          exp: Math.floor(Date.now() / 1000) + (60 * 60) // Note: in seconds!
+        }, secret);
+
+        const name = forgottenUser.dataValues.firstName + ' ' + forgottenUser.dataValues.lastName
+        const msg = {
+          to: req.body.email,
+          from: 'LeafLiftSystems@donotreply.com',
+          subject: 'Leaf Lift Systems Account Recovery',
+          text: 'click me ',
+          html: name + ` <br> <a href='https://theprofessor.herokuapp.com/reset/${token}'><strong><button style="color:blue">Reset Password</button></a></strong><br>Note:This link will expire in one hour`,
+
+        };
+        
+        sgMail.send(msg);
+        res.send('sent')
+
+      })
+      .catch(err => res.status(422).json(err));
+  },
+  authResetPass: function (req, res) {
+    const CurrentTime = moment().tz("America/Los_Angeles").format("hh a");
+    let authenticateUser;
+
+    jwt.verify(req.body.jwt, secret, function (err, decoded) {
+      if (err) {
+        return res.json({ AuthStatus: 'noAuth' });
+      } else {
+        req.decoded = decoded;
+        authenticateUser = decoded.currentUser
+        myCache.get(decoded.currentUser.forgottenUser.id, function (err, value) {
+          if (!err) {
+            if (value == undefined) {
+              // key not found
+            }
+            else if (value.Time!==CurrentTime) {
+              res.json({ AuthStatus: 'noAuth' });
+              myCache.del( decoded.currentUser.forgottenUser.id, function( err, count ){
+                if( !err ){
+                  
+                }
+              });
+            }
+            else {
+              console.log(value.Time);
+              if (value.Auth !== req.body.jwt) {
+                res.json({ AuthStatus: 'AuthOkay', userId: decoded.currentUser.forgottenUser.id, email:decoded.currentUser.forgottenUser.email,name:`${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}`})
+              } else {
+                res.json({ AuthStatus: 'noAuth' });
+              }
+
+            }
+          }
+       
+        });
+
+        //if everything is good, save to request for use in other routes
+
+        let obj = { Auth: authenticateUser, Time: CurrentTime };
+        myCache.set(decoded.currentUser.forgottenUser.id, obj, function (err, success) {
+          if (!err && success) {
+            console.log(success, 'hyeyeyye');
+            console.log(obj.Time, "olpppp")
+          }
+        });
+
+        return authenticateUser
+        //console.log(decoded.currentUser.currentUser.userId)
+
+
+      }
+    });
+
+  },
+  ChangePassword: async function (req, res) {
+    console.log(req.body)
+ let test= await req.body.userid
+    bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+      if (err) {
+
+
+        console.log(err)
+      }
+   let update=await db.users.update({
+    
+    password:hash
+   }, {
+       where: {
+         id:req.body.userid,
+         inactive: false
+       }
+     })
+
+       
+     
+      const msg = {
+        to: req.body.email,
+        from: 'LeafLiftSystems@donotreply.com',
+        subject: 'Leaf Lift Systems Account Recovery',
+        text: 'click me ',
+        html: req.body.name +' Your password has been changed sucsessfully, if you did not change your password, please contact support! '
+
+      };
+    
+      sgMail.send(msg);
+       res.json('Done')
+
+    })
+  },
+  remove: function (req, res) {
     db.nodeData.update({
-        inactive: true
-      }, {
+      inactive: true
+    }, {
         where: {
           id: req.params.id
         }

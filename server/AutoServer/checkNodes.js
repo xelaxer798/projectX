@@ -27,7 +27,7 @@ const myCache = new NodeCache();
 
 const checkNodes = async (id) => {
 
-  
+
   const theCurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
 
 
@@ -42,7 +42,7 @@ const checkNodes = async (id) => {
   let num = 0;
   try {
 
-    for (let i = 0;i< users.length ; i++) {
+    for (let i = 0; i < users.length; i++) {
       let theTime;
       let testing = num + i;
 
@@ -55,12 +55,12 @@ const checkNodes = async (id) => {
         order: [['createdAt', 'DESC']]
       })
 
-      myCache.get(users[i].dataValues.id, async  (err, value)=> {
+      myCache.get(users[i].dataValues.id, async (err, value) => {
 
         theTime = ThenodeData.dataValues.currentTime;
-        
+
         if (!err) {
-          console.log(err,)
+          console.log(err)
           if (value == undefined) {
             console.log(`${value} is undifiend`)
           } else {
@@ -84,7 +84,7 @@ const checkNodes = async (id) => {
               if (users[i].dataValues.email === 'growai798@gmail.com') {
                 BccEmail = 'lm@leafliftsystems.com';
               }
-           
+
               const msg = {
                 to: 'growai798@gmail.com',
                 ccEmail,
@@ -94,11 +94,11 @@ const checkNodes = async (id) => {
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
-           sgMail.send(msg);
-          
+              sgMail.send(msg);
+
 
             } else {
-       
+
 
             }
           }

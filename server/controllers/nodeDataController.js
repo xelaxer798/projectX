@@ -82,6 +82,7 @@ const controller = {
 
       where: {
         userId: req.params.id
+      
         // currentTime: {
         //     $between: [start, end]
 

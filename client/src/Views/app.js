@@ -2,16 +2,17 @@ import React, {Component} from 'react';
 import { BrowserRouter, Route, Switch,Redirect  } from 'react-router-dom';
 // Link
 import Grid from '@material-ui/core/Grid';
-import Rooms from './Rooms/Rooms'
-import Room2 from './Rooms/Rooms2'
-import Home from "./Home/index"
-import Navbar from './Navbar2/Navbar'
-import './app.scss'
+import Rooms from './Rooms/Rooms';
+import Room2 from './Rooms/Rooms2';
+import Home from "./Home/index";
+import Navbar from './Navbar2/Navbar';
+import './app.scss';
 import axios from "axios";
-import Dashboard from './DashBoard/DashBoard'
-import Footer from './Footer/Footer'
+import Dashboard from './DashBoard/DashBoard';
+import Footer from './Footer/Footer';
 import SignUp from './UserPages/SignUp/SignUp';
 import Verification from './UserPages/Verification/Verification';
+import { recover, resetPassword,emailSent,confirmation} from './UserPages/ResetPassword/index'
 class App extends Component {
   state = {
     logged: false,
@@ -47,7 +48,7 @@ class App extends Component {
 
 
                    },)
-                   this.checkUserStatus()
+                   
                    // console.log(this.state.userDataObj)
                    // console.log(this.state.theId);
                } else {
@@ -60,15 +61,7 @@ class App extends Component {
        
   
    }
-checkUserStatus=()=>{
-    const url = window.location.toString().split('/');
-    <Redirect to='/dashboard' />
-    if(this.state.logged===true){
-        console.log(this.state.logged)
-        
 
-    }
-}
    logOutHandler = () => {
     this.setState({ logged: false });
     localStorage.removeItem('auth');
@@ -76,7 +69,7 @@ checkUserStatus=()=>{
     window.location='/'
 }
     render(){
-        this.checkUserStatus
+     
         const RoutedDashBoard = (props) => {
             
             return ( 
@@ -134,6 +127,10 @@ checkUserStatus=()=>{
           <Route exact path='/user/data/room' userId={this.state.theId} component={Room2}/>
           <Route exact path='/signup' component={SignUp}/>
           <Route exact path='/verification/:id' component={Verification}/>
+          <Route exact path='/reset/:token' component={resetPassword}/>
+          <Route exact path='/password/reset' component={recover}/>
+          <Route exact path='/email/sent' component={emailSent}/>
+          <Route exact path='/change/conformation' component={confirmation}/>
                         </Switch>
 
 

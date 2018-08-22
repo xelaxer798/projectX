@@ -92,7 +92,7 @@ onSubmit = () => {
                
                 localStorage.setItem('auth', res.data)
                  
-                  // window.location='/dashboard';
+       window.location='/dashboard';
               }
           }).catch(function (error) {
               console.log(error);
@@ -159,7 +159,7 @@ todo build admin screen
             </div>
           </Grid>
           <Grid item md={6}>
-            <a href="/forgot" id="forgot-pass">Forgot Password</a>
+            <a href="/password/reset" id="forgot-pass">Forgot Password</a>
           </Grid>
 
           <Grid item md={12}>
