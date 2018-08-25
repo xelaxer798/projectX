@@ -7,23 +7,7 @@ const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
 
 const myCache = new NodeCache();
-// function timeToDecimal(t) {
-
-//   const arr = t.split(':');
-//   const arr2 = arr[1].split(' ');
-//   const time = [arr[0], arr2[0]];
-
-//   const dec = parseInt((time[1] / 6) * 10, 10);
-
-//   return parseFloat(parseInt(arr[0], 10) + '.' + (dec < 10 ? '0' : '') + dec);
-// }
-// function timeToNumber(t) {
-//   // lastNodeEntry.split('.')
-//   const arr = t.split(':');
-
-//   const time = parseInt(arr[0], 10);
-//   return time;
-// }
+ 
 
 const checkNodes = async (id) => {
 
@@ -92,7 +76,7 @@ const checkNodes = async (id) => {
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
-                html: `${users[i].dataValues.firstName}.The Node has not updated since ${value.time}. Please check the node it may be offline `,
+                html: `${users[i].dataValues.firstName}. The Node has not updated since ${value.time}. Please check the node it may be offline `,
               };
               sgMail.send(msg);
 

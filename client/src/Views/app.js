@@ -18,6 +18,7 @@ class App extends Component {
     logged: false,
     userDataObj: {},
     theId: '',
+    timezone:''
   } 
   componentDidMount = () => {
     // let theuser;
@@ -33,7 +34,7 @@ class App extends Component {
                },
            }).then(user => {
                if (user != null) {
-                   //console.log(user)
+               //console.log(user)
         
            
                    this.setState({
@@ -44,8 +45,8 @@ class App extends Component {
                            lastName: user.data.lastName, active: user.data.active, verified: user.data.verified
                        },
                       theId: user.data.id,
-                      userCreatedAt:user.data.createdAt
-
+                      userCreatedAt:user.data.createdAt,
+                      timezone:user.data.zone
 
                    },)
                    
@@ -104,7 +105,7 @@ class App extends Component {
           <Navbar theUser={this.state.userDataObj} logged={this.state.logged} logoutfunction={this.logOutHandler}>
 
           </Navbar>
-      
+      <p>{this.state.timezone}</p>
 
           <Switch>
           <Route exact path='/' render= {()=>(

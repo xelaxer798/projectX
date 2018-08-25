@@ -78,7 +78,7 @@ const controller = {
     let end = endTime;
     db.nodes.findAll({
       order: [['createdAt', 'DESC']],
-      // limit:24,
+       limit:1000,
 
       where: {
         userId: req.params.id
@@ -154,7 +154,7 @@ const controller = {
           Tempature = req.body.temperature
 
         }
-        else if (dbModel.dataValues.temperature <= 60) {
+        else if (dbModel.dataValues.temperature <= 50) {
           db.warnings.create({
             userId: req.body.userId,
             nodeId: req.body.nodeId,

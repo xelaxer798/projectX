@@ -4,23 +4,16 @@ import jwt, { verify } from 'jsonwebtoken';
 import sgMail from '@sendgrid/mail';
 import NodeCache from "node-cache";
 import moment from 'moment';
+import functions from '../../Functions'
 const myCache = new NodeCache();
 // import sengridoToken from '../../sendgrid'
 const secret = process.env.jwt || '5454554545';
 const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
-// Defining methods for the booksController
 const saltRounds = 10;
-function getDbDate(data) {
-  const split = JSON.stringify(data);
-  const dbDate = split.split(':')
-  const splitDate = dbDate[0].split('-')
-  const dayCreated = splitDate[2].split('T')
-  const removed = splitDate[0].split('"')
+// Defining methods for the booksController
 
-  const dates = splitDate[1] + ' ' + dayCreated[0] + ' ' + removed[1]
-  return dates
-}
+
 const controller = {
   findAll: (req, res) => {
     db.nodeData.findAll({
@@ -74,8 +67,9 @@ const controller = {
     })
       .then(user => {
 
-        const createdAt = getDbDate(user.dataValues.createdAt)
-
+        const createdAt = functions.getDateIso(user.dataValues.createdAt)
+ 
+       const zone = moment.tz.guess()
         const userInfo = {
           id: user.dataValues.id,
           email: user.dataValues.email,
@@ -86,7 +80,8 @@ const controller = {
           address: user.dataValues.address,
           verified: user.dataValues.verified,
           createdAt: createdAt,
-          active: user.dataValues.active
+          active: user.dataValues.active,
+          zone: zone
         }
         res.json(userInfo)
       })
@@ -95,13 +90,13 @@ const controller = {
   signIn: function (req, res) {
 
 
-    console.log(req.body)
+    // console.log(req.body)
     db.users.findOne({
       where: {
         email: req.body.email
       }
     }).then(function (userSign) {
-      console.log(userSign)
+      // console.log(userSign)
       if (userSign == null) {
         res.send('noUser')
       }
@@ -150,11 +145,9 @@ const controller = {
     })
   },
   create: function (req, res) {
-    const saltRounds = 10;
+
     bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
       if (err) {
-
-
         console.log(err)
       }
       db.users.findOne({

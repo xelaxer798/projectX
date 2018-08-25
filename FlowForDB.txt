@@ -1,0 +1,6 @@
+when a nodeData entry comes from the auduino it will send along with its data is its serial number 
+which in the database is classified as the nodeId. That nodeId can then look up in the table nodeLists, 
+the nodeListId can be used to find all the nodes in a ceritan room. It can also be
+used to pull the userId from the foriegn key in the rooms Table. 
+As of right now with now the tables are set up this is how the flow work. 
+I have included the files of how the tables are set up in the attachments .
