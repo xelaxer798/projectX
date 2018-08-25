@@ -4,6 +4,7 @@ import jwt, { verify } from 'jsonwebtoken';
 import sgMail from '@sendgrid/mail';
 import NodeCache from "node-cache";
 import moment from 'moment';
+import functions from '../Functions'
 const myCache = new NodeCache();
 // import sengridoToken from '../../sendgrid'
 const secret = process.env.jwt || '5454554545';
@@ -74,9 +75,9 @@ const controller = {
       }
     })
       .then(user => {
-
-        const createdAt = getDbDate(user.dataValues.createdAt)
-        const zone = moment.tz.guess()
+        const testing = functions.getDateIso(user.dataValues.createdAt);
+        const createdAt = getDbDate(user.dataValues.createdAt);
+        const zone = moment.tz.guess();
         const userInfo = {
           id: user.dataValues.id,
           email: user.dataValues.email,
@@ -88,7 +89,7 @@ const controller = {
           verified: user.dataValues.verified,
           createdAt: createdAt,
           active: user.dataValues.active,
-          zone:zone
+          zone: zone
         }
         res.json(userInfo)
       })
@@ -234,7 +235,7 @@ const controller = {
   },
   ResetPassword: function (req, res) {
     console.log(req.body)
-    
+
     db.users.findOne({
 
       where: {
@@ -255,14 +256,14 @@ const controller = {
         const name = forgottenUser.dataValues.firstName + ' ' + forgottenUser.dataValues.lastName
         const msg = {
           to: req.body.email,
-          cc:'growai798@gmail.com',
+          cc: 'growai798@gmail.com',
           from: 'LeafLiftSystems@donotreply.com',
           subject: 'Leaf Lift Systems Account Recovery',
           text: 'click me ',
           html: name + ` <br> <a href='https://theprofessor.herokuapp.com/reset/${token}'><strong><button style="color:blue">Reset Password</button></a></strong><br>Note:This link will expire in one hour`,
 
         };
-        
+
         sgMail.send(msg);
         res.send('sent')
 
@@ -279,21 +280,21 @@ const controller = {
       } else {
         req.decoded = decoded;
         authenticateUser = decoded.currentUser
-      
-       
-        
-            
-           
-                res.json({ AuthStatus: 'AuthOkay', userId: decoded.currentUser.forgottenUser.id, email:decoded.currentUser.forgottenUser.email,name:`${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}`})
-          
-         
-       
-  
+
+
+
+
+
+        res.json({ AuthStatus: 'AuthOkay', userId: decoded.currentUser.forgottenUser.id, email: decoded.currentUser.forgottenUser.email, name: `${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}` })
+
+
+
+
 
         //if everything is good, save to request for use in other routes
 
         let obj = { Auth: authenticateUser, Time: CurrentTime };
-      
+
 
         return authenticateUser
         //console.log(decoded.currentUser.currentUser.userId)
@@ -305,36 +306,36 @@ const controller = {
   },
   ChangePassword: async function (req, res) {
     console.log(req.body)
- await req.body.userid
+    await req.body.userid
     bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
       if (err) {
 
 
         console.log(err)
       }
-   db.users.update({
-    
-    password:hash
-   }, {
-       where: {
-         id:req.body.userid,
-         inactive: false
-       }
-     })
+      db.users.update({
 
-       
-     
+        password: hash
+      }, {
+          where: {
+            id: req.body.userid,
+            inactive: false
+          }
+        })
+
+
+
       const msg = {
         to: req.body.email,
         from: 'LeafLiftSystems@donotreply.com',
         subject: 'Leaf Lift Systems Account Recovery',
         text: 'click me ',
-        html: req.body.name +' Your password has been changed sucsessfully, if you did not change your password, please contact support! '
+        html: req.body.name + ' Your password has been changed sucsessfully, if you did not change your password, please contact support! '
 
       };
-    
+
       sgMail.send(msg);
-       res.done()
+      res.done()
 
     })
   },
