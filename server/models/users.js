@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     var users = sequelize.define("users", {
         id: {
             primaryKey: true,
@@ -25,17 +25,20 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
         },
         subscription: {
-                    type: DataTypes.STRING,
+            type: DataTypes.STRING,
             defaultValue: "basic"
         },
-        verified  : {
+        verified: {
             type: DataTypes.STRING,
             defaultValue: false
         },
         inactive: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-          }
+        },
     });
-    return users;
+    users.associate =  (models)=> {
+        users.hasOne(models.rooms);
+        };
+return users;
   };

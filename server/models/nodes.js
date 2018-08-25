@@ -13,10 +13,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: true
     },
-  
-    
-    
-
     temperature: {
       type: DataTypes.STRING,
       allowNull: true
@@ -57,7 +53,6 @@ module.exports = function (sequelize, DataTypes) {
     currentTime: {
       type: DataTypes.STRING
     },
-  
 
   });
   return nodes;

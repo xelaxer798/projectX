@@ -1,3 +1,5 @@
+
+
 module.exports = function (sequelize, DataTypes) {
     var rooms = sequelize.define("rooms", {
         id: {
@@ -12,12 +14,19 @@ module.exports = function (sequelize, DataTypes) {
         roomName: {
             type: DataTypes.STRING,
             allowNull: true
-          },
+        },
         nodeList: {
+
             type: DataTypes.STRING,
         },
 
 
     });
+    rooms.associate = (models) => {
+
+        rooms.belongsTo(models.users, { foreignKey: 'userId' });
+    };
+
     return rooms;
+
 };
