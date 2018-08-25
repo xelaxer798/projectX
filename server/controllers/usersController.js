@@ -13,16 +13,7 @@ sgMail.setApiKey(sengrido);
 const saltRounds = 10;
 // Defining methods for the booksController
 
-function getDbDate(data) {
-  const split = JSON.stringify(data);
-  const dbDate = split.split(':')
-  const splitDate = dbDate[0].split('-')
-  const dayCreated = splitDate[2].split('T')
-  const removed = splitDate[0].split('"')
 
-  const dates = splitDate[1] + ' ' + dayCreated[0] + ' ' + removed[1]
-  return dates
-}
 const controller = {
   findAll: (req, res) => {
     db.nodeData.findAll({
@@ -75,9 +66,9 @@ const controller = {
       }
     })
       .then(user => {
-        const testing = functions.getDateIso(user.dataValues.createdAt);
-        const createdAt = getDbDate(user.dataValues.createdAt);
-        const zone = moment.tz.guess();
+        const createdAt = functions.getDateIso(user.dataValues.createdAt);
+       
+       
         const userInfo = {
           id: user.dataValues.id,
           email: user.dataValues.email,
@@ -89,7 +80,7 @@ const controller = {
           verified: user.dataValues.verified,
           createdAt: createdAt,
           active: user.dataValues.active,
-          zone: zone
+       
         }
         res.json(userInfo)
       })
