@@ -23,7 +23,7 @@ import RoomIcon from '../../Images/roomIcon2.png';
 import SettingsIcon from '@material-ui/icons/SettingsApplications';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import StarIcon from '@material-ui/icons/Star'
 import { otherMailFolderListItems } from './DataFile';
 const styles = {
   root: {
@@ -58,11 +58,16 @@ class Navbar extends Component {
     pass: '',
     anchorEl: null,
     openMenu: false,
-    menu: false
+    menu: false,
+    admin: false
 
   }
-  goToDash = () => {
-
+  componentDid = () => {
+    if (this.props.theUser.subscription === 'admin') {
+      this.setState({
+        admin: true
+      })
+    }
   }
   toggleDrawer = (side, open) => () => {
     this.setState({
@@ -70,7 +75,7 @@ class Navbar extends Component {
     });
   };
   toggleMenu = (toggle) => {
-    console.log(toggle)
+
     this.setState({ menu: true });
   };
   handleMenuClose = () => {
@@ -90,15 +95,28 @@ class Navbar extends Component {
     });
   };
   render() {
+    let admin = null;
+    console.log(this.props.theUser)
+    if (this.props.theUser.subscription === 'admin') {
+      admin = <a href='/admin'>  <ListItem button>
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Admin" />
+      </ListItem></a>
+    }
+    else {
+      admin = <div />
+    }
     const { anchorEl } = this.state;
     // const { fullScreen } = this.props;
     // importing buttons for the drawer list
     const homeLink = (
       <div>
         {this.props.logged ? <a href='/dashboard' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
-         Leaf Lift Systems
+          Leaf Lift Systems
 </Typography></a> : <a href='/' style={styles.homeButton}> <Typography variant="title" color="inherit" style={styles.flex}>
-           Leaf Lift Systems
+            Leaf Lift Systems
 </Typography></a>}
       </div>
     )
@@ -107,7 +125,7 @@ class Navbar extends Component {
       <div styles={styles.list}>
         {!this.props.logged ? <a href='/' >  <ListItem button on>
           <ListItemIcon>
-            <HomeIcon/>
+            <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem> </a> : <a href='/dashboard' >  <ListItem button on>
@@ -116,22 +134,23 @@ class Navbar extends Component {
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem> </a>}
-        {this.props.logged? <a href='/user/rooms' > <ListItem button>
-      <ListItemIcon>
-        <img width={25}src={RoomIcon} color={'grey'} alt='room' />
-      </ListItemIcon>
-      <ListItemText style={{color:'black'}} primary="My Rooms" />
-    </ListItem></a>:<div/>}
-        {this.props.logged?<Divider />:<div/>}
-        
-        {this.props.logged?  <a href='/user/account'>  <ListItem button>
-      <ListItemIcon>
-        <SettingsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Account"  />
-    </ListItem></a>:<div/>}
-       
+        {this.props.logged ? <a href='/user/rooms' > <ListItem button>
+          <ListItemIcon>
+            <img width={25} src={RoomIcon} color={'grey'} alt='room' />
+          </ListItemIcon>
+          <ListItemText style={{ color: 'black' }} primary="My Rooms" />
+        </ListItem></a> : <div />}
+        {this.props.logged ? <Divider /> : <div />}
+
+        {this.props.logged ? <a href='/user/account'>  <ListItem button>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Account" />
+        </ListItem></a> : <div />}
+
         <List >{otherMailFolderListItems}</List>
+        {admin}
         {this.props.logged ? <ListItem button style={styles.signOut}>
           <SignOutIcon />
           <ListItemText style={styles.signOut} onClick={() => { this.props.logoutfunction() }} primary="Sign Out" />
@@ -140,7 +159,7 @@ class Navbar extends Component {
       </div>
     );
 
- 
+
     return (
       <div style={styles.root}>
         <AppBar position="static"  >
@@ -170,7 +189,7 @@ class Navbar extends Component {
             </Typography>
 
             {this.props.logged ? <LoggedIn color="inherit" User={this.props.theUser} toggleMenuFunc={this.toggleMenu} menu={this.state.menu} closeMenuFunction={this.handleMenuClose} anchorel={anchorEl} userdata={this.props.userdata} photoSource={this.props.photoSource} logout={this.props.logoutfunction} >Login</LoggedIn> : <div />}
-            {!this.props.logged ?<a href='/signup'> <Button style={{color:'white'}}>Sign Up</Button> </a>: <div></div>}
+            {!this.props.logged ? <a href='/signup'> <Button style={{ color: 'white' }}>Sign Up</Button> </a> : <div></div>}
           </Toolbar>
         </AppBar>
       </div>

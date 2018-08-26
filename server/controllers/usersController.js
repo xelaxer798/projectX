@@ -79,7 +79,8 @@ const controller = {
           address: user.dataValues.address,
           verified: user.dataValues.verified,
           createdAt: createdAt,
-          active: user.dataValues.active,
+          inactive: user.dataValues.inactive,
+          subscription:user.dataValues.subscription
        
         }
         res.json(userInfo)

@@ -35,7 +35,7 @@ const footer = () => {
     left:'0',
     bottom:'10',
     right:'0',
-    top:470}}>
+  }}>
       <Container style={{}} >
         <Row className='FooterRowOne'>
           <Col sm={4} style={{ display: 'inline-block', margin: 'auto'}}>
@@ -57,12 +57,12 @@ const footer = () => {
             </div>
           </Col>
         </Row>
-        <Row style={{padding: '15px 0px'}}>
-          <Col sm={12}>
+        <Row style={{padding: '15px 0px',color:'white'}}>
+          <Col sm={12} >
             <Copyright css="padding-right: 0.5em"><b>&copy; 2017</b></Copyright>
-            <ExtLink href="/">GrowAI</ExtLink>
+            <ExtLink style={{color:'white'}} href="/">Leaf Lyft Systems</ExtLink>
             <Separator>|</Separator>
-            <ExtLink href="/privacy">Privacy Policy</ExtLink>
+            <ExtLink style={{color:'white'}} href="/privacy">Privacy Policy</ExtLink>
           </Col>
         </Row>
       </Container>

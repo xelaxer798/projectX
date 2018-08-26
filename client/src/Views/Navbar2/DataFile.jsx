@@ -31,18 +31,7 @@ export const otherMailFolderListItems = (
       </ListItemIcon>
       <ListItemText primary="Help"/>
     </ListItem></a>
-    <a href='/user/rooms'>
-    <ListItem button>
-    <InboxIcon />
-    <ListItemText primary="View One" />
-    </ListItem>
-    </a>
-    <a href='/user/data/room'>
-    <ListItem button>
-    <StarIcon />
-    <ListItemText primary="View All" />
-    </ListItem>
-    </a>
+    
  
 
   </div>

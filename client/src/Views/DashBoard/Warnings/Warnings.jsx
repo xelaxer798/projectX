@@ -20,7 +20,7 @@ componentDidMount = async() => {
    }
 getWarnings = async() => {
     let warnings=await  WarningsApi.getWarnings(this.props.userid)
-    console.log(warnings)
+  
     this.setState({
       tempatureWarnings: warnings.data.tempature,
       humidityWarnings: warnings.data.humidity,

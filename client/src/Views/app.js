@@ -11,14 +11,16 @@ import UserPages from './UserPages/index';
 import userAPI from '../Data/users-api';
 import HelpPages from './Help/index';
 // import Grid from '@material-ui/core/Grid';
-// import Footer from './Footer/Footer';
+ import Footer from './Footer/Footer';
+ import AdminPages from './Admin/index';
 class App extends Component {
     state = {
         logged: false,
         userDataObj: {},
         theId: '',
         timezone: '',
-        theZone: ''
+        theZone: '',
+        footer:false
     }
     getTimezone = (zone) => {
         this.setState({
@@ -26,17 +28,26 @@ class App extends Component {
         })
     }
     componentDidMount = async () => {
+        const url = window.location.toString().split('/');
+      
+        if(url[3] !==''){
+            this.setState({
+                footer:true
+            })
+        }
         var zone = moment.tz.guess();
         if (localStorage.auth != null) {
             // console.log('auth')
             let user = await userAPI.Auth(localStorage.getItem('auth'));
             if (user != null) {
+            console.log(user)
                 this.setState({
                     logged: true,
                     userDataObj: {
                         email: user.data.email,
                         profilePic: user.data.profilePic, userId: user.data.id, firstName: user.data.firstName,
-                        lastName: user.data.lastName, active: user.data.active, verified: user.data.verified
+                        lastName: user.data.lastName, inactive: user.data.inactive, verified: user.data.verified,
+                        subscription:user.data.subscription
                     },
                     theId: user.data.id,
                     userCreatedAt: user.data.createdAt,
@@ -53,6 +64,17 @@ class App extends Component {
         window.location = '/'
     }
     render() {
+        const RoutedAdminPage = (props) => {
+            return (
+                <AdminPages.Admin
+                    logged={this.state.logged}
+                    component={AdminPages.Admin}
+                    userId={this.state.theId}
+                    theUser={this.state.userDataObj}
+                    {...props}
+                />
+            )
+        }
         const RoutedHelpPage = (props) => {
             return (
                 <HelpPages.Help
@@ -128,10 +150,11 @@ class App extends Component {
                         <Route exact path='/email/sent' component={UserPages.ResetPassword.emailSent} />
                         <Route exact path='/change/confirmation' component={UserPages.ResetPassword.confirmation} />
                         <Route exact path='/help' render={RoutedHelpPage} />
+                        <Route exact path='/admin' render={RoutedAdminPage}/>
                     </Switch>
 
 
-                    {/*<Footer />*/}
+          <Footer />
 
                 </div>
             </BrowserRouter>
