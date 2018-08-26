@@ -1,4 +1,4 @@
-import Home from './home-view';
+import Home from '../UserPages/SignIn/SignIn';
 export {
   Home as default
 };

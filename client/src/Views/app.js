@@ -14,6 +14,7 @@ import Dashboard from './DashBoard/DashBoard';
 import Footer from './Footer/Footer';
 import SignUp from './UserPages/SignUp/SignUp';
 import Verification from './UserPages/Verification/Verification';
+import UserPages from './UserPages/index';
 import { recover, resetPassword, emailSent, confirmation } from './UserPages/ResetPassword/index'
 import userAPI from '../Data/users-api';
 class App extends Component {
@@ -100,7 +101,7 @@ class App extends Component {
             return (
                 <Home
                     logged={this.state.logged}
-                    component={Home}
+                    component={UserPages.SignIn}
 
                     theUser={this.state.userDataObj}
                     {...props}
@@ -127,15 +128,16 @@ class App extends Component {
                                     <Redirect to='/dashboard' />
                                 )
                         )} />
+                    
                         <Route exact path='/dashboard' render={RoutedDashBoard} />
                         <Route exact path='/user/rooms' userId={this.state.theId} component={Rooms} />
                         <Route exact path='/user/data/room' userId={this.state.theId} component={Room2} />
-                        <Route exact path='/signup' component={SignUp} />
-                        <Route exact path='/verification/:id' component={Verification} />
-                        <Route exact path='/reset/:token' component={resetPassword} />
-                        <Route exact path='/password/reset' component={recover} />
-                        <Route exact path='/email/sent' component={emailSent} />
-                        <Route exact path='/change/confirmation' component={confirmation} />
+                        <Route exact path='/signup' component={UserPages.SignUp} />
+                        <Route exact path='/verification/:id' component={UserPages.Verification} />
+                        <Route exact path='/reset/:token' component={UserPages.ResetPassword.resetPassword} />
+                        <Route exact path='/password/reset' component={UserPages.ResetPassword.recover} />
+                        <Route exact path='/email/sent' component={UserPages.ResetPassword.emailSent} />
+                        <Route exact path='/change/confirmation' component={UserPages.ResetPassword.confirmation} />
                     </Switch>
 
 

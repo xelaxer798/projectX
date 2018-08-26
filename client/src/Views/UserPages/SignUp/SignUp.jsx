@@ -58,7 +58,7 @@ const styles = {
 
 
 
-class addUser extends React.Component {
+class SignUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -357,4 +357,4 @@ class addUser extends React.Component {
 }
 
 
-export default addUser;
+export default SignUp;
