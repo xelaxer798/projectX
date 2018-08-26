@@ -6,17 +6,17 @@ class RGBGraph extends Component {
   state = {
     data: []
   }
-  componentDidMount =async () => {
-    await this.getData();
-this.setInterval()
+  componentDidMount = async () => {
+
+    this.setInterval()
   }
-  setInterval=()=>{
+  setInterval = () => {
     setInterval(this.getData, 1000);
   }
   getData = () => {
     Data.getAll(this.props.userid, 'RGB').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
-        console.log(data.data)
+
         this.setState({
           data: data.data
         })
@@ -54,5 +54,5 @@ this.setInterval()
       </div>
     )
   }
-} 
+}
 export default RGBGraph;

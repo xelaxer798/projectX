@@ -19,12 +19,11 @@ const styles = {
 };
 
 
-    class TempCardData extends Component{
+    class RGBCardData extends Component{
         state={
-lux:0,
-ir:0,
-visible:0,
-full:0,
+r:0,
+g:0,
+b:0,
 time:''
         }
     
@@ -34,18 +33,17 @@ time:''
         }
         getData=()=>{
           Data.getById(this.props.userid).then(data => {
-           try{
-            this.setState({
-              lux:data.data[0].lux,
-              ir:data.data[0].ir,
-              visible:data.data[0].visible,
-full:data.data[0].full,
-              time:data.data[0].currentTime
-          })
-           }catch(err){
-             
-           }
-          
+            try{
+              this.setState({
+                r:data.data[0].r,
+                g:data.data[0].g,
+                b:data.data[0].b,
+                time:data.data[0].currentTime
+            })
+            }catch(err){
+              
+            }
+        
                         })
         }
         render(){
@@ -57,19 +55,16 @@ full:data.data[0].full,
                 
                   <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">
-                  Lux, Infrared, Visible, Full
+                  RGB
                     </Typography>
                     <Typography component="p">
-                      Lux: {this.state.lux}
+                      R: {this.state.r}
                     </Typography>
                     <Typography component="p">
-                    Infrared: {this.state.ir}
+                     G: {this.state.g}
                     </Typography>
                     <Typography component="p">
-                   Visible: {this.state.visible }
-                    </Typography>
-                    <Typography component="p">
-                    Full: {this.state.full }
+                     B: {this.state.b}
                     </Typography>
                     <Typography component="p">
                      TIme: {this.state.time}
@@ -86,7 +81,7 @@ full:data.data[0].full,
    
       
 
-        TempCardData.propTypes = {
+    RGBCardData.propTypes = {
         classes: PropTypes.object.isRequired,
       };
-export default withStyles(styles)( TempCardData);
+export default withStyles(styles)(RGBCardData);

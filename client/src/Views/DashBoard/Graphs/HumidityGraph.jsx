@@ -37,7 +37,7 @@ class HumidityGraph extends Component {
     data: []
   }
   componentDidMount = () => {
-    setInterval(this.getData, 1000);
+  setInterval(this.getData, 1000);
   }
   getData = () => {
     Data.getAll(this.props.userid, 'humidity').then(data => {
