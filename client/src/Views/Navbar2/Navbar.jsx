@@ -19,7 +19,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SignOutIcon from '@material-ui/icons/ExitToApp'
 import LoggedIn from './LoggedIn/LoggedIn';
-import RoomIcon from '../../Images/roomIcon.png';
+import RoomIcon from '../../Images/roomIcon2.png';
 import SettingsIcon from '@material-ui/icons/SettingsApplications';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -118,7 +118,7 @@ class Navbar extends Component {
         </ListItem> </a>}
         {this.props.logged? <a href='/user/rooms' > <ListItem button>
       <ListItemIcon>
-        <img width={25}src={RoomIcon} alt='room' />
+        <img width={25}src={RoomIcon} color={'grey'} alt='room' />
       </ListItemIcon>
       <ListItemText style={{color:'black'}} primary="My Rooms" />
     </ListItem></a>:<div/>}
