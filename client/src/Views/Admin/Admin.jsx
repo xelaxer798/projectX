@@ -14,13 +14,14 @@ class Admin extends Component {
                 <img src={Logo} alt='Logo' />
                 <br />    <br />    <br />
                 This is the Admin Page {this.props.theUser.firstName} {this.props.theUser.lastName}
-                <a href='/user/rooms'>
+                <br/> <br/>
+                <button><a href='/user/rooms'>
                     View One
-    </a>
-    <br/>
-                <a href='/user/data/room'>
+    </a></button>
+    <br/><br/>
+             <button> <a href='/user/data/room'>
                     View All
-    </a>
+    </a></button>  
             </div>
         )
 
