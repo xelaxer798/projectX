@@ -83,6 +83,7 @@ class Home extends Component {
                 alt='logo'
               />
             </Grid>
+        
             <Grid item md={12}>
               <TextField
                 autoFocus
@@ -93,6 +94,13 @@ class Home extends Component {
                 type="email"
                 value={this.state.email}
                 onChange={this.onChange}
+                onKeyPress={(ev) => {
+                
+                  if (ev.key === 'Enter') {
+                    this.onSubmit()
+                    ev.preventDefault();
+                  }
+                }}
               />
             </Grid>
 
@@ -105,12 +113,25 @@ class Home extends Component {
                 type="password"
                 value={this.state.password}
                 onChange={this.onChange}
+                onKeyPress={(ev) => {
+              
+                  if (ev.key === 'Enter') {
+                    this.onSubmit()
+                    ev.preventDefault();
+                  }
+                }}
               />
             </Grid>
 
-            <Grid item md={6}>
+            <Grid item md={6} >
               <div id="remember-me">
-                <input onClick={this.toggleCheck} type="checkbox" />
+                <input onClick={this.toggleCheck} type="checkbox"   onKeyPress={(ev) => {
+                
+                  if (ev.key === 'Enter') {
+                    this.onSubmit()
+                    ev.preventDefault();
+                  }
+                }}/>
                 <span>Remember Me</span>
               </div>
             </Grid>
@@ -119,7 +140,7 @@ class Home extends Component {
             </Grid>
 
             <Grid item md={12}>
-              <Button variant="contained" onClick={this.onSubmit} color="primary">
+              <Button variant="contained" onClick={this.onSubmit} color="primary" >
                 Log in
             </Button>
               {this.state.noUser &&

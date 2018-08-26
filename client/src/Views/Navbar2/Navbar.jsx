@@ -8,20 +8,23 @@ import MenuIcon from '@material-ui/icons/Menu';
 // import withMobileDialog from '@material-ui/core/withMobileDialog';
 // import TextField from '@material-ui/core/TextField';
 // import PropTypes from 'prop-types';
-// import axios from "axios";
+
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 // import { withStyles } from '@material-ui/core/styles';
-// import LoginIn from './LoginButton/Login'
-import LoggedIn from './LoggedIn/LoggedIn'
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+// import LoginIn from './LoginButton/Login';
+import HomeIcon from '@material-ui/icons/Home'
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SignOutIcon from '@material-ui/icons/ExitToApp'
+import LoggedIn from './LoggedIn/LoggedIn';
+import RoomIcon from '../../Images/roomIcon.png';
+import SettingsIcon from '@material-ui/icons/SettingsApplications';
 import ListItem from '@material-ui/core/ListItem';
-
 import ListItemText from '@material-ui/core/ListItemText';
-import StarIcon from '@material-ui/icons/Star';
-import { mailFolderListItems, otherMailFolderListItems } from './DataFile';
+
+import { otherMailFolderListItems } from './DataFile';
 const styles = {
   root: {
     flexGrow: 1,
@@ -100,39 +103,44 @@ class Navbar extends Component {
       </div>
     )
 
-
     const sideList = (
       <div styles={styles.list}>
         {!this.props.logged ? <a href='/' >  <ListItem button on>
           <ListItemIcon>
-            <InboxIcon />
+            <HomeIcon/>
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem> </a> : <a href='/dashboard' >  <ListItem button on>
           <ListItemIcon>
-            <InboxIcon />
+            <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Home" />
+          <ListItemText primary="Dashboard" />
         </ListItem> </a>}
-
-        <List>{mailFolderListItems}</List>
-        <Divider />
+        {this.props.logged? <a href='/user/rooms' > <ListItem button>
+      <ListItemIcon>
+        <img width={25}src={RoomIcon} alt='room' />
+      </ListItemIcon>
+      <ListItemText style={{color:'black'}} primary="My Rooms" />
+    </ListItem></a>:<div/>}
+        {this.props.logged?<Divider />:<div/>}
+        
+        {this.props.logged?  <a href='/user/account'>  <ListItem button>
+      <ListItemIcon>
+        <SettingsIcon />
+      </ListItemIcon>
+      <ListItemText primary="Account"  />
+    </ListItem></a>:<div/>}
+       
         <List >{otherMailFolderListItems}</List>
         {this.props.logged ? <ListItem button style={styles.signOut}>
-          <StarIcon />
+          <SignOutIcon />
           <ListItemText style={styles.signOut} onClick={() => { this.props.logoutfunction() }} primary="Sign Out" />
         </ListItem> : <div />}
 
       </div>
     );
 
-    // const fullList = (
-    //   <div style={styles.fullList}>
-
-    //     <Divider />
-
-    //   </div>
-    //    );
+ 
     return (
       <div style={styles.root}>
         <AppBar position="static"  >

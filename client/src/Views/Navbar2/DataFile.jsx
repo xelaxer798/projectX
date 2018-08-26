@@ -7,18 +7,14 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import StarIcon from '@material-ui/icons/Star';
 // import SendIcon from '@material-ui/icons/Send';
 import MailIcon from '@material-ui/icons/Mail';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import ReportIcon from '@material-ui/icons/Report';
+import HelpIcon from '@material-ui/icons/Help';
+
+ import ReportIcon from '@material-ui/icons/Store';
 import './Datafile.css'
 export const mailFolderListItems = (
   <div >
   
-   <a href='/user/rooms' > <ListItem button>
-      <ListItemIcon>
-        <StarIcon />
-      </ListItemIcon>
-      <ListItemText style={{color:'black'}} primary="My Rooms" />
-    </ListItem></a>
+   
     
     
   </div>
@@ -27,16 +23,11 @@ export const mailFolderListItems = (
 export const otherMailFolderListItems = (
   <div>
     
-  <a href='/user/account'>  <ListItem button>
-      <ListItemIcon>
-        <MailIcon />
-      </ListItemIcon>
-      <ListItemText primary="Account"  />
-    </ListItem></a>
+  
     <a href='/help'>
     <ListItem button>
       <ListItemIcon>
-        <DeleteIcon />
+        <HelpIcon />
       </ListItemIcon>
       <ListItemText primary="Help"/>
     </ListItem></a>
