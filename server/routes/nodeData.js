@@ -4,10 +4,9 @@ import nodeData from "../controllers/nodeDataController"
 const router = express.Router();
 
 // Route to get list of crypto currencies for drop down.
-router.get("/:id", nodeData.findAll);
+router.get("/the/room/:id/:graph", nodeData.findAll);
+router.get("/:id", nodeData.findById);
 router.post("/date", nodeData.findByDate);
-
-router.get("/the/room/:id", nodeData.findById);
 router.post("/rooms/", nodeData.create);
 router.put("/:id", nodeData.update);
 router.delete("/:userid", nodeData.remove);

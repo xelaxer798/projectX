@@ -127,14 +127,7 @@ class App extends Component {
                                     <Redirect to='/dashboard' />
                                 )
                         )} />
-                        <Route exact path='/dashboard' render={() => (
-                            this.state.logged ? (
-                                <RoutedDashBoard />
-
-                            ) : (
-                                    <Redirect to='/' />
-                                )
-                        )} />
+                        <Route exact path='/dashboard' render={RoutedDashBoard} />
                         <Route exact path='/user/rooms' userId={this.state.theId} component={Rooms} />
                         <Route exact path='/user/data/room' userId={this.state.theId} component={Room2} />
                         <Route exact path='/signup' component={SignUp} />

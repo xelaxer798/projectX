@@ -1,18 +1,11 @@
 
 import React, { Component } from 'react';
-import axios from "axios";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
-import moment from 'moment';
-import 'moment-timezone';
 import Logo from '../../Images/Leaf.png';
-// import moment from 'react-moment';
-import bcrypt from 'bcryptjs';
-// import 'moment-timezone';
-const saltRounds = 10;
-// var bcrypt = dcodeIO.bcrypt;
+import usersAPI from '../../Data/users-api';
 class Home extends Component {
   state = {
     email: '',
@@ -20,36 +13,20 @@ class Home extends Component {
     doesntMatch: false,
     noUser: false,
     checkBoxe: false,
-    zone:''
+    zone: ''
   }
   componentDidMount = () => {
-    // const theCurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
-    // console.log(`${this.state.email} ${theCurrentTime}`)
-   
     if (localStorage.getItem('UserEmail', this.state.email) !== null) {
-      console.log(this.state)
-
-
-
       this.setState({
         email: localStorage.getItem('UserEmail'),
-      
-
       })
-
-
     }
-
-  }
-  componentDidUpdate = () => {
-
   }
   toggleCheck = () => {
     if (this.state.checkBoxe === false) {
       this.setState({
         checkBoxe: true
       })
-
     }
     else if (this.state.checkBoxe === true) {
       this.setState({
@@ -58,57 +35,31 @@ class Home extends Component {
     }
   }
   onChange = (e) => {
-
     this.setState({
       [e.target.name]: e.target.value
     });
-
   }
-  onSubmit = () => {
-
-
+  onSubmit = async () => {
     if (this.state.checkBoxe === true) {
-
       localStorage.setItem('UserEmail', this.state.email)
-
     }
-
-
     let lowerCaseEmail = this.state.email.toLowerCase()
+    let res = await usersAPI.signIn(lowerCaseEmail, this.state.password)
     const self = this;
-    axios({
-      method: 'post',
-      url: '/api/users/sign/in',
-      data: {
-        email: lowerCaseEmail,
-        password: this.state.password,
-      },
-    })
-      .then(function (res) {
-        if (res.data === 'noMatch') {
-          self.setState({ doesntMatch: true, noUser: false });
-
-        } else if (res.data === 'noUser') {
-          self.setState({ noUser: true, doesntMatch: false });
-
-        }
-        else {
-
-          localStorage.setItem('auth', res.data)
-
-          window.location = '/dashboard';
-        }
-      }).catch(function (error) {
-        console.log(error);
-      });
-    //   const currentState = this.state.noMatch;
-    //   this.setState({ noMatch: !currentState });
+    if (res.data === 'noMatch') {
+      self.setState({ doesntMatch: true, noUser: false });
+    } else if (res.data === 'noUser') {
+      self.setState({ noUser: true, doesntMatch: false });
+    }
+    else {
+      localStorage.setItem('auth', res.data)
+      window.location = '/dashboard';
+    }
   }
   render() {
-
     return (
       <div>
-      
+
         <h4>Master User</h4>
         <p>  email growai798@gmail.com</p>
         <p> password  projectgreen</p>

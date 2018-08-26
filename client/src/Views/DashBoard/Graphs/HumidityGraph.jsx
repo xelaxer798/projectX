@@ -14,23 +14,23 @@ function getDbDate(value) {
   return dates
 };
 
-function min(value,){
+function min(value, ) {
   // const split = JSON.stringify(value);
-  const dbDate = value.split(':') 
-  console.log( dbDate[1])
- 
-  const check0 =dbDate[1].split('');
-let temp;
+  const dbDate = value.split(':')
+  console.log(dbDate[1])
 
-if(check0[0]==='0'){
-  temp= '1'+check0[1]
-  return JSON.parse(temp)
-}else{
-  return JSON.parse(dbDate[1])
-}
- 
+  const check0 = dbDate[1].split('');
+  let temp;
 
- 
+  if (check0[0] === '0') {
+    temp = '1' + check0[1]
+    return JSON.parse(temp)
+  } else {
+    return JSON.parse(dbDate[1])
+  }
+
+
+
 }
 class HumidityGraph extends Component {
   state = {
@@ -38,45 +38,19 @@ class HumidityGraph extends Component {
   }
   componentDidMount = () => {
     setInterval(this.getData, 1000);
-   
-
   }
-getData=()=>{
-  Data.getById(this.props.userid).then(data => {
-    
-    
-          if (data.data !== null || data.data !== undefined || data.data !== []) {
-            try {
-              const luxArray = []
-              for (let i = 0; i < data.data.length; i++) {
-                let lux = {
-    
-                    x: data.data[i].currentTime  ,
-                  y: JSON.parse(data.data[i].humidity
-                  )
-    
-                }
-                // console.log(lux)
-                luxArray.push(lux)
-              }
-              const reversed =luxArray.reverse()
-              this.setState({
-                data: reversed,
-    
-              })
-            } catch (err) {
-              console.log(err)
-            }
-    
-          }
-    
+  getData = () => {
+    Data.getAll(this.props.userid, 'humidity').then(data => {
+      if (data.data !== null || data.data !== undefined || data.data !== []) {
+        this.setState({
+          data: data.data,
         })
-}
+      }
+    })
+  }
   render() {
     return (
       <div >
-
-
         <div style={{ paddingLeft: '10px', color: 'black' }}>
           <h1> Humidity Graph</h1>
           <LineChart
@@ -93,15 +67,11 @@ getData=()=>{
             barWidth={10}
             height={250}
             width={1000}
-          
-             data={[this.state.data]}
-
+            data={[this.state.data]}
           />
         </div>
       </div>
     )
-
   }
-
-
-} export default HumidityGraph ;
+} 
+export default HumidityGraph;

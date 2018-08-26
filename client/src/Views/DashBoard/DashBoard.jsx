@@ -22,9 +22,9 @@ class Dashboard extends Component {
     deviceWarnings: [],
     userId: ''
   }
-  componentDidMount = () => {
-    this.getWarnings();
-    setInterval(this.getWarnings, 10000);
+  componentDidMount = async() => {
+    await this.getWarnings();
+    setInterval(this.getWarnings, 100000);
   }
   deleteUserWarnings = () => {
     let yesOrNo = window.confirm(`Are You Sure you want to Delete this users warnings with the user Id of ${this.props.userId}!?!`);
@@ -38,70 +38,17 @@ class Dashboard extends Component {
     if (yesOrNo === true) {
       NodesApi.delete(this.props.userId)
     }
-
-
   }
   getWarnings = () => {
-
     WarningsApi.getWarnings(this.props.userId).then(data => {
-      console.log(data.data)
-      const tempatureWarnings = [];
-      const humidityWarnings = [];
-
-      const deviceWarnings = [];
-
-      for (let i = 0; i < data.data.length; i++) {
-        let num = i;
-        let warningsObj;
-        try {
-          let tellwhich = data.data[i].warning.split(' ');
-          if (tellwhich[0] === 'Temperature') {
-            warningsObj = {
-              warning: data.data[i].warning,
-              time: data.data[i].time,
-              num: num + 1
-            }
-
-            tempatureWarnings.push(warningsObj)
-          }
-          else if (tellwhich[0] === 'Humidity') {
-            warningsObj = {
-              warning: data.data[i].warning,
-              time: data.data[i].time,
-              num: num + 1
-            }
-            humidityWarnings.push(warningsObj)
-          }
-
-          else if (tellwhich[0] === 'Node') {
-            warningsObj = {
-              warning: data.data[i].warning,
-              time: data.data[i].time,
-              num: num + 1
-            }
-            deviceWarnings.push(warningsObj)
-          }
-        }
-        catch (err) {
-          console.log(err)
-        }
-        console.log(deviceWarnings)
-        const tempReversed = tempatureWarnings.reverse();
-        const humidityWarningsReversed = humidityWarnings.reverse();
-
-        console.log(tempatureWarnings)
-        this.setState({
-          tempatureWarnings: tempReversed,
-          humidityWarnings: humidityWarningsReversed,
-
-          deviceWarnings: deviceWarnings
-        })
-      }
+      this.setState({
+        tempatureWarnings: data.data.tempature,
+        humidityWarnings: data.data.humidity,
+        deviceWarnings: data.data.device
+      })
     })
-
   }
   render() {
-
     return (
       <div className='home' style={{ backgroundColor: 'white' }}>
         <img src={Logo} alt='Logo' />
@@ -111,7 +58,7 @@ class Dashboard extends Component {
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <br />    <br />
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
-        <Grid container spacing={10}>
+        <Grid container spacing={16}>
           <Grid item xs={3}>
 
             <h3>Tempature Warnings</h3>
@@ -140,7 +87,7 @@ class Dashboard extends Component {
             <h3>Device Warnings</h3>
 
             {this.state.deviceWarnings.slice(0, 5).map((tile) => (
-                <div key={tile.num}>
+              <div key={tile.num}>
                 <li >The {tile.warning}</li>
                 <li >{tile.time}</li>
               </div>

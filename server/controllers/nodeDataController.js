@@ -6,7 +6,123 @@ const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
 const controller = {
-  findAll: (req, res) => {
+  findAll: function (req, res) {
+    const CurrentTime = moment().tz("America/Los_Angeles").format("hh a");
+    // const endTime = moment().tz("America/Los_Angeles").format("hh:mm a");
+    // // console.log('heyyyy',moment('2018-08-13T22:11:06.000Z').format('MMMM Do YYYY, h:mm:ss a'))
+    // const split = CurrentTime.split(' ');
+    // let change = false;
+    // if (split[0].includes("0")) {
+      
+    //   change = split[0].split('');
+  
+    // }
+    // let number;
+    // let timeStart;
+    // if (change != false) {
+
+    //   number = Number(change[1]) - 1
+    //   timeStart = `0${number}:00 ${split[1]} `
+    // } else {
+    //   number = Number(split[0]) - 1
+    //   timeStart = `0${number}:00 ${split[1]} `
+    // }
+
+
+    // let start = timeStart;
+    // let end = endTime;
+    db.nodes.findAll({
+      order: [['createdAt', 'DESC']],
+       limit:1000,
+      where: {
+        userId: req.params.id
+        // currentTime: {
+        //     $between: [start, end]
+                // }
+      }
+    })
+      .then(jeff => {
+       
+        if(req.params.graph==='temperature'){
+       
+          try {
+            const temperatureArray = []
+            for (let i = 0; i < jeff.length; i++) {
+              let temperature = {
+                x: jeff[i].currentTime,
+                y: JSON.parse(jeff[i].dataValues.temperature
+                )
+              }
+              temperatureArray.push(temperature)
+            }
+         const reversed =temperatureArray.reverse()
+         res.send(reversed);
+          } catch (err) {
+            console.log(err)
+          }
+     
+        }
+        else if(req.params.graph==='humidity'){
+          try {
+            const humidityArray = []
+            for (let i = 0; i < jeff.length; i++) {
+              let humidity = {
+                  x: jeff[i].dataValues.currentTime  ,
+                y: JSON.parse(jeff[i].dataValues.humidity
+                )
+              }
+              humidityArray.push(humidity)
+            }
+            const reversed =humidityArray.reverse()
+            res.send(reversed);
+          } catch (err) {
+            console.log(err)
+          }
+        }else if(req.params.graph==='RGB'){
+          try {
+            const rArray = [];
+            for (let i = 0; i < jeff.length; i++) {
+              let R = {
+                x: jeff[i].dataValues.currentTime,
+                y: JSON.parse(jeff[i].dataValues.r
+                )
+              }
+              rArray.push(R)
+            }
+            const gArray = [];
+            for (let i = 0; i < jeff.length; i++) {
+              let G = {
+                x: jeff[i].dataValues.currentTime,
+                y: JSON.parse(jeff[i].dataValues.g)
+              }
+              gArray.push(G)
+            }
+            const bArray = [];
+            for (let i = 0; i < jeff.length; i++) {
+              let B = {
+                x: jeff[i].dataValues.currentTime,
+                y: JSON.parse(jeff[i].dataValues.b)
+              }
+              bArray.push(B)
+            }
+            const reverseR = rArray.reverse();
+            const reverseG = gArray.reverse()
+            const reverseB = bArray.reverse()
+            // const test=[{x:'12:00 am'},{x:'10:00 am'},{x:'12:00 pm'},{x:'5:00 pm'},{x:'11:59 pm'}]
+            const thedata = [reverseR, reverseG, reverseB]
+            res.send(thedata);
+          } catch (err) {
+            console.log(err)
+          }
+        }
+       
+       
+
+
+      })
+      .catch(err => res.status(422).json(err));
+  },
+  findById : (req, res) => {
     // console.log(req.params)
     db.nodes.findAll({
       limit: 1,
@@ -24,6 +140,7 @@ const controller = {
 
       .catch(err => res.status(422).json(err));
   },
+ 
   findByDate: (req, res) => {
     // console.log(req.params)
     let start = '2018-08-12T21:00:46.000Z';
@@ -49,60 +166,7 @@ const controller = {
       .catch(err => res.status(422).json(err));
   },
 
-  findById: function (req, res) {
-    const CurrentTime = moment().tz("America/Los_Angeles").format("hh a");
-    const endTime = moment().tz("America/Los_Angeles").format("hh:mm a");
-    // console.log('heyyyy',moment('2018-08-13T22:11:06.000Z').format('MMMM Do YYYY, h:mm:ss a'))
-    const split = CurrentTime.split(' ');
-    let change = false;
-    if (split[0].includes("0")) {
-      // console.log({endTime},'hey')
-      // console.log(split[1])
-      // console.log(split[0])
-      change = split[0].split('');
-      // console.log(change[1])
-    }
-    let number;
-    let timeStart;
-    if (change != false) {
-
-      number = Number(change[1]) - 1
-      timeStart = `0${number}:00 ${split[1]} `
-    } else {
-      number = Number(split[0]) - 1
-      timeStart = `0${number}:00 ${split[1]} `
-    }
-
-
-    let start = timeStart;
-    let end = endTime;
-    db.nodes.findAll({
-      order: [['createdAt', 'DESC']],
-       limit:1000,
-
-      where: {
-        userId: req.params.id
-      
-        // currentTime: {
-        //     $between: [start, end]
-
-
-        // }
-
-
-
-
-      }
-    })
-      .then(jeff => {
-
-        res.send(jeff);
-
-
-      })
-      .catch(err => res.status(422).json(err));
-  },
-
+  
   create: async function (req, res) {
 
     const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");

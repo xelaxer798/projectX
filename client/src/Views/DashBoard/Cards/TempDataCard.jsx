@@ -29,11 +29,11 @@ time:''
         }
     
         componentDidMount = () => {
-          setInterval(this.getData, 1000);
+        setInterval(this.getData, 1000);
           
         }
         getData=()=>{
-          Data.getAll(this.props.userid).then(data => {
+          Data.getById(this.props.userid).then(data => {
            try{
             this.setState({
               lux:data.data[0].lux,

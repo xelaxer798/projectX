@@ -27,10 +27,52 @@ const controller = {
           where:{
     
             userId: req.params.id
-          
+      
           }
           })
-          .then(dbModel => res.json(dbModel))
+          .then(data => {
+            const tempatureWarnings = [];
+            const humidityWarnings = [];
+      
+            const deviceWarnings = [];
+            // console.log(data[0].dataValues)
+             for (let i = 0; i < data.length; i++) {
+               let num = i;
+               let warningsObj;
+               try {
+                 let tellwhich = data[i].dataValues.warning.split(' ');
+                 if (tellwhich[0] === 'Temperature') {
+                   warningsObj = {
+                     warning: data[i].dataValues.warning,
+                     time: data[i].dataValues.time,
+                     num: num + 1
+                   }
+                   tempatureWarnings.push(warningsObj)
+                 }
+                 else if (tellwhich[0] === 'Humidity') {
+                   warningsObj = {
+                     warning:  data[i].dataValues.warning,
+                     time: data[i].dataValues.time,
+                     num: num + 1
+                   }
+                   humidityWarnings.push(warningsObj)
+                 }
+                 else if (tellwhich[0] === 'Node') {
+                   warningsObj = {
+                     warning:  data[i].dataValues.warning,
+                     time: data[i].dataValues.time,
+                     num: num + 1
+                   }
+                   deviceWarnings.push(warningsObj)
+                 }
+               }
+               catch (err) {
+                 console.log(err)
+               }
+             }
+             
+            res.json({device:deviceWarnings,humidity:humidityWarnings,tempature:tempatureWarnings})}
+          )
           .catch(err => res.status(422).json(err));
       },
       removeWarning: function(req, res) {
