@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-// Link
 import Rooms from './Rooms/Rooms';
 import Room2 from './Rooms/Rooms2';
-
 import moment from 'moment';
 import 'moment-timezone';
 import Navbar from './Navbar2/Navbar';
 import './app.scss';
 import Dashboard from './DashBoard/DashBoard';
 import UserPages from './UserPages/index';
-
 import userAPI from '../Data/users-api';
 import HelpPages from './Help/index';
 // import Grid from '@material-ui/core/Grid';
@@ -25,7 +22,7 @@ class App extends Component {
     }
     getTimezone = (zone) => {
         this.setState({
-            theZone: zone
+            timezone: zone
         })
     }
     componentDidMount = async () => {
@@ -109,7 +106,7 @@ class App extends Component {
 
                     </Navbar>
 
-                    <p>{this.state.theZone} </p>
+                    <p>{this.state.timezone} </p>
                     <Switch>
                         <Route exact path='/' render={() => (
                             !this.state.logged ? (
