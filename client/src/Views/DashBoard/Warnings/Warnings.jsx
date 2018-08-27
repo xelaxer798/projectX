@@ -33,7 +33,7 @@ render(){
           <Grid item xs={3}>
 
             <h3>Tempature Warnings</h3>
-            {this.state.tempatureWarnings.slice(0, 5).map((tile) => (
+            {this.state.tempatureWarnings.map((tile) => (
               <div key={tile.num}>
                 <li >The {tile.warning} °</li>
                 <li >{tile.time}</li>
@@ -44,7 +44,7 @@ render(){
           </Grid>
           <Grid item xs={3}>
             <h3>Humidity Warnings</h3>
-            {this.state.humidityWarnings.slice(0, 5).map((tile) => (
+            {this.state.humidityWarnings.map((tile) => (
               <div key={tile.num}>
                 <li >The {tile.warning} %</li>
                 <li >{tile.time}</li>
@@ -57,7 +57,7 @@ render(){
           <Grid item xs={3}>
             <h3>Device Warnings</h3>
 
-            {this.state.deviceWarnings.slice(0, 5).map((tile) => (
+            {this.state.deviceWarnings.map((tile) => (
               <div key={tile.num}>
                 <li >The {tile.warning}</li>
                 <li >{tile.time}</li>
