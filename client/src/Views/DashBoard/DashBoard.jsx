@@ -15,9 +15,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 class Dashboard extends Component {
   state={
   CurrentTime :moment().tz("America/Los_Angeles").format(),
-  timeLength:'day',
-  timeToStart:'',
-  timeSubtracted:'',
+  timeTempLength:'day',
+  timeHumdLength:'day',
+  timeLuxIrLength:'day',
+  timeToStartTemp:'',
+  timeToEndTemp:'',
+  timeToStartHumd:'',
+  timeToEndHumd:'',
+  timeToStartLuxIr:'',
+  timeToEndLuxIr:'',
   tickFormat:'%I:%M %p'
   }
   componentDidMount=()=>{
@@ -26,8 +32,8 @@ class Dashboard extends Component {
    const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
   
    this.setState({
-timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
-timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
+ timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
+timeToEndTemp:moment(this.state.CurrentTime).format('YYYY-MM-DD')
    });
   }
   handleChange = event => {
@@ -36,32 +42,33 @@ timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
   },this.changeGraphData);
   };
   changeGraphData=()=>{
-    if(this.state.timeLength==='day'){
+    
+    if(this.state.timeTempLength==='day'){
       const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
   
       this.setState({
-   timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
-   timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD'),
+    timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
+   timeToEndTemp:moment(this.state.CurrentTime).format('YYYY-MM-DD'),
    tickFormat:'%I:%M %p'
       });
     }
-    else if(this.state.timeLength==='hour'){
+    else if(this.state.timeTempLength==='hour'){
       const heyt=moment(this.state.CurrentTime).subtract(1, 'hour');
       this.setState({
-        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD HH:MM'),
-        timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD HH:MM'),
+         timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD HH:MM'),
+        timeToEndTemp:moment(this.state.CurrentTime).format('YYYY-MM-DD HH:MM'),
         tickFormat:'%I:%M %p'
            });
     }
-    else if(this.state.timeLength==='week'){
+    else if(this.state.timeTempLength==='week'){
       const heyt=moment(this.state.CurrentTime).subtract(7, 'days');
       this.setState({
-        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
-        timeToStart:moment(this.state.CurrentTime).format(),
+         timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToEndTemp:moment(this.state.CurrentTime).format(),
         tickFormat:'%a  %e-%b'
            });
     }
-    else if(this.state.timeLength==='month'){
+    else if(this.state.timeTempLength==='month'){
       // "2018-04-25T04:41:30.000Z"
     const month=  moment(this.state.CurrentTime).tz("America/Los_Angeles").format('M')
       const monthsWith31Days=['1','3','5','7','8','10','12'];
@@ -80,20 +87,19 @@ timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
       }
     }
   
- 
  const heyt=moment(this.state.CurrentTime).subtract(days, 'days');
   
       this.setState({
-        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
-        timeToStart:moment(this.state.CurrentTime).format(),
+         timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToEndTemp:moment(this.state.CurrentTime).format(),
         tickFormat:'%a  %e-%b'
            });
     }
-    else if(this.state.timeLength=== 'year'){
+    else if(this.state.timeTempLength=== 'year'){
       const heyt=moment(this.state.CurrentTime).subtract(365, 'days');
       this.setState({
-        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
-        timeToStart:moment(this.state.CurrentTime).format(),
+         timeToStartTemp:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToEndTemp:moment(this.state.CurrentTime).format(),
         tickFormat:'%a  %e-%b'
            });
     }
@@ -129,9 +135,9 @@ timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
         <br/>
         <Select
         autoWidth
-            value={this.state.timeLength}
+            value={this.state.timeTempLength}
             onChange={this.handleChange}
-            input={<Input name="timeLength" id="timeLength" />}
+            input={<Input name="timeTempLength" id="timeTempLength" />}
           > 
 
       
@@ -142,7 +148,7 @@ timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
             <MenuItem value={'year'}>Last Year</MenuItem>
           </Select>
         
-        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} tickFormat={this.state.tickFormat}range={[this.state.timeSubtracted, this.state.timeToStart]} />
+        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} tickFormat={this.state.tickFormat}range={[this.state.timeToStartTemp, this.state.timeToEndTemp]} />
         
         <NodeData.Graphs.HumidityGraph userid={this.props.userId}range={['2018-08-28 10:00', '2018-08-28 11:00']} />
         <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 

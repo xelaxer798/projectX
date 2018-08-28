@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
-
+import moment from 'moment';
+import 'moment-timezone';
 function min(value, ) {
   // const split = JSON.stringify(value);
   const dbDate = value.split(':')
@@ -23,9 +23,19 @@ function min(value, ) {
 }
 class LuxIRGraph extends Component {
   state = {
-    data: []
+    data: [],
+    CurrentTime :moment().tz("America/Los_Angeles").format(),
+    timeToStartLuxIr:'',
+    timeToEndLuxIr:''
   }
   componentDidMount = () => {
+    const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
+  
+      this.setState({
+        timeToStartLuxIr:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
+        timeToEndLuxIr:moment(this.state.CurrentTime).format('YYYY-MM-DD'),
+  //  tickFormat:'%I:%M %p'
+      });
   setInterval(this.getData, 1000);
   }
   getData = () => {
@@ -47,7 +57,7 @@ class LuxIRGraph extends Component {
          
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100000]},xaxis:{  tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
+           yaxis:{range: [0,100000]},xaxis:{  range:[this.state.timeToStartLuxIr,this.state.timeToEndLuxIr],tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
       />
         </div>
       </div>
