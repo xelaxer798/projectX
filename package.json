@@ -58,6 +58,7 @@
     "nodemon": "^1.14.10",
     "normalize.css": "^7.0.0",
     "object-assign": "4.1.1",
+    "plotly.js": "^1.40.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
@@ -69,7 +70,7 @@
     "react-easy-chart": "^1.0.0",
     "react-grid-system": "^3.1.2",
     "react-moment": "^0.7.9",
-    
+    "react-plotly.js": "^2.2.0",
     "react-render-html": "^0.6.0",
     "react-responsive-carousel": "^3.1.41",
     "react-router": "^4.3.1",

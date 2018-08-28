@@ -3,6 +3,7 @@ const orgApi = {
   getById:  id=> axios.get(`/api/nodes/${id}`),
   
   getAll: (id,graph)=> axios.get(`/api/nodes/the/room/${id}/${graph}`),
+  getAdmin: (id,number)=> axios.get(`/api/nodes/data/${id}/${number}`),
   create: org => axios.post('/api/organization', org).then(results => results.data),
   update: org => axios.put(`/api/organization/${org.id}`, org),
   delete: userid => axios.delete(`/api/nodes/${userid}`),

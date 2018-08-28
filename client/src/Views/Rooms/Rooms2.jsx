@@ -65,13 +65,13 @@ class Room extends Component {
   }
   
 getData=()=>{
-  Data.getById().then(data => {
+  Data.getAdmin('9b4c41ef-9e1d-492b-acce-a9bd9eca46a9','many').then(data => {
     console.log(data.data)
     if(data.data!==null||data.data !==undefined||data.data !==[]){
       try{
        this.setState({
-         room:data.data,
-         id:data.data[0].id
+         room:data.data
+        
        })
       }catch (err){
         console.log(err)
@@ -106,18 +106,22 @@ getData=()=>{
       let person=  window.prompt("Which id do you want To Delete!?!");
       console.log( person)
       if(person  !==null ){
-      
-            Data.deleteById( person).then(data => {
-              Data.getById().then(data => {
-                this.setState({
-                  room:data.data,
-                 id: data.data[0].id||'000000'
+      try{
+        Data.deleteById( person).then(data => {
+          Data.getById().then(data => {
+            this.setState({
+              room:data.data,
+             id: data.data[0].id||'000000'
+            })
                 })
-                    })
-                    })
+                })
+      }catch(err){
+        
+      }
+           
       
       }else{
-          alert('none')
+     
       }
      
 
@@ -163,8 +167,8 @@ this.setState({
 <p>IR: {tile.ir}</p>
 <p>Room Id: {tile.roomId}</p>
 
-<p>Date Created: {getDbDate(tile.createdAt)}</p>
-<p>Time Created At: {getTIme(tile.createdAt)}</p>
+<p>Date Created: {tile.createdAt}</p>
+<p>Time Created At: {tile.currentTime}</p>
 </div>
 </Grid>
          ))}

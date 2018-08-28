@@ -16,7 +16,7 @@ componentDidMount = async() => {
     //      deviceWarnings: warnings.data.device
     //    })
   
-     setInterval(this.getWarnings, 1000);
+     setInterval(this.getWarnings, 100000);
    }
 getWarnings = async() => {
     let warnings=await  WarningsApi.getWarnings(this.props.userid)

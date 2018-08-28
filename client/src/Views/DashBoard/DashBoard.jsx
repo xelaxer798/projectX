@@ -4,6 +4,7 @@ import NodesApi from '../../Data/nodes-api';
 import WarningsApi from "../../Data/warnings-api"
 import Logo from '../../Images/Leaf.png';
 import NodeData from './index';
+
 // import moment from 'moment';
 // import Grid from '@material-ui/core/Grid';
 class Dashboard extends Component {
@@ -30,12 +31,15 @@ class Dashboard extends Component {
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <br />    <br />
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
-       <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
+        <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
+ 
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
-        <NodeData.Graphs.RGBGraph userid={this.props.userId} />
-        <NodeData.Cards.RGBCardData userid={this.props.userId} />
-        <NodeData.Cards.LuxDataCard userid={this.props.userId} />
+        <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 
+        <NodeData.Graphs.TestGraph userid={this.props.userId}/>
+         <NodeData.Cards.RGBCardData userid={this.props.userId} />
+        <NodeData.Cards.LuxDataCard userid={this.props.userId} /> *
+
       </div>
     ) 
     

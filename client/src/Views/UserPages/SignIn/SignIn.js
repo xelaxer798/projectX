@@ -9,7 +9,7 @@ import usersAPI from '../../../Data/users-api';
 class Home extends Component {
   state = {
     email: '',
-    password: '',
+    password: 'projectgreen',
     doesntMatch: false,
     noUser: false,
     checkBoxe: false,

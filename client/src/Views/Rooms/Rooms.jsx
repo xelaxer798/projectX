@@ -64,7 +64,7 @@ class Room extends Component {
   }
 
 getData=()=>{
-  Data.getAll().then(data => {
+  Data.getAdmin('9b4c41ef-9e1d-492b-acce-a9bd9eca46a9','1').then(data => {
     console.log(data.data)
     if (data.data !== null || data.data !== undefined || data.data !== []) {
       try {
@@ -169,7 +169,7 @@ getData=()=>{
                 <p>Room Id: {tile.roomId}</p>
 
                 <p>Date Created: {getDbDate(tile.createdAt)}</p>
-                <p>Time Created At: {getTIme(tile.createdAt)}</p>
+                <p>Time Created At: {tile.currentTime}</p>
               </div>
             </Grid>
           ))}

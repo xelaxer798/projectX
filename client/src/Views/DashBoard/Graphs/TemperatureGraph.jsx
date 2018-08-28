@@ -12,7 +12,7 @@ class TemperatureGraph extends Component {
     Data.getAll(this.props.userid, 'temperature').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         this.setState({
-          data: data.data,
+          data: data.data.Easy,
         })
       }
     })

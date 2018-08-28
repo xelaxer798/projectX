@@ -13,9 +13,9 @@ const controller = {
     // const split = CurrentTime.split(' ');
     // let change = false;
     // if (split[0].includes("0")) {
-      
+
     //   change = split[0].split('');
-  
+
     // }
     // let number;
     // let timeStart;
@@ -33,19 +33,21 @@ const controller = {
     // let end = endTime;
     db.nodes.findAll({
       order: [['createdAt', 'DESC']],
-       limit:1000,
+      limit: 1000,
       where: {
         userId: req.params.id
         // currentTime: {
         //     $between: [start, end]
-                // }
+        // }
       }
     })
       .then(jeff => {
-       
-        if(req.params.graph==='temperature'){
-       
+
+        if (req.params.graph === 'temperature') {
+
           try {
+            const testx = [];
+            const testy = [];
             const temperatureArray = []
             for (let i = 0; i < jeff.length; i++) {
               let temperature = {
@@ -55,30 +57,45 @@ const controller = {
               }
               temperatureArray.push(temperature)
             }
-         const reversed =temperatureArray.reverse()
-         res.send(reversed);
+            for (let i = 0; i < jeff.length; i++) {
+              testx.push(jeff[i].currentTime);
+              testy.push(JSON.parse(jeff[i].dataValues.temperature));
+            }
+            const x = testx.reverse();
+            const y = testy.reverse();
+            const data = [{
+              x,
+              y,
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'red' },
+              xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
+            }]
+            const reversed = temperatureArray.reverse()
+            console.log(reversed)
+            res.send({ Easy: reversed, Ploty: data });
           } catch (err) {
             console.log(err)
           }
-     
+
         }
-        else if(req.params.graph==='humidity'){
+        else if (req.params.graph === 'humidity') {
           try {
             const humidityArray = []
             for (let i = 0; i < jeff.length; i++) {
               let humidity = {
-                  x: jeff[i].dataValues.currentTime  ,
+                x: jeff[i].dataValues.currentTime,
                 y: JSON.parse(jeff[i].dataValues.humidity
                 )
               }
               humidityArray.push(humidity)
             }
-            const reversed =humidityArray.reverse()
+            const reversed = humidityArray.reverse()
             res.send(reversed);
           } catch (err) {
             console.log(err)
           }
-        }else if(req.params.graph==='RGB'){
+        } else if (req.params.graph === 'RGB') {
           try {
             const rArray = [];
             for (let i = 0; i < jeff.length; i++) {
@@ -115,14 +132,14 @@ const controller = {
             console.log(err)
           }
         }
-       
-       
+
+
 
 
       })
       .catch(err => res.status(422).json(err));
   },
-  findById : (req, res) => {
+  findById: (req, res) => {
     // console.log(req.params)
     db.nodes.findAll({
       limit: 1,
@@ -140,7 +157,39 @@ const controller = {
 
       .catch(err => res.status(422).json(err));
   },
- 
+  adminViewAllData: (req, res) => {
+    // console.log(req.params)
+    if (req.params.number === '1') {
+      db.nodes.findAll({
+        limit: 1,
+        where: {
+          userId: req.params.id
+        },
+        order: [['createdAt', 'DESC']]
+      })
+        .then(dbModel => {
+          res.json(dbModel);
+        }
+        )
+        .catch(err => res.status(422).json(err));
+    }
+    else if(req.params.number==='many'){
+      db.nodes.findAll({
+
+        where: {
+          userId: req.params.id
+        },
+        order: [['createdAt', 'DESC']]
+      })
+        .then(dbModel => {
+          res.json(dbModel);
+        }
+        )
+        .catch(err => res.status(422).json(err));
+    }
+
+  },
+
   findByDate: (req, res) => {
     // console.log(req.params)
     let start = '2018-08-12T21:00:46.000Z';
@@ -166,10 +215,11 @@ const controller = {
       .catch(err => res.status(422).json(err));
   },
 
-  
-  create: async function (req, res) {
 
-    const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm a");
+  create: async function (req, res) {
+    // moment().tz("America/Los_Angeles").format("hh:mm a");
+    const CurrentTime = '12:45 am'
+
     let user = await db.users.findOne({
       where: {
         id: req.body.userId
@@ -193,7 +243,7 @@ const controller = {
       visible: req.body.visible,
       ir: req.body.ir,
       roomId: req.body.roomId,
-      currentTime: CurrentTime
+      currentTime: req.body.time
     })
       .then(dbModel => {
         console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj")
@@ -276,7 +326,7 @@ const controller = {
           const msg = {
             to: user.dataValues.email,
             cc: BccEmail,
-       
+
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -290,7 +340,7 @@ const controller = {
         else if (Tempature != null && Humidity !== null && RGB !== null) {
           const msg = {
             to: user.dataValues.email,
-         
+
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
@@ -305,8 +355,8 @@ const controller = {
         else if (Tempature !== null && Humidity === null && RGB === null) {
           const msg = {
             to: user.dataValues.email,
-        
-           cc: BccEmail,
+
+            cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -320,8 +370,8 @@ const controller = {
         else if (Humidity !== null && Tempature === null && RGB === null) {
           const msg = {
             to: user.dataValues.email,
-       
-           cc: BccEmail,
+
+            cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -335,7 +385,7 @@ const controller = {
           const msg = {
             to: user.dataValues.email,
             cc: BccEmail,
-        
+
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -348,8 +398,8 @@ const controller = {
         else if (Tempature !== null && RGB !== null && Humidity === null) {
           const msg = {
             to: user.dataValues.email,
-        
-          cc: BccEmail,
+
+            cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -361,8 +411,8 @@ const controller = {
         else if (RGB !== null && Humidity === null && Tempature == null) {
           const msg = {
             to: user.dataValues.email,
-          
-          
+
+
             cc: 'lm@leafliftsystems.com',
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
