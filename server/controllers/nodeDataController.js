@@ -1,7 +1,7 @@
 import db from "../models";
 import moment from 'moment';
 import sgMail from '@sendgrid/mail';
-
+import functions from '../Functions/index';
 const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
 // Defining methods for the booksController
@@ -51,14 +51,14 @@ const controller = {
             const temperatureArray = []
             for (let i = 0; i < jeff.length; i++) {
               let temperature = {
-                x: jeff[i].currentTime,
+                x: functions.convertTimeZonesNonGuess(jeff[i].createdAt),
                 y: JSON.parse(jeff[i].dataValues.temperature
                 )
               }
-              temperatureArray.push(temperature)
+              temperatureArray.push(temperature);
             }
             for (let i = 0; i < jeff.length; i++) {
-              testx.push(jeff[i].currentTime);
+              testx.push(jeff[i].createdAt);
               testy.push(JSON.parse(jeff[i].dataValues.temperature));
             }
             const x = testx.reverse();
@@ -72,8 +72,8 @@ const controller = {
               xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
             }]
             const reversed = temperatureArray.reverse()
-            console.log(reversed)
-            res.send({ Easy: reversed, Ploty: data });
+            console.log(data)
+            res.send({ Easy: reversed, Ploty: data,test:jeff});
           } catch (err) {
             console.log(err)
           }
@@ -173,7 +173,7 @@ const controller = {
         )
         .catch(err => res.status(422).json(err));
     }
-    else if(req.params.number==='many'){
+    else if (req.params.number === 'many') {
       db.nodes.findAll({
 
         where: {

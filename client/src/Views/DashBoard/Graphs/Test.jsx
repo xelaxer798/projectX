@@ -14,7 +14,8 @@ class TestGraph extends Component {
     Data.getAll(this.props.userid, 'temperature').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
           console.log(data)
-         
+         console.log(typeof data.data.test[0].createdAt
+        )
         this.setState({
           data: data.data.Ploty,
         })
@@ -30,7 +31,7 @@ class TestGraph extends Component {
           color={'blue'}
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100]},xaxis:{ tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'A Fancy Plot',}}
+           yaxis:{range: [0,100]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'A Fancy Plot',}}
       />
         </div>
       </div>
