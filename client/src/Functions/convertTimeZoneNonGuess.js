@@ -1,8 +1,12 @@
 const moment = require('moment');
-
-const convertTimeZonesNonGuess=(date,timeZone)=>{
+require('moment-timezone');
+//  const theDate= "2018-08-28T05:22:15.000Z";
+const convertTimeZonesNonGuess=(date)=>{
     const dateToChange = moment(date)
-    const changedDate = dateToChange.tz(timeZone).format('hh:mm:ss YY-MM-DD z');
-    return changedDate
+    const changedDate = dateToChange.tz('America/Los_Angeles').format();
+    // console.log(changedDate);
+    return changedDate;
 }
-export default convertTimeZonesNonGuess;
+
+// convertTimeZonesNonGuess(theDate)
+ export default convertTimeZonesNonGuess;

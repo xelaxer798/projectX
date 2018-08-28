@@ -13,6 +13,9 @@ import HelpPages from './Help/index';
 // import Grid from '@material-ui/core/Grid';
  import Footer from './Footer/Footer';
  import AdminPages from './Admin/index';
+ import functions from '../Functions/index';
+     
+ 
 class App extends Component {
     state = {
         logged: false,
@@ -20,14 +23,25 @@ class App extends Component {
         theId: '',
         timezone: '',
         theZone: '',
-        footer:false
+        footer:false,
+       CurrentTime:moment().tz("America/Los_Angeles").format(),
+       timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm:ss a')
     }
     getTimezone = (zone) => {
         this.setState({
             timezone: zone
         })
     }
+    updateTime=()=>{
+    
+        this.setState({
+            CurrentTime: moment().tz("America/Los_Angeles").format(),
+            timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm:ss a')
+        })
+    }
     componentDidMount = async () => {
+        this.updateTime();
+        setInterval(this.updateTime,1000)
         const url = window.location.toString().split('/');
       
         if(url[3] !==''){
@@ -101,6 +115,8 @@ class App extends Component {
 
             return (
                 <Dashboard
+                timeformated={this.state.timeFormated}
+                currenttime={this.state.CurrentTime}
                     logged={this.state.logged}
                     component={Dashboard}
                     userId={this.state.theId}
