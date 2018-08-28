@@ -51,8 +51,8 @@ const checkNodes = async (id) => {
             // console.log(ThenodeData.dataValues.currentTime, `this is # ${testing}`)
             // console.log(users[i].dataValues.id,'nijdlsldklda')
             // console.log(value.time, 'kkkklol line 64');
-            // console.log(ThenodeData.dataValues.currentTime, 'fuck;;;;')
-            // console.log(ThenodeData.dataValues.currentTime === value.time, "die")
+            // console.log(ThenodeData.dataValues.currentTime, '')
+            // console.log(ThenodeData.dataValues.currentTime === value.time, "")
             if (ThenodeData.dataValues.currentTime === value.time) {
               db.warnings.create({
                 userId: users[i].dataValues.id,
@@ -89,7 +89,7 @@ const checkNodes = async (id) => {
         }
       });
 
-      // console.log(`line 95.-hey fucker0 ${ThenodeData.dataValues.currentTime} ${testing}`)
+      // console.log(`line 95. ${ThenodeData.dataValues.currentTime} ${testing}`)
       let obj = { time: theTime };
 
       myCache.set(users[i].dataValues.id, obj, function (err, success) {
