@@ -31,7 +31,7 @@ class LuxIRGraph extends Component {
   getData = () => {
     Data.getAll(this.props.userid, 'Lux,IR').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
-        console.log(data)
+      
         this.setState({
           data: data.data,
         })

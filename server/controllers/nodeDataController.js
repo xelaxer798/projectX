@@ -33,7 +33,7 @@ const controller = {
     // let end = endTime;
     db.nodes.findAll({
       order: [['createdAt', 'DESC']],
-      limit: 1000,
+
       where: {
         userId: req.params.id
         // currentTime: {

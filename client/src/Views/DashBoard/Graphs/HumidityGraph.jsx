@@ -46,7 +46,7 @@ class HumidityGraph extends Component {
           color={'blue'}
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Humidity Graph',}}
+           yaxis:{range: [0,100]},xaxis:{ range:this.props.range, tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Humidity Graph',}}
       />
         </div>
       </div>

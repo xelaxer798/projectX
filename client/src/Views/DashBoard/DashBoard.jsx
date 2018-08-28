@@ -4,10 +4,100 @@ import NodesApi from '../../Data/nodes-api';
 import WarningsApi from "../../Data/warnings-api"
 import Logo from '../../Images/Leaf.png';
 import NodeData from './index';
-
+import moment from 'moment';
+import 'moment-timezone';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 // import moment from 'moment';
 // import Grid from '@material-ui/core/Grid';
 class Dashboard extends Component {
+  state={
+  CurrentTime :moment().tz("America/Los_Angeles").format(),
+  timeLength:'day',
+  timeToStart:'',
+  timeSubtracted:'',
+  tickFormat:'%I:%M %p'
+  }
+  componentDidMount=()=>{
+
+
+   const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
+  
+   this.setState({
+timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
+timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD')
+   });
+  }
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value,
+    CurrentTime:moment().tz("America/Los_Angeles").format() 
+  },this.changeGraphData);
+  };
+  changeGraphData=()=>{
+    if(this.state.timeLength==='day'){
+      const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
+  
+      this.setState({
+   timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
+   timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD'),
+   tickFormat:'%I:%M %p'
+      });
+    }
+    else if(this.state.timeLength==='hour'){
+      const heyt=moment(this.state.CurrentTime).subtract(1, 'hour');
+      this.setState({
+        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD HH:MM'),
+        timeToStart:moment(this.state.CurrentTime).format('YYYY-MM-DD HH:MM'),
+        tickFormat:'%I:%M %p'
+           });
+    }
+    else if(this.state.timeLength==='week'){
+      const heyt=moment(this.state.CurrentTime).subtract(7, 'days');
+      this.setState({
+        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToStart:moment(this.state.CurrentTime).format(),
+        tickFormat:'%a  %e-%b'
+           });
+    }
+    else if(this.state.timeLength==='month'){
+      // "2018-04-25T04:41:30.000Z"
+    const month=  moment(this.state.CurrentTime).tz("America/Los_Angeles").format('M')
+      const monthsWith31Days=['1','3','5','7','8','10','12'];
+      const monthsWith30Days=['4', '6','9' ,'11'];
+      let days;
+    for(let i=0;i<monthsWith31Days.length;i++){
+      if(monthsWith31Days[i]===month){
+      days=31;
+      }else {
+        for(let b=0;b<monthsWith30Days.length;b++){
+          if(monthsWith30Days[b]===month){
+          days= 30;
+          }
+          
+        }
+      }
+    }
+  
+ 
+ const heyt=moment(this.state.CurrentTime).subtract(days, 'days');
+  
+      this.setState({
+        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToStart:moment(this.state.CurrentTime).format(),
+        tickFormat:'%a  %e-%b'
+           });
+    }
+    else if(this.state.timeLength=== 'year'){
+      const heyt=moment(this.state.CurrentTime).subtract(365, 'days');
+      this.setState({
+        timeSubtracted:moment(heyt._d).tz("America/Los_Angeles").format(),
+        timeToStart:moment(this.state.CurrentTime).format(),
+        tickFormat:'%a  %e-%b'
+           });
+    }
+  }
   deleteUserWarnings = () => {
     let yesOrNo = window.confirm(`Are You Sure you want to Delete this users warnings with the user Id of ${this.props.userId}!?!`);
     if (yesOrNo === true) {
@@ -32,9 +122,29 @@ class Dashboard extends Component {
         <br />    <br />
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
         <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
- 
-        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
-        <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
+        <br/>
+        <br/>
+        
+        <InputLabel htmlFor="age-simple">Please Choose the Length of Time to see your Data</InputLabel>
+        <br/>
+        <Select
+        autoWidth
+            value={this.state.timeLength}
+            onChange={this.handleChange}
+            input={<Input name="timeLength" id="timeLength" />}
+          > 
+
+      
+            <MenuItem name={'day'}value={'day'}>Last Day</MenuItem>
+            <MenuItem name={'hour'}value={"hour"}>Last Hour </MenuItem>
+            <MenuItem value={'week'}>Last Week</MenuItem>
+            <MenuItem value={'month'}>Last Month</MenuItem>
+            <MenuItem value={'year'}>Last Year</MenuItem>
+          </Select>
+        
+        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} tickFormat={this.state.tickFormat}range={[this.state.timeSubtracted, this.state.timeToStart]} />
+        
+        <NodeData.Graphs.HumidityGraph userid={this.props.userId}range={['2018-08-28 10:00', '2018-08-28 11:00']} />
         <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 
    <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%I:%M %p'} title={'Lux/IR Graph 1 Day'}/>
    <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%a %I:%M%p %e-%b'} title={'Lux/IR Graph Last Day'} />

@@ -28,7 +28,7 @@ class TestGraph extends Component {
          
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Temperature Graph'}}
+           yaxis:{range: [0,100]},xaxis:{ range:this.props.range, tickangle: -45, tickformat:this.props.tickFormat,tickcolor: '#000', autotick: true},title: 'Temperature Graph'}}
       />
         </div>
       </div>
