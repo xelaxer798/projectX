@@ -36,9 +36,9 @@ class Dashboard extends Component {
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
         <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 
-        <NodeData.Graphs.TestGraph userid={this.props.userId}/>
+   <NodeData.Graphs.LuxIRGraph userid={this.props.userId}/>
          <NodeData.Cards.RGBCardData userid={this.props.userId} />
-        <NodeData.Cards.LuxDataCard userid={this.props.userId} /> *
+        <NodeData.Cards.LuxDataCard userid={this.props.userId} /> 
 
       </div>
     ) 

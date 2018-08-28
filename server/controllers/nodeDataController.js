@@ -48,17 +48,12 @@ const controller = {
           try {
             const testx = [];
             const testy = [];
-            const temperatureArray = []
+        
             for (let i = 0; i < jeff.length; i++) {
-              let temperature = {
-                x: functions.convertTimeZonesNonGuess(jeff[i].createdAt),
-                y: JSON.parse(jeff[i].dataValues.temperature
-                )
-              }
-              temperatureArray.push(temperature);
+
             }
             for (let i = 0; i < jeff.length; i++) {
-              testx.push(jeff[i].createdAt);
+              testx.push(functions.convertTimeZonesNonGuess(jeff[i].createdAt));
               testy.push(JSON.parse(jeff[i].dataValues.temperature));
             }
             const x = testx.reverse();
@@ -71,9 +66,9 @@ const controller = {
               marker: { color: 'red' },
               xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
             }]
-            const reversed = temperatureArray.reverse()
-            console.log(data)
-            res.send({ Easy: reversed, Ploty: data,test:jeff});
+
+          
+            res.send(data );
           } catch (err) {
             console.log(err)
           }
@@ -81,53 +76,110 @@ const controller = {
         }
         else if (req.params.graph === 'humidity') {
           try {
-            const humidityArray = []
+            const humidityx = [];
+            const humidityy = [];
             for (let i = 0; i < jeff.length; i++) {
-              let humidity = {
-                x: jeff[i].dataValues.currentTime,
-                y: JSON.parse(jeff[i].dataValues.humidity
-                )
-              }
-              humidityArray.push(humidity)
+
+              humidityx.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              humidityy.push(JSON.parse(jeff[i].dataValues.humidity))
+
             }
-            const reversed = humidityArray.reverse()
-            res.send(reversed);
+            const x = humidityx.reverse();
+            const y = humidityy.reverse();
+            const data = [{
+              x,
+              y,
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'red' },
+              xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
+            }]
+            res.send(data);
           } catch (err) {
             console.log(err)
           }
-        } else if (req.params.graph === 'RGB') {
+        } 
+        else if (req.params.graph === 'RGB') {
           try {
-            const rArray = [];
+            const rXArray = [];
+            const rYArray = [];
+            const gXArray = [];
+            const gYArray = [];
+            const bXArray = [];
+            const bYArray = [];
             for (let i = 0; i < jeff.length; i++) {
-              let R = {
-                x: jeff[i].dataValues.currentTime,
-                y: JSON.parse(jeff[i].dataValues.r
-                )
-              }
-              rArray.push(R)
+              rXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              rYArray.push(JSON.parse(jeff[i].dataValues.r))
+              gXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              gYArray.push(JSON.parse(jeff[i].dataValues.g))
+              bXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              bYArray.push(JSON.parse(jeff[i].dataValues.b))
             }
-            const gArray = [];
+            const data = [{
+              x:rXArray.reverse(),
+              y:rYArray.reverse(),
+              name:'R',
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'red' },
+             
+            },
+          {
+            x:gXArray.reverse(),
+            y:gYArray.reverse(),
+            name:'G',
+            type: 'scatter',
+            mode: 'lines',
+            marker: { color: 'green' },
+          },
+          {
+            x:bXArray.reverse(),
+            y:bYArray.reverse(),
+            name:'B',
+            type: 'scatter',
+            mode: 'lines',
+            marker: { color: 'blue' },
+          }]
+        
+          
+            res.send(data);
+          } catch (err) {
+            console.log(err)
+          }
+        }else if(req.params.graph ==='Lux,IR'){
+          try {
+            const luxX = [];
+            const luxY = [];
+            const irX=[];
+            const irY=[];
             for (let i = 0; i < jeff.length; i++) {
-              let G = {
-                x: jeff[i].dataValues.currentTime,
-                y: JSON.parse(jeff[i].dataValues.g)
-              }
-              gArray.push(G)
+
+              luxX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              luxY.push(JSON.parse(jeff[i].dataValues.lux))
+              irX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
+              irY.push(JSON.parse(jeff[i].dataValues.ir))
+
             }
-            const bArray = [];
-            for (let i = 0; i < jeff.length; i++) {
-              let B = {
-                x: jeff[i].dataValues.currentTime,
-                y: JSON.parse(jeff[i].dataValues.b)
-              }
-              bArray.push(B)
+       
+            const data = [{
+              x:luxX.reverse(),
+              y:luxY.reverse(),
+              name:'Lux',
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'blue' },
+           
+            },
+            {
+              x:irX.reverse(),
+              y:irY.reverse(),
+              name:'Infrared',
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'red' },
             }
-            const reverseR = rArray.reverse();
-            const reverseG = gArray.reverse()
-            const reverseB = bArray.reverse()
-            // const test=[{x:'12:00 am'},{x:'10:00 am'},{x:'12:00 pm'},{x:'5:00 pm'},{x:'11:59 pm'}]
-            const thedata = [reverseR, reverseG, reverseB]
-            res.send(thedata);
+          ]
+            res.send(data);
           } catch (err) {
             console.log(err)
           }
@@ -217,8 +269,8 @@ const controller = {
 
 
   create: async function (req, res) {
-    // moment().tz("America/Los_Angeles").format("hh:mm a");
-    const CurrentTime = '12:45 am'
+
+    const CurrentTime =   moment().tz("America/Los_Angeles").format("hh:mm a");
 
     let user = await db.users.findOne({
       where: {

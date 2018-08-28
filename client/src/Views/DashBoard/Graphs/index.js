@@ -1,11 +1,11 @@
 import TemperatureGraph from './TemperatureGraph';
 import HumidityGraph from './HumidityGraph';
 import RGBGraph from './RGBGraph';
-import TestGraph from './Test'
+import LuxIRGraph from './LuxIRGraph';
 const Graphs={
     TemperatureGraph,
     HumidityGraph,
     RGBGraph,
-    TestGraph
+    LuxIRGraph
 }
 export default Graphs;

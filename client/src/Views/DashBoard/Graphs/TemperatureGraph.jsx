@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
-class TemperatureGraph extends Component {
+import Plot from 'react-plotly.js';
+class TestGraph extends Component {
   state = {
     data: []
   }
   componentDidMount = () => {
-    setInterval(this.GetData, 1000);
+    
+  setInterval(this.GetData, 1000);
   }
   GetData = () => {
     Data.getAll(this.props.userid, 'temperature').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
+       
+      
         this.setState({
-          data: data.data.Easy,
+          data: data.data,
         })
       }
     })
@@ -21,26 +24,15 @@ class TemperatureGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-          <h1> Temperature Graph</h1>
-          <LineChart
-            axes
-            xType={'text'}
-            dataPoints
-            interpolate={'cardinal'}
-            y2Type="linear"
-            axisLabels={{ x: 'My x Axis', y: 'My y Axis' }}
-            colorBars
-            grid
-            lineColors={['green']}
-            yDomainRange={[0, 125]}
-            barWidth={10}
-            height={250}
-            width={1000}
-            data={[this.state.data]}
-          />
+        <Plot
+         
+        data={this.state.data}
+        layout={{ 
+           yaxis:{range: [0,100]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Temperature Graph'}}
+      />
         </div>
       </div>
     )
   }
 }
-export default TemperatureGraph;
+export default TestGraph;

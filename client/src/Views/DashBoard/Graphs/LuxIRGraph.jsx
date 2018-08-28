@@ -21,7 +21,7 @@ function min(value, ) {
 
 
 }
-class HumidityGraph extends Component {
+class LuxIRGraph extends Component {
   state = {
     data: []
   }
@@ -29,8 +29,9 @@ class HumidityGraph extends Component {
   setInterval(this.getData, 1000);
   }
   getData = () => {
-    Data.getAll(this.props.userid, 'humidity').then(data => {
+    Data.getAll(this.props.userid, 'Lux,IR').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
+        console.log(data)
         this.setState({
           data: data.data,
         })
@@ -43,14 +44,14 @@ class HumidityGraph extends Component {
         <div style={{ paddingLeft: '10px', color: 'black' }}>
        
           <Plot
-          color={'blue'}
+         
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Humidity Graph',}}
+           yaxis:{range: [0,100000]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Lux, IR Graph',}}
       />
         </div>
       </div>
     )
   }
 } 
-export default HumidityGraph;
+export default LuxIRGraph;
