@@ -295,7 +295,7 @@ const controller = {
       visible: req.body.visible,
       ir: req.body.ir,
       roomId: req.body.roomId,
-      currentTime: req.body.time
+      currentTime: CurrentTime
     })
       .then(dbModel => {
         console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj")

@@ -1,4 +1,5 @@
 const moment = require('moment');
+require('moment-timezone')
 // const theDate= "2018-08-25T04:41:30.000Z";
 const convertDiffTimeZones = (date) => {
     const zone = moment.tz.guess()

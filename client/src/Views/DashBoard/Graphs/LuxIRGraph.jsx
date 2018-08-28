@@ -47,7 +47,7 @@ class LuxIRGraph extends Component {
          
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100000]},xaxis:{  tickangle: -45, tickformat:'%I:%M %p',tickcolor: '#000', autotick: true},title: 'Lux, IR Graph',}}
+           yaxis:{range: [0,100000]},xaxis:{  tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: 'Lux, IR Graph',}}
       />
         </div>
       </div>

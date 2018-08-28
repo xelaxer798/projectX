@@ -36,7 +36,8 @@ class Dashboard extends Component {
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
         <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 
-   <NodeData.Graphs.LuxIRGraph userid={this.props.userId}/>
+   <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%I:%M %p'}/>
+   <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%a %I:%M%p %e-%b'}/>
          <NodeData.Cards.RGBCardData userid={this.props.userId} />
         <NodeData.Cards.LuxDataCard userid={this.props.userId} /> 
 
