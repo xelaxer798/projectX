@@ -21,7 +21,7 @@ function min(value, ) {
 
 
 }
-class LuxIRGraph extends Component {
+class ResuseabelGraph extends Component {
   state = {
     data: []
   }
@@ -29,7 +29,7 @@ class LuxIRGraph extends Component {
   setInterval(this.getData, 1000);
   }
   getData = () => {
-    Data.getAll(this.props.userid, 'Lux,IR').then(data => {
+    Data.getAll(this.props.userid, this.props.datatype).then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         console.log(data)
         this.setState({
@@ -47,11 +47,11 @@ class LuxIRGraph extends Component {
          
         data={this.state.data}
         layout={{ 
-           yaxis:{range: [0,100000]},xaxis:{  tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
+           yaxis:{range:this.state.yRange},xaxis:{ range: this.props.range, tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
       />
         </div>
       </div>
     )
   }
 } 
-export default LuxIRGraph;
+export default ResuseabelGraph;

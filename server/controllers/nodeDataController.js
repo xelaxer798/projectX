@@ -162,8 +162,8 @@ const controller = {
             }
        
             const data = [{
-              x:luxX.reverse(),
-              y:luxY.reverse(),
+              x:luxX,
+              y:luxY,
               name:'Lux',
               type: 'scatter',
               mode: 'lines',
@@ -171,8 +171,8 @@ const controller = {
            
             },
             {
-              x:irX.reverse(),
-              y:irY.reverse(),
+              x:irX,
+              y:irY,
               name:'Infrared',
               type: 'scatter',
               mode: 'lines',
