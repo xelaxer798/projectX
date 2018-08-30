@@ -75,20 +75,20 @@ console.log(event.target.graph)
         <br />    <br />
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
         <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
-        <br/>
-        <br/>
+        <br/><br/>
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
         <br/> <br/>
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
         <br/> <br/>
         <NodeData.Graphs.RGBGraph userid={this.props.userId} /> 
         <br/> <br/> 
-   <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%I:%M %p'} title={'Lux/IR Graph 1 Day'}/>
+   <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%I:%M %p'} />
  
    {/* <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%a %I:%M%p %e-%b'} title={'Lux/IR Graph Last Day'} />
    <NodeData.Graphs.ResuseabelGraph userid={this.props.userId} tickType={'%a  %e-%b'} title={'Lux/IR Graph Last Month'} range={['2018-08-01', '2018-08-31']}datatype={'Lux,IR'}/> */}
    <br/> <br/> <br/>
    <NodeData.Cards.LuxDataCard userid={this.props.userId} /> 
+   <br/> <br/> <br/>
          <NodeData.Cards.RGBCardData userid={this.props.userId} />
         
 

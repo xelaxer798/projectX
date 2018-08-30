@@ -77,10 +77,11 @@ class HumidityGraph extends Component {
           size: 12,
           color: 'black'
         },
-        ticks: 'outside', rangeselector: selectorOptions,
+        ticks: 'outside', rangeselector: selectorOptions,rangeslider: {},
         tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
-      }, title: 'Humidity Graph'
+      }, title: 'Humidity'
     }
+    
     this.setState({
       selectorOptions: selectorOptions,
       layout: layout
@@ -102,7 +103,7 @@ class HumidityGraph extends Component {
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
           <Plot
-            color={'blue'}
+        
             data={this.state.data}
             layout={this.state.layout}
           />

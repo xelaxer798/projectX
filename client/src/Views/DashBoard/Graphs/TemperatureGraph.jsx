@@ -56,7 +56,8 @@ class TestGraph extends Component {
         size: 12,
         color: 'black'
       },ticks: 'outside', rangeselector: selectorOptions,
-        rangeslider: {}, tickangle: -45, tickformat:'%a %I:%M%p %e-%b',tickcolor: '#000', autotick: true},title: 'Temperature Graph'
+        rangeslider: {}, tickangle: -45, tickformat:'%a %I:%M%p %e-%b',tickcolor: '#000', autotick: true},
+        title: 'Temperature'
      }
     this.setState({
       selectorOptions: selectorOptions,

@@ -68,7 +68,7 @@ class RGBGraph extends Component {
       ticks: 'outside',
         rangeselector: selectorOptions,
         rangeslider: {}, autoRange: true, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
-      }, title: 'RGB Graph'
+      }, title: 'RGB '
     }
     this.setState({
       timeToStartRGB: moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
