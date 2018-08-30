@@ -25,7 +25,7 @@ class LuxIRGraph extends Component {
   state = {
     data: [],
     CurrentTime: moment().tz("America/Los_Angeles").format(),
-layout:{}
+    layout: {}
   }
   componentDidMount = () => {
     const selectorOptions = {
