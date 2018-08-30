@@ -24,24 +24,73 @@ function min(value, ) {
 class LuxIRGraph extends Component {
   state = {
     data: [],
-    CurrentTime :moment().tz("America/Los_Angeles").format(),
-    timeToStartLuxIr:'',
-    timeToEndLuxIr:''
+    CurrentTime: moment().tz("America/Los_Angeles").format(),
+layout:{}
   }
   componentDidMount = () => {
-    const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
-  
-      this.setState({
-        timeToStartLuxIr:moment(heyt._d).tz("America/Los_Angeles").format('YYYY-MM-DD'),
-        timeToEndLuxIr:moment(this.state.CurrentTime).format('YYYY-MM-DD'),
-  //  tickFormat:'%I:%M %p'
-      });
-  setInterval(this.getData, 1000);
+    const selectorOptions = {
+      buttons: [
+        {
+          step: 'hour',
+          stepmode: 'backward',
+          count: 1,
+          label: '1h'
+        }, {
+          step: 'day',
+          stepmode: 'backward',
+          count: 1,
+          label: '1d'
+        }, {
+          step: 'day',
+          stepmode: 'backward',
+          count: 7,
+          label: '1w'
+        }, {
+          step: 'month',
+          stepmode: 'backward',
+          count: 1,
+          label: '1m'
+        }, {
+          step: 'month',
+          stepmode: 'backward',
+          count: 6,
+          label: '6m'
+        }, {
+          step: 'year',
+          stepmode: 'todate',
+          count: 1,
+          label: 'YTD'
+        }, {
+          step: 'year',
+          stepmode: 'backward',
+          count: 1,
+          label: '1y'
+        }, {
+          step: 'all',
+          label: 'all'
+        }],
+    };
+    let layout = {
+      yaxis: { range: [0, 100000] }, xaxis: {
+        tickfont: {
+          family: 'Old Standard TT, serif',
+          size: 12,
+          color: 'black'
+        }, ticks: 'outside', rangeselector: selectorOptions,
+        rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
+      }, title: "Lux/Infrared"
+    }
+
+    this.setState({
+      layout: layout
+      //  tickFormat:'%I:%M %p'
+    });
+    setInterval(this.getData, 1000);
   }
   getData = () => {
     Data.getAll(this.props.userid, 'Lux,IR').then(data => {
       if (data.data !== null || data.data !== undefined || data.data !== []) {
-      
+
         this.setState({
           data: data.data,
         })
@@ -52,16 +101,15 @@ class LuxIRGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-       
+
           <Plot
-         
-        data={this.state.data}
-        layout={{ 
-           yaxis:{range: [0,100000]},xaxis:{  range:[this.state.timeToStartLuxIr,this.state.timeToEndLuxIr],tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
-      />
+
+            data={this.state.data}
+            layout={this.state.layout}
+          />
         </div>
       </div>
     )
   }
-} 
+}
 export default LuxIRGraph;

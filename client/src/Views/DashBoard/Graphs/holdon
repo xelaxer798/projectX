@@ -1,0 +1,11 @@
+this.starDataFetch();
+  }
+  starDataFetch=()=>{
+    let layout={ yaxis:{range: [0,100]},xaxis:{ range:this.props.range, tickangle: -45, tickformat:this.props.tickFormat,tickcolor: '#000', autotick: true},title: 'Temperature Graph'
+  };
+    this.setState({
+      layout:layout
+    })
+    setTimeout(this.GetData, 1000);
+    setInterval(this.GetData, 2000);
+  }

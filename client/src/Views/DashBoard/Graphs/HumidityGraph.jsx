@@ -24,50 +24,68 @@ function min(value, ) {
 class HumidityGraph extends Component {
   state = {
     data: [],
-    selectorOptions:{}
+    selectorOptions: {},
+    layout: {}
   }
   componentDidMount = () => {
-    const  selectorOptions = {
+    const selectorOptions = {
       buttons: [
         {
           step: 'hour',
           stepmode: 'backward',
           count: 1,
           label: '1h'
-      },{
-        step: 'day',
-        stepmode: 'backward',
-        count: 1,
-        label: '1d'
-    }, {
+        }, {
+          step: 'day',
+          stepmode: 'backward',
+          count: 1,
+          label: '1d'
+        }, {
+          step: 'day',
+          stepmode: 'backward',
+          count: 7,
+          label: '1w'
+        }, {
           step: 'month',
           stepmode: 'backward',
           count: 1,
           label: '1m'
-      }, {
+        }, {
           step: 'month',
           stepmode: 'backward',
           count: 6,
           label: '6m'
-      }, {
+        }, {
           step: 'year',
           stepmode: 'todate',
           count: 1,
           label: 'YTD'
-      }, {
+        }, {
           step: 'year',
           stepmode: 'backward',
           count: 1,
           label: '1y'
-      }, {
+        }, {
           step: 'all',
-          label: '!!RESET!!'
-      }],
+          label: 'all'
+        }],
     };
+    let layout = {
+      yaxis: { range: [0, 100] }, xaxis: {
+        tickfont: {
+          family: 'Old Standard TT, serif',
+          size: 12,
+          color: 'black'
+        },
+        ticks: 'outside', rangeselector: selectorOptions,
+        tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
+      }, title: 'Humidity Graph'
+    }
     this.setState({
-      selectorOptions:selectorOptions 
+      selectorOptions: selectorOptions,
+      layout: layout
     })
-  setInterval(this.getData, 1000);
+    setInterval(this.getData, 1000);
   }
   getData = () => {
     Data.getAll(this.props.userid, 'humidity').then(data => {
@@ -82,17 +100,15 @@ class HumidityGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-       
+
           <Plot
-          color={'blue'}
-        data={this.state.data}
-        layout={{ 
-           yaxis:{range: [0,100]},xaxis:{  rangeselector: this.state.selectorOptions,
-            tickangle: -45, tickformat:'%a %I:%M%p %e-%b',tickcolor: '#000', autotick: true},title: 'Humidity Graph',}}
-      />
+            color={'blue'}
+            data={this.state.data}
+            layout={this.state.layout}
+          />
         </div>
       </div>
     )
   }
-} 
+}
 export default HumidityGraph;
