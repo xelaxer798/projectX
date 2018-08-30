@@ -55,7 +55,7 @@
     "multer-s3": "^2.7.0",
     "mysql2": "^1.5.1",
     "node-cache": "^4.2.0",
-    "node-sass": "",
+    "node-sass": "*",
     "nodemon": "^1.14.10",
     "normalize.css": "^7.0.0",
     "object-assign": "4.1.1",
