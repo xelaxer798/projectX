@@ -1,20 +1,45 @@
 
-import React, { Component } from 'react';
+import React, { Component,PureComponent } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
 import Logo from '../../../Images/Leaf.png'
 import usersAPI from '../../../Data/users-api';
-class Home extends Component {
+var _ = require('lodash');
+// Load the core build.
+var _ = require('lodash/core');
+// Load the FP build for immutable auto-curried iteratee-first data-last methods.
+var fp = require('lodash/fp');
+ 
+// Load method categories.
+var array = require('lodash/array');
+var object = require('lodash/fp/object');
+ 
+// Cherry-pick methods for smaller browserify/rollup/webpack bundles.
+var at = require('lodash/at');
+var curryN = require('lodash/fp/curryN');
+class Home extends PureComponent {
   state = {
     email: '',
-    password: 'projectgreen',
+    password: '',
     doesntMatch: false,
     noUser: false,
     checkBoxe: false,
     zone: ''
   }
+  // componentWillReceiveProps (nextProps) {
+  //   const changedProps = _.reduce(this.props, function (result, value, key) {
+  //     return _.isEqual(value, nextProps[key])
+  //       ? result
+  //       : result.concat(key)
+  //   }, [])
+  //   console.log('changedProps: ', changedProps)
+  // }
+  // shouldComponentUpdate=(nextProps, nextState) =>{
+  //   console.log(nextProps,nextState)
+  //   return false;
+  // }
   componentDidMount = () => {
     if (localStorage.getItem('UserEmail', this.state.email) !== null) {
       this.setState({
@@ -57,6 +82,7 @@ class Home extends Component {
     }
   }
   render() {
+   
     return (
       <div>
 

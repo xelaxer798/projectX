@@ -25,7 +25,7 @@ class App extends Component {
         theZone: '',
         footer:false,
        CurrentTime:moment().tz("America/Los_Angeles").format(),
-       timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm:ss a')
+       timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm a')
     }
     getTimezone = (zone) => {
         this.setState({
@@ -36,12 +36,12 @@ class App extends Component {
     
         this.setState({
             CurrentTime: moment().tz("America/Los_Angeles").format(),
-            timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm:ss a')
+            timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm a')
         })
     }
     componentDidMount = async () => {
-        this.updateTime();
-        setInterval(this.updateTime,1000)
+     
+       
         const url = window.location.toString().split('/');
       
         if(url[3] !==''){
@@ -54,7 +54,7 @@ class App extends Component {
             // console.log('auth')
             let user = await userAPI.Auth(localStorage.getItem('auth'));
             if (user != null) {
-            console.log(user)
+            // console.log(user)
                 this.setState({
                     logged: true,
                     userDataObj: {
@@ -69,8 +69,9 @@ class App extends Component {
                 // console.log(this.state.userDataObj)
                 // console.log(this.state.theId);
             }
-        }
+        } 
         this.getTimezone(zone);
+        // setInterval(this.updateTime,60000)
     }
     logOutHandler = () => {
         this.setState({ logged: false });
@@ -115,8 +116,7 @@ class App extends Component {
 
             return (
                 <Dashboard
-                timeformated={this.state.timeFormated}
-                currenttime={this.state.CurrentTime}
+     
                     logged={this.state.logged}
                     component={Dashboard}
                     userId={this.state.theId}
@@ -128,6 +128,7 @@ class App extends Component {
         const RoutedHome = (props) => {
             return (
                 <UserPages.SignIn
+               
                     logged={this.state.logged}
                     component={UserPages.SignIn}
                     theUser={this.state.userDataObj}

@@ -10,12 +10,14 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import functions from '../../Functions/index';
 // import moment from 'moment';
 // import Grid from '@material-ui/core/Grid';
       // "2018-04-25T04:41:30.000Z"
 class Dashboard extends Component {
   state={
-  CurrentTime :this.props.currenttime,
+  CurrentTime :moment().tz("America/Los_Angeles").format(),
+  timeFormated: functions.getDashboardFormateTime(),
   timeTempLength:'day',
   timeHumdLength:'day',
   timeLuxIrLength:'day',
@@ -27,8 +29,14 @@ class Dashboard extends Component {
   timeToEndLuxIr:'',
   tickFormat:'%I:%M %p'
   }
+   updateTime=()=>{
+    this.setState({
+        CurrentTime: moment().tz("America/Los_Angeles").format(),
+        timeFormated:functions.getDashboardFormateTime()
+    });
+};
   componentDidMount=()=>{
-   
+ setInterval(this.updateTime,1000);
     
    const heyt=moment(this.state.CurrentTime).subtract(1, 'days');
   
@@ -124,9 +132,11 @@ console.log(event.target.graph)
       <div className='home' style={{ backgroundColor: 'white' }}>
         <img src={Logo} alt='Logo' />
         <br />    <br />    <br />
+        {this.state.timeFormated}
+        <br/>  <br/>  <br/>
         This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
-        <br/>
-        {this.props.timeformated}
+      
+      
         <br />    <br />    <br />
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <br />    <br />
