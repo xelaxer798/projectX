@@ -22,6 +22,7 @@ class Dashboard extends Component {
 
   }
   componentDidCatch=(error, info) =>{
+    console.log('hi i am catching Dashboard');
     console.log(error,'hi im errors at dash')
     console.log(info,'hi im info at dash')
   }

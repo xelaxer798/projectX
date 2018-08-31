@@ -82,6 +82,7 @@ class Home extends PureComponent {
     }
   }
   componentDidCatch=(error, info) =>{
+    console.log('hi i am catching Sign In');
     console.log(error,'hi im errors at sign in')
     console.log(info,'hi im info at sign in')
   }

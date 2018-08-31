@@ -27,12 +27,13 @@ class HumidityGraph extends Component {
     selectorOptions: {},
     layout: {}
   }
-  componentDidCatch=(error, info) =>{
-    console.log(error,'hi im errors at hum')
-    console.log(info,'hi im info at hum')
-  }
+  componentDidCatch = (error, info) => {
+    console.log('hi i am catching Humidity');
+    console.log(error, 'hi im errors at hum');
+    console.log(info, 'hi im info at hum');
+  };
   componentDidMount = () => {
-    
+
     let layout = {
       height: 700,
       yaxis: { range: [0, 100] }, xaxis: {
@@ -41,11 +42,11 @@ class HumidityGraph extends Component {
           size: 12,
           color: 'black'
         },
-        ticks: 'outside', rangeselector: Options.selectorOptions,rangeslider: {},
+        ticks: 'outside', rangeselector: Options.selectorOptions, rangeslider: {},
         tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'Humidity'
     }
-    
+
     this.setState({
       selectorOptions: Options.selectorOptions,
       layout: layout
@@ -67,7 +68,7 @@ class HumidityGraph extends Component {
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
           <Plot
-        
+
             data={this.state.data}
             layout={this.state.layout}
           />
