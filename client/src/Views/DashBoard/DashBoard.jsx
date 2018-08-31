@@ -21,6 +21,10 @@ class Dashboard extends Component {
   
 
   }
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors')
+    console.log(info,'hi im info')
+  }
    updateTime=()=>{
     this.setState({
         CurrentTime: moment().tz("America/Los_Angeles").format(),

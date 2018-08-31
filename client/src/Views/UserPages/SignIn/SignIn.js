@@ -81,6 +81,10 @@ class Home extends PureComponent {
       window.location = '/dashboard';
     }
   }
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors')
+    console.log(info,'hi im info')
+  }
   render() {
    
     return (

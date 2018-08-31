@@ -14,6 +14,10 @@ class RGBGraph extends Component {
     selectorOptions: {},
     layout: {}
   }
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors')
+    console.log(info,'hi im info')
+  }
   componentDidMount = async () => {
     const selectorOptions = {
       buttons: [

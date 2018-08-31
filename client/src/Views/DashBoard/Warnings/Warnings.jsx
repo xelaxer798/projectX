@@ -8,13 +8,12 @@ state={
     RGBWarnings: [],
     deviceWarnings: [],
 }
+componentDidCatch=(error, info) =>{
+  console.log(error,'hi im errors')
+  console.log(info,'hi im info')
+}
 componentDidMount = () => {
-    // let warnings=await  WarningsApi.getWarnings(this.props.userid)
-    //    this.setState({
-    //      tempatureWarnings: warnings.data.tempature,
-    //      humidityWarnings: warnings.data.humidity,
-    //      deviceWarnings: warnings.data.device
-    //    })
+   
   setTimeout(this.getWarnings, 1000)
      setInterval(this.getWarnings, 2000);
    }
