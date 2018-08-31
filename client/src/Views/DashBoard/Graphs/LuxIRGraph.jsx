@@ -3,6 +3,7 @@ import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
 import moment from 'moment';
 import 'moment-timezone';
+import Options from '../Options/index';
 function min(value, ) {
   // const split = JSON.stringify(value);
   const dbDate = value.split(':')
@@ -32,55 +33,15 @@ class LuxIRGraph extends Component {
     console.log(info,'hi im info at lux')
   }
   componentDidMount = () => {
-    const selectorOptions = {
-      buttons: [
-        {
-          step: 'hour',
-          stepmode: 'backward',
-          count: 1,
-          label: '1h'
-        }, {
-          step: 'day',
-          stepmode: 'backward',
-          count: 1,
-          label: '1d'
-        }, {
-          step: 'day',
-          stepmode: 'backward',
-          count: 7,
-          label: '1w'
-        }, {
-          step: 'month',
-          stepmode: 'backward',
-          count: 1,
-          label: '1m'
-        }, {
-          step: 'month',
-          stepmode: 'backward',
-          count: 6,
-          label: '6m'
-        }, {
-          step: 'year',
-          stepmode: 'todate',
-          count: 1,
-          label: 'YTD'
-        }, {
-          step: 'year',
-          stepmode: 'backward',
-          count: 1,
-          label: '1y'
-        }, {
-          step: 'all',
-          label: 'all'
-        }],
-    };
+  
     let layout = {
+      height: 700,
       yaxis: { range: [0, 100000] }, xaxis: {
         tickfont: {
           family: 'Old Standard TT, serif',
           size: 12,
           color: 'black'
-        }, ticks: 'outside', rangeselector: selectorOptions,
+        }, ticks: 'outside', rangeselector: Options.selectorOptions,
         rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: "Lux/Infrared"
     }

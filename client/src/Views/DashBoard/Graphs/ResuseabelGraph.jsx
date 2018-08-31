@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
-
+import Options from '../Options/index';
 function min(value, ) {
   // const split = JSON.stringify(value);
   const dbDate = value.split(':')
@@ -46,7 +46,7 @@ class ResuseabelGraph extends Component {
           <Plot
          
         data={this.state.data}
-        layout={{ 
+        layout={{  height: 700,
            yaxis:{range:this.state.yRange},xaxis:{ range: this.props.range, tickangle: -45, tickformat:this.props.tickType,tickcolor: '#000', autotick: true},title: this.props.title,}}
       />
         </div>
