@@ -9,8 +9,8 @@ state={
     deviceWarnings: [],
 }
 componentDidCatch=(error, info) =>{
-  console.log(error,'hi im errors')
-  console.log(info,'hi im info')
+  console.log(error,'hi im errors at warnings')
+  console.log(info,'hi im info at warnings')
 }
 componentDidMount = () => {
    

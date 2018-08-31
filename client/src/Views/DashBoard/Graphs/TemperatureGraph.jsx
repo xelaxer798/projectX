@@ -76,6 +76,10 @@ class TestGraph extends Component {
       }
     })
   }
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors at Temp')
+    console.log(info,'hi im info at Temp')
+  }
   render() {
     return (
       <div >

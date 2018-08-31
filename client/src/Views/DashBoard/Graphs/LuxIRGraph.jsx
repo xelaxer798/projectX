@@ -27,6 +27,10 @@ class LuxIRGraph extends Component {
     CurrentTime: moment().tz("America/Los_Angeles").format(),
     layout: {}
   }
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors at lux')
+    console.log(info,'hi im info at lux')
+  }
   componentDidMount = () => {
     const selectorOptions = {
       buttons: [

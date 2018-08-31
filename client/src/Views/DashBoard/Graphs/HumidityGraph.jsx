@@ -28,8 +28,8 @@ class HumidityGraph extends Component {
     layout: {}
   }
   componentDidCatch=(error, info) =>{
-    console.log(error,'hi im errors')
-    console.log(info,'hi im info')
+    console.log(error,'hi im errors at hum')
+    console.log(info,'hi im info at hum')
   }
   componentDidMount = () => {
     const selectorOptions = {

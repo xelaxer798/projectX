@@ -22,8 +22,8 @@ class Dashboard extends Component {
 
   }
   componentDidCatch=(error, info) =>{
-    console.log(error,'hi im errors')
-    console.log(info,'hi im info')
+    console.log(error,'hi im errors at dash')
+    console.log(info,'hi im info at dash')
   }
    updateTime=()=>{
     this.setState({

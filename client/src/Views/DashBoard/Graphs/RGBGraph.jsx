@@ -15,6 +15,10 @@ class RGBGraph extends Component {
     layout: {}
   }
   componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors at RGB')
+    console.log(info,'hi im info at RGB')
+  }
+  componentDidCatch=(error, info) =>{
     console.log(error,'hi im errors')
     console.log(info,'hi im info')
   }

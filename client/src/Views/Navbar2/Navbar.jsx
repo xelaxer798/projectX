@@ -94,6 +94,10 @@ class Navbar extends Component {
       [name]: event.target.value,
     });
   };
+  componentDidCatch=(error, info) =>{
+    console.log(error,'hi im errors at navbarE')
+    console.log(info,'hi im info at navbarE')
+  }
   render() {
     let admin = null;
 
