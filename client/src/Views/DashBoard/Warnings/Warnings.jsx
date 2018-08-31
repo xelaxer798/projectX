@@ -8,24 +8,27 @@ state={
     RGBWarnings: [],
     deviceWarnings: [],
 }
-componentDidMount = async() => {
+componentDidMount = () => {
     // let warnings=await  WarningsApi.getWarnings(this.props.userid)
     //    this.setState({
     //      tempatureWarnings: warnings.data.tempature,
     //      humidityWarnings: warnings.data.humidity,
     //      deviceWarnings: warnings.data.device
     //    })
-  
-     setInterval(this.getWarnings, 1000);
+  setTimeout(this.getWarnings, 1000)
+     setInterval(this.getWarnings, 2000);
    }
-getWarnings = async() => {
-    let warnings=await  WarningsApi.getWarnings(this.props.userid)
+getWarnings = () => {
+ WarningsApi.getWarnings(this.props.userid).then(warnings=>{
+   console.log(warnings)
+  this.setState({
+    tempatureWarnings: warnings.data.tempature,
+    humidityWarnings: warnings.data.humidity,
+    deviceWarnings: warnings.data.device
+  })
+ })
   
-    this.setState({
-      tempatureWarnings: warnings.data.tempature,
-      humidityWarnings: warnings.data.humidity,
-      deviceWarnings: warnings.data.device
-    })
+ 
   }
 render(){
     return(
@@ -62,8 +65,6 @@ render(){
                 <li >The {tile.warning}</li>
                 <li >{tile.time}</li>
               </div>
-
-
             ))}
           </Grid>
         </Grid>
