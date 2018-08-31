@@ -96,7 +96,7 @@ class Navbar extends Component {
   };
   render() {
     let admin = null;
-  
+
     if (this.props.theUser.subscription === 'admin') {
       admin = <a href='/admin'>  <ListItem button>
         <ListItemIcon>
