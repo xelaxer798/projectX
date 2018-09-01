@@ -30,7 +30,7 @@ class Dashboard extends Component {
    updateTime=()=>{
     this.setState({
         CurrentTime: moment().tz("America/Los_Angeles").format(),
-        timeFormated:functions.getDashboardFormateTime()
+        timeFormated:functions.getDashboardFormateTime('dont')
     });
 };
   componentDidMount=()=>{
