@@ -3,29 +3,14 @@ import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
 import Options from '../Options/index';
-function min(value, ) {
-  // const split = JSON.stringify(value);
-  const dbDate = value.split(':')
-  console.log(dbDate[1])
+import Images from '../../../Images/index';
 
-  const check0 = dbDate[1].split('');
-  let temp;
-
-  if (check0[0] === '0') {
-    temp = '1' + check0[1]
-    return JSON.parse(temp)
-  } else {
-    return JSON.parse(dbDate[1])
-  }
-
-
-
-}
 class HumidityGraph extends Component {
   state = {
     data: [],
     selectorOptions: {},
-    layout: {}
+    layout: {},
+    loading:true
   }
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Humidity');
@@ -53,25 +38,29 @@ class HumidityGraph extends Component {
     })
     setInterval(this.getData, 1000);
   }
-  getData = () => {
-    Data.getAll(this.props.userid, 'humidity').then(data => {
+  getData = async() => {
+ let data=await   Data.getAll(this.props.userid, 'humidity')
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         this.setState({
           data: data.data,
+          loading:false
         })
       }
-    })
+    
   }
   render() {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
-          <Plot
+            {!this.state.loading?  <Plot
 
-            data={this.state.data}
-            layout={this.state.layout}
-          />
+data={this.state.data}
+layout={this.state.layout}
+/>:<div>
+
+  <img src={Images.loadingGif} alt='loading'/>
+  </div>}
         </div>
       </div>
     )

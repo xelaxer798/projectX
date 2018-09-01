@@ -4,6 +4,7 @@ import Plot from 'react-plotly.js';
 import moment from 'moment';
 import 'moment-timezone';
 import Options from '../Options/index';
+import Images from '../../../Images/index';
 function min(value, ) {
   // const split = JSON.stringify(value);
   const dbDate = value.split(':')
@@ -26,7 +27,8 @@ class LuxIRGraph extends Component {
   state = {
     data: [],
     CurrentTime: moment().tz("America/Los_Angeles").format(),
-    layout: {}
+    layout: {},
+    loading:true
   }
   componentDidCatch=(error, info) =>{
     console.log(error,'hi im errors at lux')
@@ -52,26 +54,30 @@ class LuxIRGraph extends Component {
     });
     setInterval(this.getData, 1000);
   }
-  getData = () => {
-    Data.getAll(this.props.userid, 'Lux,IR').then(data => {
+  getData =async () => {
+  let data=await  Data.getAll(this.props.userid, 'Lux,IR')
       if (data.data !== null || data.data !== undefined || data.data !== []) {
 
         this.setState({
           data: data.data,
+          loading:false
         })
       }
-    })
+   
   }
   render() {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
-          <Plot
+              {!this.state.loading?  <Plot
 
-            data={this.state.data}
-            layout={this.state.layout}
-          />
+data={this.state.data}
+layout={this.state.layout}
+/>:<div>
+
+  <img src={Images.loadingGif} alt='loading'/>
+  </div>}
         </div>
       </div>
     )

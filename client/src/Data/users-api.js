@@ -1,6 +1,6 @@
 import axios from "axios";
 const usersApi = {
- 
+  findAllUsers:()=>axios.get('/api/users/'),
   signIn:(email,password)=>axios.post('/api/users/sign/in',{email,password}),
   Auth:userToken=>axios.post('/api/users/auth',{userToken}),
   startRecover:  email=> axios.post(`/api/users/reset/pass`,{email}),

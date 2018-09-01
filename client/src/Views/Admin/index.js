@@ -1,5 +1,7 @@
 import Admin from './Admin';
+import AdminData from './NodeData/index';
 const AdminPages={
-    Admin
+    Admin,
+    AdminData
 }
 export default AdminPages;

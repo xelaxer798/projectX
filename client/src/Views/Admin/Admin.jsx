@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Logo from '../../Images/Leaf.png';
+import Button from '@material-ui/core/Button';
 // import Grid from '@material-ui/core/Grid';
 // import moment from 'moment';
 class Admin extends Component {
@@ -15,13 +16,13 @@ class Admin extends Component {
                 <br />    <br />    <br />
                 This is the Admin Page {this.props.theUser.firstName} {this.props.theUser.lastName}
                 <br/> <br/>
-                <button><a href='/user/rooms'>
+                <Button><a href='/user/most/recent'>
                     View One
-    </a></button>
+    </a></Button>
     <br/><br/>
-             <button> <a href='/user/data/room'>
+             <Button> <a href='/user/view/all'>
                     View All
-    </a></button>  
+    </a></Button>  
             </div>
         )
 

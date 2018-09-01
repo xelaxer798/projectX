@@ -7,6 +7,7 @@ import momentTimeZones from './momentTimeZones';
 import convertTimeZonesNonGuess from './convertTimeZoneNonGuess';
 import getMonth from './getMonth';
 import getDashboardFormateTime from './getDashboardFormateTime';
+import getFormateTime from './getFormatedTime';
 const functions = {
     getDateIso,
     timeToDecimal,
@@ -16,6 +17,7 @@ const functions = {
     momentTimeZones,
     convertTimeZonesNonGuess,
     getMonth,
-    getDashboardFormateTime 
+    getDashboardFormateTime,
+    getFormateTime
 }
 export default functions;

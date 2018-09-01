@@ -5,11 +5,13 @@ import Plot from 'react-plotly.js';
 import moment from 'moment';
 import 'moment-timezone';
 import Options from '../Options/index';
+import Images from '../../../Images/index';
 class RGBGraph extends Component {
   state = {
     data: [],
     selectorOptions: {},
-    layout: {}
+    layout: {},
+    loading:true
   }
   componentDidCatch=(error, info) =>{
     console.log('hi i am catching RGB')
@@ -42,14 +44,15 @@ class RGBGraph extends Component {
 
   }
 
-  getData = () => {
-    Data.getAll(this.props.userid, 'RGB').then(data => {
+  getData =async () => {
+  let data=await  Data.getAll(this.props.userid, 'RGB')
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         this.setState({
-          data: data.data
+          data: data.data,
+          loading:false
         })
       }
-    })
+   
   }
 
   render() {
@@ -58,12 +61,14 @@ class RGBGraph extends Component {
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
           <div >
-            <Plot
-              color={'blue'}
-              data={this.state.data}
+          {!this.state.loading?  <Plot
 
-              layout={this.state.layout}
-            />
+data={this.state.data}
+layout={this.state.layout}
+/>:<div>
+
+  <img src={Images.loadingGif} alt='loading'/>
+  </div>}
 
           </div>
         </div>

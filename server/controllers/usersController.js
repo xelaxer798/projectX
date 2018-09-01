@@ -16,7 +16,7 @@ const saltRounds = 10;
 
 const controller = {
   findAll: (req, res) => {
-    db.nodeData.findAll({
+    db.users.findAll({
       where: {
         inactive: false
       }
