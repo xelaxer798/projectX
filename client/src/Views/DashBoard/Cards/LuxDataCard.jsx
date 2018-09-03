@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Data from '../../../Data/nodes-api';
+import functions from '../../../Functions/index';
+
 // import CardActions from '@material-ui/core/CardActions';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Button from '@material-ui/core/Button';
@@ -38,7 +40,7 @@ class LuxDataCard extends Component {
           ir: data.data[0].ir,
           visible: data.data[0].visible,
           full: data.data[0].full,
-          time: data.data[0].currentTime
+          time: functions.getFormateTime(data.data[0].createdAt,'cards')
         })
       } catch (err) {
 

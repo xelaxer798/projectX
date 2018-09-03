@@ -7,7 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Data from '../../../Data/nodes-api'
+import Data from '../../../Data/nodes-api';
+import functions from '../../../Functions/index';
 const styles = {
   card: {
     maxWidth: 345,
@@ -40,7 +41,7 @@ time:''
                 r:data.data[0].r,
                 g:data.data[0].g,
                 b:data.data[0].b,
-                time:data.data[0].currentTime
+                time:functions.getFormateTime(data.data[0].createdAt,'cards')
             })
             }catch(err){
               
