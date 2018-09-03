@@ -30,7 +30,7 @@ class LuxDataCard extends Component {
     setInterval(this.getData, 1000);
 
   }
-  getData = () => {
+  getData = async() => {
     Data.getById(this.props.userid).then(data => {
       try {
         this.setState({

@@ -31,7 +31,7 @@ time:''
         setInterval(this.getData, 1000);
           
         }
-        getData=()=>{
+        getData=async()=>{
           
           Data.getById(this.props.userid).then(data => {
       

@@ -56,8 +56,8 @@ const controller = {
               testx.push(functions.convertTimeZonesNonGuess(jeff[i].createdAt));
               testy.push(JSON.parse(jeff[i].dataValues.temperature));
             }
-            const x = testx.reverse();
-            const y = testy.reverse();
+            const x = testx;
+            const y = testy;
             const data = [{
               x,
               y,
@@ -84,8 +84,8 @@ const controller = {
               humidityy.push(JSON.parse(jeff[i].dataValues.humidity))
 
             }
-            const x = humidityx.reverse();
-            const y = humidityy.reverse();
+            const x = humidityx;
+            const y = humidityy;
             const data = [{
               x,
               y,
@@ -116,8 +116,8 @@ const controller = {
               bYArray.push(JSON.parse(jeff[i].dataValues.b))
             }
             const data = [{
-              x:rXArray.reverse(),
-              y:rYArray.reverse(),
+              x:rXArray,
+              y:rYArray,
               name:'R',
               type: 'scatter',
               mode: 'lines',
@@ -125,16 +125,16 @@ const controller = {
              
             },
           {
-            x:gXArray.reverse(),
-            y:gYArray.reverse(),
+            x:gXArray,
+            y:gYArray,
             name:'G',
             type: 'scatter',
             mode: 'lines',
             marker: { color: 'green' },
           },
           {
-            x:bXArray.reverse(),
-            y:bYArray.reverse(),
+            x:bXArray,
+            y:bYArray,
             name:'B',
             type: 'scatter',
             mode: 'lines',
@@ -270,7 +270,8 @@ const controller = {
 
   create: async function (req, res) {
 
-    const CurrentTime =   moment().tz("America/Los_Angeles").format("hh:mm a");
+    const CurrentTime =   moment().tz("America/Los_Angeles").format("hh:mm:ss a");
+    const timeToFormat =   moment().tz("America/Los_Angeles").format();
 
     let user = await db.users.findOne({
       where: {
@@ -298,7 +299,7 @@ const controller = {
       currentTime: CurrentTime
     })
       .then(dbModel => {
-        console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj")
+       // console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj");
         let Tempature = null;
         let Humidity = null;
         let RGB = null;
@@ -315,7 +316,7 @@ const controller = {
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Temperature high ${req.body.temperature}`,
-            time: `at ${CurrentTime}`
+            time: `at ${functions.getFormateTime(timeToFormat)}`
           })
           Tempature = req.body.temperature
 
@@ -325,7 +326,7 @@ const controller = {
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Temperature was low ${req.body.temperature}`,
-            time: `at ${CurrentTime}`
+            time: `at ${functions.getFormateTime(timeToFormat)}`
           })
           Tempature = req.body.temperature
         }
@@ -334,7 +335,7 @@ const controller = {
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Humidity was high ${req.body.humidity}`,
-            time: `at ${CurrentTime}`
+            time: `at ${functions.getFormateTime(timeToFormat)}`
           })
           Humidity = req.body.Humidity
         }
@@ -343,7 +344,7 @@ const controller = {
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Humidity was low ${req.body.humidity}`,
-            time: `at ${CurrentTime}`
+            time: `at ${functions.getFormateTime(timeToFormat)}`
           })
           Humidity = req.body.Humidity
         }
@@ -352,7 +353,7 @@ const controller = {
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Node is detecting the RGB was the same with a value of ${req.body.r}`,
-            time: `at ${CurrentTime}`
+            time: `at ${functions.getFormateTime(timeToFormat)}`
           })
 
 
@@ -382,7 +383,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
+            html: `${user.dataValues.firstName} Your Farm had a couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
      `,
           };
@@ -397,7 +398,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
+            html: `${user.dataValues.firstName} Your Farm had a couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
      `,
           };
@@ -412,7 +413,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
+            html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
      
      `,
           };
@@ -427,7 +428,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
+            html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
      `,
           };
 
@@ -441,7 +442,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a couple warnings  at ${CurrentTime}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
+            html: `${user.dataValues.firstName} Your Farm had a couple warnings  on ${functions.getFormateTime(timeToFormat)}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
      `,
           };
 
@@ -455,7 +456,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had couple warnings at ${CurrentTime}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
+            html: `${user.dataValues.firstName} Your Farm had couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
           };
 
           sgMail.send(msg);
@@ -469,7 +470,7 @@ const controller = {
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
-            html: `${user.dataValues.firstName} Your Farm had a warning at ${CurrentTime}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.
+            html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.
      
      `,
           };

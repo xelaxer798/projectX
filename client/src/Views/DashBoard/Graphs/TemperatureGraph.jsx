@@ -33,6 +33,7 @@ class TestGraph extends Component {
       selectorOptions: Options.selectorOptions,
       layout: layout
     })
+
     setInterval(this.GetData, 1000);
   }
   GetData = async() => {

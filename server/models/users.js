@@ -42,3 +42,4 @@ module.exports = function (sequelize, DataTypes) {
         };
 return users;
   };
+//   users.belongsTo(models.Farms, { foreignKey: 'farmId' });

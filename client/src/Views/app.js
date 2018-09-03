@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-
 import moment from 'moment';
 import 'moment-timezone';
 import Navbar from './Navbar2/Navbar';
@@ -156,8 +155,8 @@ class App extends Component {
                         )} />
 
                         <Route exact path='/dashboard' render={RoutedDashBoard} />
-                        <Route exact path='/user/view/all' userId={this.state.theId} component={AdminPages.AdminData.ViewAll} />
-                        <Route exact path='/user/most/recent' userId={this.state.theId} component={AdminPages.AdminData.MostRecent} />
+                        <Route exact path='/user/view/all'component={AdminPages.AdminData.ViewAll} />
+                        <Route exact path='/user/most/recent'  component={AdminPages.AdminData.MostRecent} />
                         <Route exact path='/signup' component={UserPages.SignUp} />
                         <Route exact path='/user/account' render={RoutedAccountPage} />
                         <Route exact path='/verification/:id' component={UserPages.Verification} />
