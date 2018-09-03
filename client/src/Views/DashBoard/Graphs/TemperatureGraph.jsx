@@ -27,7 +27,7 @@ class TestGraph extends Component {
         // t: 100,
         pad: 1
       },
-      yaxis: { range: [0, 100] }, xaxis: {
+      yaxis: { range: [0, 125] }, xaxis: {
         tickfont: {
           family: 'Old Standard TT, serif',
           size: 12,
