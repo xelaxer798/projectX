@@ -39,45 +39,52 @@ const checkNodes = async (id) => {
         },
         order: [['createdAt', 'DESC']]
       });
-
+// console.log(ThenodeData)
       myCache.get(users[i].dataValues.id, async (err, value) => {
-        
-        theTime = functions.getFormateTime(ThenodeData.dataValues.createdAt);
-
+        //functions.getFormateTime()
+        theTime = ThenodeData.dataValues.createdAt;
+console.log( theTime,"line 46")
         if (!err) {
           console.log(err,'error on line 48');
           if (value == undefined) {
             console.log(`${value} is undifiend`);
           } else {
+            // 2018-09-03T17:49:01.000Z
+            // 2018-09-03T17:49:01.000Z
             // console.log(ThenodeData.dataValues.currentTime, `this is # ${testing}`)
             // console.log(users[i].dataValues.id,'nijdlsldklda')
             // console.log(value.time, 'kkkklol line 64');
             // console.log(ThenodeData.dataValues.currentTime, '')
-            // console.log(ThenodeData.dataValues.currentTime === value.time, "")
-            if (functions.getFormateTime(ThenodeData.dataValues.createdAt) === functions.getFormateTime(value.date)) {
+            //  console.log(JSON.stringify(ThenodeData.dataValues.createdAt)=== JSON.stringify(value.date), "line 59")
+            //  console.log(typeof JSON.stringify(theTime),"line 46")
+            //  console.log(value.date,"line 57")
+            //  console.log(typeof value.date,"line 57")
+            if (JSON.stringify(ThenodeData.dataValues.createdAt)=== JSON.stringify(value.date)) {
               db.warnings.create({
                 userId: users[i].dataValues.id,
                 nodeId: ThenodeData.dataValues.nodeId,
-                warning: `Node has not updated since ${functions.getFormateTime(value.date)}. Please check the node it may be offline`,
-                time: `${functions.getFormateTime(theCurrentTime)}`
+                warning: `Node has not updated since ${functions.getFormateTime(value.date,'checkNodes')}. Please check the node it may be offline`,
+                time: `${functions.getFormateTime(theCurrentTime,'checkNodes')}`
               });
+              let emailToSend=users[i].dataValues.email;
               let ccEmail;
+              if (users[i].dataValues.email === 'growai798@gmail.com') {
+                emailToSend = 'lm@leafliftsystems.com';
+              };
               if (users[i].dataValues.email !== 'growai798@gmail.com') {
                 ccEmail = 'growai798@gmail.com';
               };
-              let BccEmail
-              if (users[i].dataValues.email === 'growai798@gmail.com') {
-                BccEmail = 'lm@leafliftsystems.com';
+              if(users[i].dataValues.email === 'alexanderjnordstrom@gmail.com '){
+                emailToSend=null
               };
-
               const msg = {
-                to: 'growai798@gmail.com',
-               cc: BccEmail,
-                bcc:ccEmail,
+                to: emailToSend,
+               cc: ccEmail,
+            
                 from: 'LeafLiftSystems@donotreply.com',
                 subject: 'Your Farm Has A Warning',
                 text: 'Click me ',
-                html: `${users[i].dataValues.firstName}. The Node has not updated since ${functions.getFormateTime(value.date)}. Please check the node it may be offline `,
+                html: `${users[i].dataValues.firstName}. The Node has not updated since ${functions.getFormateTime(value.date,'checkNodes')}. Please check the node it may be offline `,
               };
               sgMail.send(msg);
 
@@ -93,9 +100,11 @@ const checkNodes = async (id) => {
 
       myCache.set(users[i].dataValues.id, obj, function (err, success) {
         if (!err && success) {
-          console.log(success, 'hyeyeyye');
-          console.log(obj, "olpppp")
-        };
+          console.log(success, 'line 96');
+          console.log(obj, "line 97")
+        }else if(err){
+          console.log(err,'error line 100');
+        }
       });
 
 
