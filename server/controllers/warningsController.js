@@ -43,7 +43,7 @@ const controller = {
                  let tellwhich = data[i].dataValues.warning.split(' ');
                  if (tellwhich[0] === 'Temperature') {
                    warningsObj = {
-                     warning: data[i].dataValues.warning,
+                     warning: `The ${data[i].dataValues.warning} °`,
                      time: data[i].dataValues.time,
                      num: num + 1
                    }
@@ -51,7 +51,7 @@ const controller = {
                  }
                  else if (tellwhich[0] === 'Humidity') {
                    warningsObj = {
-                     warning:  data[i].dataValues.warning,
+                     warning: `The ${data[i].dataValues.warning} %`,
                      time: data[i].dataValues.time,
                      num: num + 1
                    }
@@ -59,7 +59,7 @@ const controller = {
                  }
                  else if (tellwhich[0] === 'Node') {
                    warningsObj = {
-                     warning:  data[i].dataValues.warning,
+                     warning: `The ${data[i].dataValues.warning}`,
                      time: data[i].dataValues.time,
                      num: num + 1
                    }

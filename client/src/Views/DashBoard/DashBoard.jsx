@@ -7,18 +7,15 @@ import Logo from '../../Images/Leaf.png';
 import NodeData from './index';
 import moment from 'moment';
 import 'moment-timezone';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import functions from '../../Functions/index';
+import Grid from '@material-ui/core/Grid';
 // import moment from 'moment';
-// import Grid from '@material-ui/core/Grid';
+
 // "2018-04-25T04:41:30.000Z"
 class Dashboard extends Component {
   state = {
     CurrentTime: moment().tz("America/Los_Angeles").format(),
-    timeFormated: functions.getDashboardFormateTime(),
+    timeFormated: functions.getDashboardFormateTime('dont'),
   };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Dashboard');
@@ -81,20 +78,33 @@ class Dashboard extends Component {
         <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
         <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
         <br /><br />
+        <Grid container spacing={40}>
+        <Grid item xs={4}>
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
-        <br /> <br />
+        </Grid>
+     
+        <Grid item xs={4}>
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
-        <br /> <br />
+        </Grid>
+        </Grid>
+        <Grid container spacing={40}>
+        <Grid item xs={4}>
         <NodeData.Graphs.RGBGraph userid={this.props.userId} />
-        <br /> <br />
+        </Grid>
+        <Grid item xs={4}>
         <NodeData.Graphs.LuxIRGraph userid={this.props.userId}  />
+        </Grid>
+      </Grid>
         {/* <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%a %I:%M%p %e-%b'} title={'Lux/IR Graph Last Day'} />
    <NodeData.Graphs.ResuseabelGraph userid={this.props.userId} tickType={'%a  %e-%b'} title={'Lux/IR Graph Last Month'} range={['2018-08-01', '2018-08-31']}datatype={'Lux,IR'}/> */}
-        <br /> <br /> <br />
+   <Grid container spacing={24}>
+   <Grid item xs={4}>
         <NodeData.Cards.LuxDataCard userid={this.props.userId} />
-        <br /> <br /> <br />
+        </Grid>
+        <Grid item xs={4}>
         <NodeData.Cards.RGBCardData userid={this.props.userId} />
-
+        </Grid>
+        </Grid>
 
       </div>
     );

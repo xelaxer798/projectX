@@ -18,7 +18,15 @@ class TestGraph extends Component {
   componentDidMount = () => {
 
     let layout = {
+      width: 575,
       height: 700,
+      margin: {
+        // l: 50,
+        // r: 50,
+        // b: 100,
+        // t: 100,
+        pad: 1
+      },
       yaxis: { range: [0, 100] }, xaxis: {
         tickfont: {
           family: 'Old Standard TT, serif',

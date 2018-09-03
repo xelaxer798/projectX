@@ -21,14 +21,24 @@ class Warnings extends Component {
     setInterval(this.getWarnings, 2000);
   };
   getWarnings = async () => {
-    let warnings = await WarningsApi.getWarnings(this.props.userid)
-
-    this.setState({
-      tempatureWarnings: warnings.data.tempature,
-      humidityWarnings: warnings.data.humidity,
-      deviceWarnings: warnings.data.device,
-      loading: false
-    });
+    let warnings = await WarningsApi.getWarnings(this.props.userid);
+console.log(warnings.data.tempature.length)
+if(warnings.data.tempature.length<1&&warnings.data.humidity.length <1&&warnings.data.device.length<1){
+  this.setState({
+    tempatureWarnings: [{num:0,warning:'no warnings'}],
+    humidityWarnings: [{num:0,warning:'no warnings'}],
+    deviceWarnings: [{num:0,warning:'no warnings'}],
+    loading: false
+  });
+}else{
+  this.setState({
+    tempatureWarnings: warnings.data.tempature,
+    humidityWarnings: warnings.data.humidity,
+    deviceWarnings: warnings.data.device,
+    loading: false
+  });
+}
+   
   };
   render() {
     return (
@@ -38,7 +48,7 @@ class Warnings extends Component {
           <h3>Tempature Warnings</h3>
           {this.state.tempatureWarnings.map((tile) => (
             <div key={tile.num}>
-              <li >The {tile.warning} °</li>
+              <li >{tile.warning} </li>
               <li >{tile.time}</li>
             </div>
 
@@ -49,7 +59,7 @@ class Warnings extends Component {
             <h3>Humidity Warnings</h3>
             {this.state.humidityWarnings.map((tile) => (
               <div key={tile.num}>
-                <li >The {tile.warning} %</li>
+                <li >{tile.warning} </li>
                 <li >{tile.time}</li>
               </div>
 
@@ -62,7 +72,7 @@ class Warnings extends Component {
 
             {this.state.deviceWarnings.map((tile) => (
               <div key={tile.num}>
-                <li >The {tile.warning}</li>
+                <li >{tile.warning}</li>
                 <li >{tile.time}</li>
               </div>
             ))}
