@@ -288,14 +288,17 @@ const controller = {
         let Tempature = null;
         let Humidity = null;
         let RGB = null;
+     let emailToSend=user.dataValues.email;
         let ccEmail = '';
         let BccEmail = '';
         if (user.dataValues.email !== 'growai798@gmail.com') {
-          ccEmail = 'growai798@gmail.com';
+          BccEmail = 'growai798@gmail.com';
         }
-        if (user.dataValues.email === 'growai798@gmail.com') {
-          BccEmail = 'lm@leafliftsystems.com';
+        else if(user.dataValues.email === 'growai798@gmail.com'){
+          emailToSend='lm@leafliftsystems.com';
+          BccEmail = 'growai798@gmail.com';
         }
+        
         if (dbModel.dataValues.temperature >= 110) {
           db.warnings.create({
             userId: req.body.userId,
@@ -362,7 +365,7 @@ const controller = {
 
 
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
             cc: BccEmail,
 
             from: 'LeafLiftSystems@donotreply.com',
@@ -377,7 +380,7 @@ const controller = {
         }
         else if (Tempature != null && Humidity !== null && RGB !== null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
 
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
@@ -392,7 +395,7 @@ const controller = {
         }
         else if (Tempature !== null && Humidity === null && RGB === null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
 
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
@@ -407,7 +410,7 @@ const controller = {
         }
         else if (Humidity !== null && Tempature === null && RGB === null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
 
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
@@ -421,7 +424,7 @@ const controller = {
         }
         else if (Humidity !== null && RGB !== null && Tempature == null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
             cc: BccEmail,
 
             from: 'LeafLiftSystems@donotreply.com',
@@ -435,7 +438,7 @@ const controller = {
         }
         else if (Tempature !== null && RGB !== null && Humidity === null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
 
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
@@ -448,9 +451,9 @@ const controller = {
         }
         else if (RGB !== null && Humidity === null && Tempature == null) {
           const msg = {
-            to: user.dataValues.email,
+            to: emailToSend,
 
-
+            cc: BccEmail,
             cc: 'lm@leafliftsystems.com',
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
