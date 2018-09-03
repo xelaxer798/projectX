@@ -20,71 +20,67 @@ const styles = {
 };
 
 
-    class RGBCardData extends Component{
-        state={
-r:0,
-g:0,
-b:0,
-time:''
-        }
-    
-        componentDidMount = () => {
-        setInterval(this.getData, 1000);
-          
-        }
-        getData=async()=>{
-          
-          Data.getById(this.props.userid).then(data => {
-      
-            try{
-              this.setState({
-                r:data.data[0].r,
-                g:data.data[0].g,
-                b:data.data[0].b,
-                time:functions.getFormateTime(data.data[0].createdAt,'cards')
-            })
-            }catch(err){
-              
-            }
-        
-                        })
-        }
-        render(){
-            const { classes } = this.props;
-            return (
-              <div>
-           
-                <Card className={classes.card}>
-                
-                  <CardContent>
-                    <Typography gutterBottom variant="headline" component="h2">
-                  RGB
-                    </Typography>
-                    <Typography component="p">
-                      R: {this.state.r}
-                    </Typography>
-                    <Typography component="p">
-                     G: {this.state.g}
-                    </Typography>
-                    <Typography component="p">
-                     B: {this.state.b}
-                    </Typography>
-                    <Typography component="p">
-                     TIme: {this.state.time}
-                    </Typography>
-                  </CardContent>
-                
-                </Card>
-              </div>
-            );
-          }
-          
-        }
-        
-   
-      
+class RGBCardData extends Component {
+  state = {
+    r: 0,
+    g: 0,
+    b: 0,
+    time: ''
+  };
 
-    RGBCardData.propTypes = {
-        classes: PropTypes.object.isRequired,
+  componentDidMount = () => {
+    setInterval(this.getData, 1000);
+
+  };
+  getData = async () => {
+
+    Data.getById(this.props.userid).then(data => {
+
+      try {
+        this.setState({
+          r: data.data[0].r,
+          g: data.data[0].g,
+          b: data.data[0].b,
+          time: functions.getFormateTime(data.data[0].createdAt, 'cards')
+        });
+      } catch (err) {
+
       };
+
+    });
+  };
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+
+        <Card className={classes.card}>
+
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h2">
+              RGB
+                    </Typography>
+            <Typography component="p">
+              R: {this.state.r}
+            </Typography>
+            <Typography component="p">
+              G: {this.state.g}
+            </Typography>
+            <Typography component="p">
+              B: {this.state.b}
+            </Typography>
+            <Typography component="p">
+              Date: {this.state.time}
+            </Typography>
+          </CardContent>
+
+        </Card>
+      </div>
+    );
+  };
+
+};
+RGBCardData.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 export default withStyles(styles)(RGBCardData);

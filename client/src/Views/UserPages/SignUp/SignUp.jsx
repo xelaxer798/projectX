@@ -14,13 +14,13 @@ const required = (value) => {
     if (!value.toString().trim().length) {
         // We can return string or jsx as the 'error' prop for the validated Component
         return 'require';
-    }
+    };
 };
 
 const email = (value) => {
     if (!validator.isEmail(value)) {
         return `${value} is not a valid email.`
-    }
+    };
 };
 
 
@@ -84,11 +84,11 @@ class SignUp extends React.Component {
             rows: 2,
             countDown: 10,
             OpenModel: false,
-            newUserId:''
+            newUserId: ''
 
 
         }
-    }
+    };
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
@@ -129,26 +129,26 @@ class SignUp extends React.Component {
     tellPassReg = () => {
         this.setState({
             passRequire: false
-        })
-    }
+        });
+    };
     hidePassReq = () => {
         this.setState({
             passRequire: true
-        })
-    }
+        });
+    };
     passMatch = () => {
         if (this.state.password != this.state.passwordConfirm) {
             this.setState({
                 noMatch: false
-            })
+            });
         }
         else {
             this.setState({
                 noMatch: true
-            })
-        }
+            });
+        };
 
-    }
+    };
 
     componentDidMount = () => {
 
@@ -157,7 +157,7 @@ class SignUp extends React.Component {
         // })
 
 
-    }
+    };
 
     onChange = (e) => {
 
@@ -166,7 +166,7 @@ class SignUp extends React.Component {
         const value = e.target.value;
         this.setState({ [name]: value },
             () => { this.validateField(name, value) });
-    }
+    };
     passOnChange = (e) => {
 
 
@@ -174,17 +174,17 @@ class SignUp extends React.Component {
         const value = e.target.value;
         this.setState({ [name]: value },
             () => { this.validateField(name, value) });
-            if (this.state.password != this.state.passwordConfirm) {
-                this.setState({
-                    noMatch: false
-                })
-            }
-            else {
-                this.setState({
-                    noMatch: true
-                })
-            }
-    }
+        if (this.state.password != this.state.passwordConfirm) {
+            this.setState({
+                noMatch: false
+            });
+        }
+        else {
+            this.setState({
+                noMatch: true
+            });
+        };
+    };
     // let value = e.target.value;
     // const name = e.target.name;
     // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
@@ -193,12 +193,12 @@ class SignUp extends React.Component {
     // value = value.substring(0, 15);
 
 
-  
+
     imageChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value.split('\\').pop()
         });
-        const file = e.target.files[0]
+        const file = e.target.files[0];
 
 
 
@@ -228,36 +228,35 @@ class SignUp extends React.Component {
 
         } else {
 
-        }
+        };
 
-        const { firstName, lastName, email, phoneNumber, address,  password } = this.state;
+        const { firstName, lastName, email, phoneNumber, address, password } = this.state;
 
-        axios.post('/api/users/new/user', { firstName, lastName, email, phoneNumber, address,  password })
+        axios.post('/api/users/new/user', { firstName, lastName, email, phoneNumber, address, password })
             .then((result) => {
-                console.log(result)
+                console.log(result);
                 if (result.data == 'already') {
-                    alert('There is already an account with that email addres,please try a diffrent one')
+                    alert('There is already an account with that email addres,please try a diffrent one');
                 } else {
 
                     this.setState({
                         OpenModel: true,
-                        newUserId:result.data
-                    })
+                        newUserId: result.data
+                    });
                     setInterval(() => this.setState({
-                        countDown: this.state.countDown -1
-                    })
-                        , 1000);
+                        countDown: this.state.countDown - 1
+                    }), 1000);
 
-                }
-            })
+                };
+            });
 
-    }
+    };
     render() {
         if (this.state.countDown === 0) {
-            window.location = '/'
-        }
+            window.location = '/';
+        };
         return (
-          <div>
+            <div>
 
                 <Dialog
                     title={`This Window Will Redirect You in: ${this.state.countDown} secounds`}
@@ -276,7 +275,7 @@ class SignUp extends React.Component {
                 <div styles={{ margin: "auto" }}>
 
                     {<h1 style={styles.h1}>Create an Account!</h1>}
-                    
+
                 </div>
                 <div style={{ padding: '20px 0' }}>
 
@@ -312,7 +311,7 @@ class SignUp extends React.Component {
                             label="Phone Number"
                             onChange={this.onChange} />
                         <br />
-                      
+
                         {!this.state.passRequire &&
                             <p>Passwords must contain at least 6 characters.One letter,one number, and a special character.</p>}
 
@@ -346,15 +345,15 @@ class SignUp extends React.Component {
 
                     </div>
                     <div>
-                   
+
                         <br />
                         <Button onClick={this.onSubmit} disabled={!this.state.formValid} label="Submit!" >Submit</Button>
                     </div>
                 </div>
-  </div>
+            </div>
         );
-    }
-}
+    };
+};
 
 
 export default SignUp;

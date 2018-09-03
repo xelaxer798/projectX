@@ -1,24 +1,24 @@
 
-import React, { Component,PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
 import Logo from '../../../Images/Leaf.png'
 import usersAPI from '../../../Data/users-api';
-var _ = require('lodash');
-// Load the core build.
-var _ = require('lodash/core');
-// Load the FP build for immutable auto-curried iteratee-first data-last methods.
-var fp = require('lodash/fp');
- 
-// Load method categories.
-var array = require('lodash/array');
-var object = require('lodash/fp/object');
- 
-// Cherry-pick methods for smaller browserify/rollup/webpack bundles.
-var at = require('lodash/at');
-var curryN = require('lodash/fp/curryN');
+// var _ = require('lodash');
+// // Load the core build.
+// var _ = require('lodash/core');
+// // Load the FP build for immutable auto-curried iteratee-first data-last methods.
+// var fp = require('lodash/fp');
+
+// // Load method categories.
+// var array = require('lodash/array');
+// var object = require('lodash/fp/object');
+
+// // Cherry-pick methods for smaller browserify/rollup/webpack bundles.
+// var at = require('lodash/at');
+// var curryN = require('lodash/fp/curryN');
 class Home extends PureComponent {
   state = {
     email: '',
@@ -27,7 +27,7 @@ class Home extends PureComponent {
     noUser: false,
     checkBoxe: false,
     zone: ''
-  }
+  };
   // componentWillReceiveProps (nextProps) {
   //   const changedProps = _.reduce(this.props, function (result, value, key) {
   //     return _.isEqual(value, nextProps[key])
@@ -44,30 +44,30 @@ class Home extends PureComponent {
     if (localStorage.getItem('UserEmail', this.state.email) !== null) {
       this.setState({
         email: localStorage.getItem('UserEmail'),
-      })
-    }
-  }
+      });
+    };
+  };
   toggleCheck = () => {
     if (this.state.checkBoxe === false) {
       this.setState({
         checkBoxe: true
-      })
+      });
     }
     else if (this.state.checkBoxe === true) {
       this.setState({
         checkBoxe: false
-      })
-    }
-  }
+      });
+    };
+  };
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  };
   onSubmit = async () => {
     if (this.state.checkBoxe === true) {
       localStorage.setItem('UserEmail', this.state.email)
-    }
+    };
     let lowerCaseEmail = this.state.email.toLowerCase()
     let res = await usersAPI.signIn(lowerCaseEmail, this.state.password)
     const self = this;
@@ -79,15 +79,15 @@ class Home extends PureComponent {
     else {
       localStorage.setItem('auth', res.data)
       window.location = '/dashboard';
-    }
-  }
-  componentDidCatch=(error, info) =>{
+    };
+  };
+  componentDidCatch = (error, info) => {
     console.log('hi i am catching Sign In');
-    console.log(error,'hi im errors at sign in')
-    console.log(info,'hi im info at sign in')
-  }
+    console.log(error, 'hi im errors at sign in');
+    console.log(info, 'hi im info at sign in');
+  };
   render() {
-   
+
     return (
       <div>
 
@@ -114,7 +114,7 @@ class Home extends PureComponent {
                 alt='logo'
               />
             </Grid>
-        
+
             <Grid item md={12}>
               <TextField
                 autoFocus
@@ -126,11 +126,11 @@ class Home extends PureComponent {
                 value={this.state.email}
                 onChange={this.onChange}
                 onKeyPress={(ev) => {
-                
+
                   if (ev.key === 'Enter') {
-                    this.onSubmit()
+                    this.onSubmit();
                     ev.preventDefault();
-                  }
+                  };
                 }}
               />
             </Grid>
@@ -145,24 +145,24 @@ class Home extends PureComponent {
                 value={this.state.password}
                 onChange={this.onChange}
                 onKeyPress={(ev) => {
-              
+
                   if (ev.key === 'Enter') {
-                    this.onSubmit()
+                    this.onSubmit();
                     ev.preventDefault();
-                  }
+                  };
                 }}
               />
             </Grid>
 
             <Grid item md={6} >
               <div id="remember-me">
-                <input onClick={this.toggleCheck} type="checkbox"   onKeyPress={(ev) => {
-                
+                <input onClick={this.toggleCheck} type="checkbox" onKeyPress={(ev) => {
+
                   if (ev.key === 'Enter') {
-                    this.onSubmit()
+                    this.onSubmit();
                     ev.preventDefault();
-                  }
-                }}/>
+                  };
+                }} />
                 <span>Remember Me</span>
               </div>
             </Grid>
@@ -185,8 +185,8 @@ class Home extends PureComponent {
         </div>
       </div>
     );
-  }
-}
+  };
+};
 
 export default Home;
 

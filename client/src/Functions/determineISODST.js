@@ -1,4 +1,4 @@
-const moment = require('moment')
+const moment = require('moment');
 // use if you have date and time in an ISO Format to tell if the date is in Daylight SavingsTime
 const determineISODST = (date) => {
     const splitChangedDate = date.split(' ');

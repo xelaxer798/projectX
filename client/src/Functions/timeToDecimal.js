@@ -4,5 +4,5 @@ const timeToDecimal = (t) => {
   const time = [arr[0], arr2[0]];
   const dec = parseInt((time[1] / 6) * 10, 10);
   return parseFloat(parseInt(arr[0], 10) + '.' + (dec < 10 ? '0' : '') + dec);
-}
+};
 export default timeToDecimal;

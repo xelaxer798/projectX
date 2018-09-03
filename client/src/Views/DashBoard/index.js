@@ -7,5 +7,5 @@ const NodeData = {
     Graphs,
     Cards,
     Options
-}
+};
 export default NodeData;

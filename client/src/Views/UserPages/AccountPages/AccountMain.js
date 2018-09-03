@@ -4,21 +4,22 @@ import Logo from '../../../Images/Leaf.png';
 // import moment from 'moment';
 class AccountMain extends Component {
 
-  componentDidMount = async() => {
-   
-  }
-  
+  componentDidMount = async () => {
+
+  };
+
   render() {
     return (
       <div className='home' style={{ backgroundColor: 'white' }}>
         <img src={Logo} alt='Logo' />
         <br />    <br />    <br />
         This is your Account Page {this.props.theUser.firstName} {this.props.theUser.lastName}
-        
+
       </div>
-    )
+    );
 
-  }
+  };
 
 
-} export default AccountMain;
+};
+export default AccountMain;

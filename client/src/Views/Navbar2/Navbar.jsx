@@ -61,14 +61,14 @@ class Navbar extends Component {
     menu: false,
     admin: false
 
-  }
-  componentDid = () => {
+  };
+  componentDidMount = () => {
     if (this.props.theUser.subscription === 'admin') {
       this.setState({
         admin: true
-      })
-    }
-  }
+      });
+    };
+  };
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
@@ -95,9 +95,9 @@ class Navbar extends Component {
     });
   };
   componentDidCatch=(error, info) =>{
-    console.log(error,'hi im errors at navbarE')
-    console.log(info,'hi im info at navbarE')
-  }
+    console.log(error,'hi im errors at navbarE');
+    console.log(info,'hi im info at navbarE');
+  };
   render() {
     let admin = null;
 
@@ -111,7 +111,7 @@ class Navbar extends Component {
     }
     else {
       admin = <div />
-    }
+    };
     const { anchorEl } = this.state;
     // const { fullScreen } = this.props;
     // importing buttons for the drawer list
@@ -123,7 +123,7 @@ class Navbar extends Component {
             Leaf Lift Systems
 </Typography></a>}
       </div>
-    )
+    );
 
     const sideList = (
       <div styles={styles.list}>
@@ -199,8 +199,8 @@ class Navbar extends Component {
       </div>
     );
 
-  }
-}
+  };
+};
 // Navbar.propTypes = {
 //   fullScreen: PropTypes.bool.isRequired,
 // };

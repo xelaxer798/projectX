@@ -31,14 +31,14 @@ const checkNodes = async (id) => {
       let theTime;
       let testing = num + i;
 
-      console.log(num + i)
+      console.log(num + i);
       let ThenodeData = await db.nodes.findOne({
 
         where: {
           userId: users[i].dataValues.id
         },
         order: [['createdAt', 'DESC']]
-      })
+      });
 
       myCache.get(users[i].dataValues.id, async (err, value) => {
         
@@ -60,15 +60,15 @@ const checkNodes = async (id) => {
                 nodeId: ThenodeData.dataValues.nodeId,
                 warning: `Node has not updated since ${functions.getFormateTime(value.date)}. Please check the node it may be offline`,
                 time: `${functions.getFormateTime(theCurrentTime)}`
-              })
+              });
               let ccEmail;
               if (users[i].dataValues.email !== 'growai798@gmail.com') {
                 ccEmail = 'growai798@gmail.com';
-              }
+              };
               let BccEmail
               if (users[i].dataValues.email === 'growai798@gmail.com') {
                 BccEmail = 'lm@leafliftsystems.com';
-              }
+              };
 
               const msg = {
                 to: 'growai798@gmail.com',
@@ -83,11 +83,9 @@ const checkNodes = async (id) => {
 
 
             } else {
-
-
-            }
-          }
-        }
+            };
+          };
+        };
       });
 
       // console.log(`line 95. ${ThenodeData.dataValues.currentTime} ${testing}`)
@@ -97,17 +95,14 @@ const checkNodes = async (id) => {
         if (!err && success) {
           console.log(success, 'hyeyeyye');
           console.log(obj, "olpppp")
-        }
+        };
       });
 
 
-    }
+    };
   } catch (err) {
     console.log(err,'error line 106');
 
-  }
-
-
-
-}
+  };
+};
 export default checkNodes;

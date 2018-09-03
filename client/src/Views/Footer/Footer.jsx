@@ -68,6 +68,6 @@ const footer = () => {
       </Container>
     </div>
   );
-}
+};
 
 export default footer;

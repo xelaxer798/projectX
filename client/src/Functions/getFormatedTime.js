@@ -1,7 +1,6 @@
 import functions from './index';
 const moment = require('moment');
 require('moment-timezone');
-
 const getFormateTime = (date,format) => {
 if(format ==='cards'){
         const month = functions.getMonth(date);
@@ -16,8 +15,6 @@ if(format ==='cards'){
         const timeString = `Date created ${month} ${splitDate[2]} ${splitDate[0]}. 
         The Time was ${time[1]} ${time[2]}`;
         return timeString;
-}
-       
-}
-
+};    
+};
 export default getFormateTime;

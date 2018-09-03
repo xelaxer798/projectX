@@ -26,13 +26,13 @@ class LuxDataCard extends Component {
     visible: 0,
     full: 0,
     time: ''
-  }
+  };
 
   componentDidMount = () => {
     setInterval(this.getData, 1000);
 
-  }
-  getData = async() => {
+  };
+  getData = async () => {
     Data.getById(this.props.userid).then(data => {
       try {
         this.setState({
@@ -40,14 +40,14 @@ class LuxDataCard extends Component {
           ir: data.data[0].ir,
           visible: data.data[0].visible,
           full: data.data[0].full,
-          time: functions.getFormateTime(data.data[0].createdAt,'cards')
-        })
+          time: functions.getFormateTime(data.data[0].createdAt, 'cards')
+        });
       } catch (err) {
 
-      }
+      };
 
-    })
-  }
+    });
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -72,16 +72,16 @@ class LuxDataCard extends Component {
               Full: {this.state.full}
             </Typography>
             <Typography component="p">
-              TIme: {this.state.time}
+              Date: {this.state.time}
             </Typography>
           </CardContent>
 
         </Card>
       </div>
     );
-  }
+  };
 
-}
+};
 
 
 

@@ -7,7 +7,7 @@ class Admin extends Component {
 
     componentDidMount = async () => {
 
-    }
+    };
 
     render() {
         return (
@@ -24,9 +24,10 @@ class Admin extends Component {
                     View All
     </a></Button>  
             </div>
-        )
+        );
 
-    }
+    };
 
 
-} export default Admin;
+};
+ export default Admin;

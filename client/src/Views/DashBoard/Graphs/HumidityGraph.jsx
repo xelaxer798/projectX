@@ -11,7 +11,7 @@ class HumidityGraph extends Component {
     selectorOptions: {},
     layout: {},
     loading:true
-  }
+  }; 
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Humidity');
     console.log(error, 'hi im errors at hum');
@@ -30,24 +30,24 @@ class HumidityGraph extends Component {
         ticks: 'outside', rangeselector: Options.selectorOptions, rangeslider: {},
         tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'Humidity'
-    }
+    };
 
     this.setState({
       selectorOptions: Options.selectorOptions,
       layout: layout
-    })
+    });
     setInterval(this.getData, 1000);
-  }
+  };
   getData = async() => {
  let data=await   Data.getAll(this.props.userid, 'humidity')
       if (data.data !== null || data.data !== undefined || data.data !== []) {
         this.setState({
           data: data.data,
           loading:false
-        })
-      }
+        });
+      };
     
-  }
+  };
   render() {
     return (
       <div >
@@ -63,7 +63,7 @@ layout={this.state.layout}
   </div>}
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 export default HumidityGraph;

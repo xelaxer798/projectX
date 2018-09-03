@@ -24,19 +24,19 @@ class App extends Component {
         footer:false,
        CurrentTime:moment().tz("America/Los_Angeles").format(),
        timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm a')
-    }
+    };
     getTimezone = (zone) => {
         this.setState({
             timezone: zone
-        })
-    }
+        });
+    };
     updateTime=()=>{
     
         this.setState({
             CurrentTime: moment().tz("America/Los_Angeles").format(),
             timeFormated:moment().tz("America/Los_Angeles").format('YYYY-MM-DD hh:mm a')
-        })
-    }
+        });
+    };
     componentDidMount = async () => {
      
        
@@ -45,8 +45,8 @@ class App extends Component {
         if(url[3] !==''){
             this.setState({
                 footer:true
-            })
-        }
+            });
+        };
         var zone = moment.tz.guess();
         if (localStorage.auth != null) {
             // console.log('auth')
@@ -63,19 +63,19 @@ class App extends Component {
                     },
                     theId: user.data.id,
                     userCreatedAt: user.data.createdAt,
-                })
+                });
                 // console.log(this.state.userDataObj)
                 // console.log(this.state.theId);
-            }
-        } 
+            };
+        } ;
         this.getTimezone(zone);
         // setInterval(this.updateTime,60000)
-    }
+    };
     logOutHandler = () => {
         this.setState({ logged: false });
         localStorage.removeItem('auth');
         window.location = '/'
-    }
+    };
     render() {
         const RoutedAdminPage = (props) => {
             return (
@@ -86,8 +86,8 @@ class App extends Component {
                     theUser={this.state.userDataObj}
                     {...props}
                 />
-            )
-        }
+            );
+        };
         const RoutedHelpPage = (props) => {
             return (
                 <HelpPages.Help
@@ -97,8 +97,8 @@ class App extends Component {
                     theUser={this.state.userDataObj}
                     {...props}
                 />
-            )
-        }
+            );
+        };
         const RoutedAccountPage = (props) => {
             return (
                 <UserPages.AccountPages.AccountMain
@@ -108,8 +108,8 @@ class App extends Component {
                     theUser={this.state.userDataObj}
                     {...props}
                 />
-            )
-        }
+            );
+        };
         const RoutedDashBoard = (props) => {
 
             return (
@@ -121,8 +121,8 @@ class App extends Component {
                     theUser={this.state.userDataObj}
                     {...props}
                 />
-            )
-        }
+            );
+        };
         const RoutedHome = (props) => {
             return (
                 <UserPages.SignIn
@@ -132,8 +132,8 @@ class App extends Component {
                     theUser={this.state.userDataObj}
                     {...props}
                 />
-            )
-        }
+            );
+        };
         return (
             <BrowserRouter>
 
@@ -173,10 +173,10 @@ class App extends Component {
 
                 </div>
             </BrowserRouter>
-        )
-    }
+        );
+    };
 
-}
+};
 
 
 export default App;

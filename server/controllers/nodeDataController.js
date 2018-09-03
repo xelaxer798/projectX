@@ -48,14 +48,13 @@ const controller = {
           try {
             const testx = [];
             const testy = [];
-        
             for (let i = 0; i < jeff.length; i++) {
 
-            }
+            };
             for (let i = 0; i < jeff.length; i++) {
               testx.push(functions.convertTimeZonesNonGuess(jeff[i].createdAt));
               testy.push(JSON.parse(jeff[i].dataValues.temperature));
-            }
+            };
             const x = testx;
             const y = testy;
             const data = [{
@@ -65,12 +64,10 @@ const controller = {
               mode: 'lines',
               marker: { color: 'red' },
               xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
-            }]
-
-          
+            }];
             res.send(data );
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
 
         }
@@ -79,11 +76,9 @@ const controller = {
             const humidityx = [];
             const humidityy = [];
             for (let i = 0; i < jeff.length; i++) {
-
-              humidityx.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              humidityy.push(JSON.parse(jeff[i].dataValues.humidity))
-
-            }
+              humidityx.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              humidityy.push(JSON.parse(jeff[i].dataValues.humidity));
+            };
             const x = humidityx;
             const y = humidityy;
             const data = [{
@@ -93,11 +88,11 @@ const controller = {
               mode: 'lines',
               marker: { color: 'red' },
               xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
-            }]
+            }];
             res.send(data);
           } catch (err) {
-            console.log(err)
-          }
+            console.log(err);
+          };
         } 
         else if (req.params.graph === 'RGB') {
           try {
@@ -108,13 +103,13 @@ const controller = {
             const bXArray = [];
             const bYArray = [];
             for (let i = 0; i < jeff.length; i++) {
-              rXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              rYArray.push(JSON.parse(jeff[i].dataValues.r))
-              gXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              gYArray.push(JSON.parse(jeff[i].dataValues.g))
-              bXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              bYArray.push(JSON.parse(jeff[i].dataValues.b))
-            }
+              rXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              rYArray.push(JSON.parse(jeff[i].dataValues.r));
+              gXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              gYArray.push(JSON.parse(jeff[i].dataValues.g));
+              bXArray.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              bYArray.push(JSON.parse(jeff[i].dataValues.b));
+            };
             const data = [{
               x:rXArray,
               y:rYArray,
@@ -139,13 +134,11 @@ const controller = {
             type: 'scatter',
             mode: 'lines',
             marker: { color: 'blue' },
-          }]
-        
-          
+          }];
             res.send(data);
           } catch (err) {
-            console.log(err)
-          }
+            console.log(err);
+          };
         }else if(req.params.graph ==='Lux,IR'){
           try {
             const luxX = [];
@@ -153,14 +146,11 @@ const controller = {
             const irX=[];
             const irY=[];
             for (let i = 0; i < jeff.length; i++) {
-
-              luxX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              luxY.push(JSON.parse(jeff[i].dataValues.lux))
-              irX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt))
-              irY.push(JSON.parse(jeff[i].dataValues.ir))
-
-            }
-       
+              luxX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              luxY.push(JSON.parse(jeff[i].dataValues.lux));
+              irX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
+              irY.push(JSON.parse(jeff[i].dataValues.ir));
+            };
             const data = [{
               x:luxX,
               y:luxY,
@@ -168,7 +158,6 @@ const controller = {
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'blue' },
-           
             },
             {
               x:irX,
@@ -178,18 +167,14 @@ const controller = {
               mode: 'lines',
               marker: { color: 'red' },
             }
-          ]
+          ];
             res.send(data);
           } catch (err) {
             console.log(err)
-          }
-        }
-
-
-
-
+          };
+        };
       })
-      .catch(err => res.status(422).json(err));
+      .catc(err => res.status(422).json(err));
   },
   findById: (req, res) => {
     // console.log(req.params)

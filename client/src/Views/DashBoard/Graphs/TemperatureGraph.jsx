@@ -9,7 +9,7 @@ class TestGraph extends Component {
     selectorOptions: {},
     layout: {},
     loading:true
-  }
+  };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Temperature');
     console.log(error, 'hi im errors at Temp');
@@ -28,14 +28,14 @@ class TestGraph extends Component {
         rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       },
       title: 'Temperature'
-    }
+    };
     this.setState({
       selectorOptions: Options.selectorOptions,
       layout: layout
-    })
+    });
 
     setInterval(this.GetData, 1000);
-  }
+  };
   GetData = async() => {
  let data=await   Data.getAll(this.props.userid, 'temperature')
       if (data.data !== null || data.data !== undefined || data.data !== []) {
@@ -44,10 +44,10 @@ class TestGraph extends Component {
         this.setState({
           data: data.data,
           loading:false
-        })
-      }
+        });
+      };
   
-  }
+  };
 
   render() {
     return (
@@ -64,7 +64,7 @@ layout={this.state.layout}
         
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 export default TestGraph;

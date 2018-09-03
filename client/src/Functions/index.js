@@ -21,5 +21,5 @@ const functions = {
     getMonth,
     getDashboardFormateTime,
     getFormateTime
-}
+};
 export default functions;

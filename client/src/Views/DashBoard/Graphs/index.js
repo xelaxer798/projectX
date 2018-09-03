@@ -9,5 +9,5 @@ const Graphs={
     RGBGraph,
     LuxIRGraph,
     ResuseabelGraph
-}
+};
 export default Graphs;

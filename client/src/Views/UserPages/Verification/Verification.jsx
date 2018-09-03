@@ -14,7 +14,7 @@ state = {
         console.log(dataPoints)
      this.setState({
       name:dataPoints.data
-     })
+     });
     });
   };
   render() {
@@ -24,8 +24,8 @@ state = {
      <br/>
      {this.state.name}, You have been verified.   
       </div>
-    )
-  }
+    );
+  };
 
-}
+};
 export default verify;

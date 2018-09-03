@@ -12,12 +12,12 @@ class RGBGraph extends Component {
     selectorOptions: {},
     layout: {},
     loading:true
-  }
+  };
   componentDidCatch=(error, info) =>{
     console.log('hi i am catching RGB')
     console.log(error,'hi im errors at RGB')
     console.log(info,'hi im info at RGB')
-  }
+  };
 
   componentDidMount = async () => {
   
@@ -33,7 +33,7 @@ class RGBGraph extends Component {
         rangeselector:  Options.selectorOptions,
         rangeslider: {}, autoRange: true, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'RGB '
-    }
+    };
     this.setState({
 
       selectorOptions:  Options.selectorOptions,
@@ -42,7 +42,7 @@ class RGBGraph extends Component {
     });
     setInterval(this.getData, 1000);
 
-  }
+  };
 
   getData =async () => {
   let data=await  Data.getAll(this.props.userid, 'RGB')
@@ -50,10 +50,10 @@ class RGBGraph extends Component {
         this.setState({
           data: data.data,
           loading:false
-        })
-      }
+        });
+      };
    
-  }
+  };
 
   render() {
 
@@ -73,7 +73,7 @@ layout={this.state.layout}
           </div>
         </div>
       </div>
-    )
-  }
-}
+    );
+  };
+};
 export default RGBGraph;
