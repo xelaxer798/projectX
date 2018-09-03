@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import WarningsApi from "../../../Data/warnings-api";
 import Grid from '@material-ui/core/Grid';
 import Images from '../../../Images/index';
+import Button from '@material-ui/core/Button';
 class Warnings extends Component {
   state = {
     tempatureWarnings: [],
@@ -80,6 +81,7 @@ class Warnings extends Component {
     };
     return (
       <div>
+        <Button onClick={this.props.delete()} >Delete users warnings data</Button>
         {!this.state.loading ?
           <Grid container spacing={16}>
             <Grid item xs={3}>

@@ -75,8 +75,8 @@ class Dashboard extends Component {
         <br />    <br />    <br />
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
         <br />    <br />
-        <Button onClick={this.deleteUserWarnings} >Delete users warnings data</Button>
-        <NodeData.Warnings.ThreeWarnings userid={this.props.userId} />
+        
+        <NodeData.Warnings.ThreeWarnings userid={this.props.userId} delete={()=>this.deleteUserWarnings} />
         <br /><br />
         <Grid container spacing={40}>
         <Grid item xs={4} lg={5}>
