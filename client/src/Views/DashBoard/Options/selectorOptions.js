@@ -1,6 +1,12 @@
 const selectorOptions = {
     buttons: [
       {
+        step: 'minute',
+        stepmode: 'backward',
+        count: 30,
+        label: '30m'
+      }, 
+      {
         step: 'hour',
         stepmode: 'backward',
         count: 1,
