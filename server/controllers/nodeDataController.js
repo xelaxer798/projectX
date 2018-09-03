@@ -262,9 +262,9 @@ const controller = {
       where: {
         id: req.body.userId
       }
-    })
+    });
 
-    console.log(user.dataValues)
+    console.log(user.dataValues);
     // console.log(time)
     // console.log({CurrentTime})
     db.nodes.create({
@@ -297,7 +297,7 @@ const controller = {
         else if(user.dataValues.email === 'growai798@gmail.com'){
           emailToSend='lm@leafliftsystems.com';
           BccEmail = 'growai798@gmail.com';
-        }
+        };
         
         if (dbModel.dataValues.temperature >= 110) {
           db.warnings.create({
@@ -305,8 +305,8 @@ const controller = {
             nodeId: req.body.nodeId,
             warning: `Temperature high ${req.body.temperature}`,
             time: `at ${functions.getFormateTime(timeToFormat)}`
-          })
-          Tempature = req.body.temperature
+          });
+          Tempature = req.body.temperature;
 
         }
         else if (dbModel.dataValues.temperature <= 50) {
@@ -315,17 +315,17 @@ const controller = {
             nodeId: req.body.nodeId,
             warning: `Temperature was low ${req.body.temperature}`,
             time: `at ${functions.getFormateTime(timeToFormat)}`
-          })
-          Tempature = req.body.temperature
-        }
+          });
+          Tempature = req.body.temperature;
+        };
         if (dbModel.dataValues.humidity >= 85) {
           db.warnings.create({
             userId: req.body.userId,
             nodeId: req.body.nodeId,
             warning: `Humidity was high ${req.body.humidity}`,
             time: `at ${functions.getFormateTime(timeToFormat)}`
-          })
-          Humidity = req.body.Humidity
+          });
+          Humidity = req.body.Humidity;
         }
         else if (dbModel.dataValues.humidity <= 30) {
           db.warnings.create({
@@ -333,8 +333,8 @@ const controller = {
             nodeId: req.body.nodeId,
             warning: `Humidity was low ${req.body.humidity}`,
             time: `at ${functions.getFormateTime(timeToFormat)}`
-          })
-          Humidity = req.body.Humidity
+          });
+          Humidity = req.body.Humidity;
         }
         if (dbModel.dataValues.r === dbModel.dataValues.g && dbModel.dataValues.g === dbModel.dataValues.b && dbModel.dataValues.b === dbModel.dataValues.r && dbModel.dataValues.r >= 100) {
           db.warnings.create({
@@ -342,24 +342,24 @@ const controller = {
             nodeId: req.body.nodeId,
             warning: `Node is detecting the RGB was the same with a value of ${req.body.r}`,
             time: `at ${functions.getFormateTime(timeToFormat)}`
-          })
+          });
 
 
-          RGB = req.body.r
+          RGB = req.body.r;
         }
         let TempHighLow;
         let HumidityHighLow;
         if (req.body.temperature >= 110) {
-          TempHighLow = 'spiked'
+          TempHighLow = 'spiked';
         }
         else if (req.body.temperature <= 60) {
-          TempHighLow = 'dropped'
+          TempHighLow = 'dropped';
         }
         if (req.body.humidity >= 85) {
-          HumidityHighLow = 'spiked'
+          HumidityHighLow = 'spiked';
         }
         else if (req.body.humidity <= 30) {
-          HumidityHighLow = 'dropped'
+          HumidityHighLow = 'dropped';
         }
         if (Tempature !== null && Humidity !== null && RGB == null) {
 
@@ -381,7 +381,6 @@ const controller = {
         else if (Tempature != null && Humidity !== null && RGB !== null) {
           const msg = {
             to: emailToSend,
-
             cc: BccEmail,
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
@@ -454,7 +453,7 @@ const controller = {
             to: emailToSend,
 
             cc: BccEmail,
-            cc: 'lm@leafliftsystems.com',
+   
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
@@ -464,9 +463,9 @@ const controller = {
           };
 
           sgMail.send(msg);
-        }
+        };
 
-        res.json(dbModel)
+        res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
   },
