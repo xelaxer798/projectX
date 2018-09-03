@@ -83,7 +83,7 @@ class Warnings extends Component {
         {!this.state.loading ?
           <Grid container spacing={16}>
             <Grid item xs={3}>
-              <h3>Tempature Warnings</h3>
+              <h3>Temperature Warnings</h3>
               {tempatureWarnings}
             </Grid>
             <Grid item xs={3}>

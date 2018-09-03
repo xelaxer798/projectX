@@ -70,13 +70,14 @@ console.log( theTime,"line 46")
               let ccEmail;
               if (users[i].dataValues.email === 'growai798@gmail.com') {
                 emailToSend = 'lm@leafliftsystems.com';
-              };
+              }
+              else if(users[i].dataValues.email === 'alexanderjnordstrom@gmail.com'){
+                emailToSend='growai798@gmail.com'
+              }
               if (users[i].dataValues.email !== 'growai798@gmail.com') {
                 ccEmail = 'growai798@gmail.com';
               };
-              if(users[i].dataValues.email === 'alexanderjnordstrom@gmail.com '){
-                emailToSend=null
-              };
+             
               const msg = {
                 to: emailToSend,
                cc: ccEmail,
@@ -86,13 +87,10 @@ console.log( theTime,"line 46")
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}. The Node has not updated since ${functions.getFormateTime(value.date,'checkNodes')}. Please check the node it may be offline `,
               };
-              if(users[i].dataValues.email === 'alexanderjnordstrom@gmail.com '){
-        
-                //sgMail.send(msg);
-              }
-              else {
+              
+          
                 sgMail.send(msg);
-              }
+            
              
 
 
