@@ -86,7 +86,14 @@ console.log( theTime,"line 46")
                 text: 'Click me ',
                 html: `${users[i].dataValues.firstName}. The Node has not updated since ${functions.getFormateTime(value.date,'checkNodes')}. Please check the node it may be offline `,
               };
-              sgMail.send(msg);
+              if(users[i].dataValues.email === 'alexanderjnordstrom@gmail.com '){
+        
+                //sgMail.send(msg);
+              }
+              else {
+                sgMail.send(msg);
+              }
+             
 
 
             } else {

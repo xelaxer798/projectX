@@ -54,7 +54,7 @@ class Dashboard extends Component {
     if (yesOrNo === true) {
       WarningsApi.delete(this.props.userId);
     };
-    this.getWarnings();
+    
   }
   deleteAllUserNodes = () => {
     let yesOrNo = window.confirm(`Are You Sure you want to Delete this users node data with the user Id of ${this.props.userId}!?!`);
