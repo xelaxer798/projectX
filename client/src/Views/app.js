@@ -9,10 +9,10 @@ import UserPages from './UserPages/index';
 import userAPI from '../Data/users-api';
 import HelpPages from './Help/index';
 // import Grid from '@material-ui/core/Grid';
- import Footer from './Footer/Footer';
- import AdminPages from './Admin/index';
- import functions from '../Functions/index';
-     
+import Footer from './Footer/Footer';
+import AdminPages from './Admin/index';
+import functions from '../Functions/index';
+import NotFound from './404Page/404Page'
  
 class App extends Component {
     state = {
@@ -166,6 +166,7 @@ class App extends Component {
                         <Route exact path='/change/confirmation' component={UserPages.ResetPassword.confirmation} />
                         <Route exact path='/help' render={RoutedHelpPage} />
                         <Route exact path='/admin' render={RoutedAdminPage}/>
+                        <Route path="*" component={NotFound} />
                     </Switch>
 
 
