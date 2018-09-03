@@ -26,14 +26,7 @@ class Warnings extends Component {
   };
   getWarnings = async () => {
     let warnings = await WarningsApi.getWarnings(this.props.userid);
-    if (warnings.data.tempature.length < 1 && warnings.data.humidity.length < 1 && warnings.data.device.length < 1) {
-      this.setState({
-        tempLengt: 0,
-        humidLength: 0,
-        deviceLength: 0,
-        loading: false
-      });
-    } else {
+  
       this.setState({
         tempLength: warnings.data.tempature.length,
         humidLength: warnings.data.humidity.length,
@@ -43,27 +36,26 @@ class Warnings extends Component {
         deviceWarnings: warnings.data.device,
         loading: false
       });
-    }
+   
 
   };
   render() {
     let tempatureWarnings = null;
     let humidityWarnings = null;
     let deviceWarnings = null;
-
     if (this.state.tempLength < 1) {
       tempatureWarnings = <div></div>
     }
     else {
-      tempatureWarnings =    this.state.tempatureWarnings.map((tile) => (
+      tempatureWarnings = this.state.tempatureWarnings.map((tile) => (
         <div key={tile.num}>
           <li >{tile.warning} </li>
           <li >{tile.time}</li>
         </div>
-      ))
-    }
+      ));
+    };
     if (this.state.humidLength < 1) {
-      humidityWarnings  = <div></div>
+      humidityWarnings = <div></div>
     }
     else {
       humidityWarnings = this.state.humidityWarnings.map((tile) => (
@@ -79,7 +71,7 @@ class Warnings extends Component {
       deviceWarnings = <div></div>
     }
     else {
-      deviceWarnings= this.state.deviceWarnings.map((tile) => (
+      deviceWarnings = this.state.deviceWarnings.map((tile) => (
         <div key={tile.num}>
           <li >{tile.warning} </li>
           <li >{tile.time}</li>
@@ -88,21 +80,21 @@ class Warnings extends Component {
     };
     return (
       <div>
-        {!this.state.loading ? <Grid container spacing={16}> <Grid item xs={3}>
+        {!this.state.loading ?
+          <Grid container spacing={16}>
+            <Grid item xs={3}>
+              <h3>Tempature Warnings</h3>
+              {tempatureWarnings}
+            </Grid>
+            <Grid item xs={3}>
+              <h3>Humidity Warnings</h3>
+              {humidityWarnings}
+            </Grid>
 
-          <h3>Tempature Warnings</h3>
-          {tempatureWarnings}
-        </Grid>
-          <Grid item xs={3}>
-            <h3>Humidity Warnings</h3>
-            {humidityWarnings}
-          </Grid>
-
-          <Grid item xs={3}>
-            <h3>Device Warnings</h3>
-
-            {deviceWarnings}
-          </Grid></Grid> : <div>
+            <Grid item xs={3}>
+              <h3>Device Warnings</h3>
+              {deviceWarnings}
+            </Grid></Grid> : <div>
             <h1>Your Warnings are loading</h1>
             <img src={Images.loadingGif} alt='loading' />
           </div>}
