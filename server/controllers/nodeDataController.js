@@ -163,6 +163,7 @@ const controller = {
               x:irX,
               y:irY,
               name:'Infrared',
+                yaxis: "y2",
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
