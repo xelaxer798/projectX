@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Data from '../../../Data/nodes-api';
 import functions from '../../../Functions/index';
-
+import Images from '../../../Images/index';
 // import CardActions from '@material-ui/core/CardActions';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Button from '@material-ui/core/Button';
@@ -25,7 +25,8 @@ class LuxDataCard extends Component {
     ir: 0,
     visible: 0,
     full: 0,
-    time: ''
+    time: '',
+    loading:true
   };
 
   componentDidMount = () => {
@@ -33,50 +34,54 @@ class LuxDataCard extends Component {
 
   };
   getData = async () => {
-    Data.getById(this.props.userid).then(data => {
+   let data=await Data.getById(this.props.userid)
       try {
         this.setState({
           lux: data.data[0].lux,
           ir: data.data[0].ir,
           visible: data.data[0].visible,
           full: data.data[0].full,
-          time: functions.getFormateTime(data.data[0].createdAt, 'cards')
+          time: functions.getFormateTime(data.data[0].createdAt, 'cards'),
+          loading:false
         });
       } catch (err) {
 
       };
 
-    });
+    
   };
   render() {
     const { classes } = this.props;
     return (
       <div>
+        {!this.state.loading?<div>
+          <Card className={classes.card}>
 
-        <Card className={classes.card}>
-
-          <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
-              Lux, Infrared, Visible, Full
+            <CardContent>
+              <Typography gutterBottom variant="headline" component="h2">
+                Lux, Infrared, Visible, Full
                     </Typography>
-            <Typography component="p">
-              Lux: {this.state.lux}
-            </Typography>
-            <Typography component="p">
-              Infrared: {this.state.ir}
-            </Typography>
-            <Typography component="p">
-              Visible: {this.state.visible}
-            </Typography>
-            <Typography component="p">
-              Full: {this.state.full}
-            </Typography>
-            <Typography component="p">
-              Date: {this.state.time}
-            </Typography>
-          </CardContent>
+              <Typography component="p">
+                Lux: {this.state.lux}
+              </Typography>
+              <Typography component="p">
+                Infrared: {this.state.ir}
+              </Typography>
+              <Typography component="p">
+                Visible: {this.state.visible}
+              </Typography>
+              <Typography component="p">
+                Full: {this.state.full}
+              </Typography>
+              <Typography component="p">
+                Date: {this.state.time}
+              </Typography>
+            </CardContent>
 
-        </Card>
+          </Card>
+        </div>: <img src={Images.loadingGif} alt='loading' height={100} width={100} />}
+        
+    
       </div>
     );
   };

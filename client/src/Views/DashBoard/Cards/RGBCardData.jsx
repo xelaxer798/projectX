@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Data from '../../../Data/nodes-api';
 import functions from '../../../Functions/index';
+import Images from '../../../Images/index';
 const styles = {
   card: {
     maxWidth: 345,
@@ -25,7 +26,8 @@ class RGBCardData extends Component {
     r: 0,
     g: 0,
     b: 0,
-    time: ''
+    time: '',
+    loading:true
   };
 
   componentDidMount = () => {
@@ -34,47 +36,50 @@ class RGBCardData extends Component {
   };
   getData = async () => {
 
-    Data.getById(this.props.userid).then(data => {
+let data =await Data.getById(this.props.userid);
 
       try {
         this.setState({
           r: data.data[0].r,
           g: data.data[0].g,
           b: data.data[0].b,
-          time: functions.getFormateTime(data.data[0].createdAt, 'cards')
+          time: functions.getFormateTime(data.data[0].createdAt, 'cards'),
+          loading:false
         });
       } catch (err) {
 
       };
 
-    });
+   
   };
   render() {
     const { classes } = this.props;
     return (
       <div>
+        {!this.state.loading?<div>
+          <Card className={classes.card}>
 
-        <Card className={classes.card}>
-
-          <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
-              RGB
+            <CardContent>
+              <Typography gutterBottom variant="headline" component="h2">
+                RGB
                     </Typography>
-            <Typography component="p">
-              R: {this.state.r}
-            </Typography>
-            <Typography component="p">
-              G: {this.state.g}
-            </Typography>
-            <Typography component="p">
-              B: {this.state.b}
-            </Typography>
-            <Typography component="p">
-              Date: {this.state.time}
-            </Typography>
-          </CardContent>
+              <Typography component="p">
+                R: {this.state.r}
+              </Typography>
+              <Typography component="p">
+                G: {this.state.g}
+              </Typography>
+              <Typography component="p">
+                B: {this.state.b}
+              </Typography>
+              <Typography component="p">
+                Date: {this.state.time}
+              </Typography>
+            </CardContent>
 
-        </Card>
+          </Card>
+        </div>:<img src={Images.loadingGif}alt='loading' height={100} width={100}/>}
+        
       </div>
     );
   };

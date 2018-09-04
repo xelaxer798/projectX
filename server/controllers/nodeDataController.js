@@ -63,9 +63,9 @@ const controller = {
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
-              xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
+              
             }];
-            res.send(data );
+            res.send(data);
           } catch (err) {
             console.log(err);
           }
@@ -87,13 +87,13 @@ const controller = {
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
-              xaxes: ['12:00 am', '10:00 am', '12:00 pm', '3:00 pm', '8:00 pm', '11:59 pm']
+             
             }];
             res.send(data);
           } catch (err) {
             console.log(err);
           };
-        } 
+        }
         else if (req.params.graph === 'RGB') {
           try {
             const rXArray = [];
@@ -111,40 +111,40 @@ const controller = {
               bYArray.push(JSON.parse(jeff[i].dataValues.b));
             };
             const data = [{
-              x:rXArray,
-              y:rYArray,
-              name:'R',
+              x: rXArray,
+              y: rYArray,
+              name: 'R',
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
-             
+
             },
-          {
-            x:gXArray,
-            y:gYArray,
-            name:'G',
-            type: 'scatter',
-            mode: 'lines',
-            marker: { color: 'green' },
-          },
-          {
-            x:bXArray,
-            y:bYArray,
-            name:'B',
-            type: 'scatter',
-            mode: 'lines',
-            marker: { color: 'blue' },
-          }];
+            {
+              x: gXArray,
+              y: gYArray,
+              name: 'G',
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'green' },
+            },
+            {
+              x: bXArray,
+              y: bYArray,
+              name: 'B',
+              type: 'scatter',
+              mode: 'lines',
+              marker: { color: 'blue' },
+            }];
             res.send(data);
           } catch (err) {
             console.log(err);
           };
-        }else if(req.params.graph ==='Lux,IR'){
+        } else if (req.params.graph === 'Lux,IR') {
           try {
             const luxX = [];
             const luxY = [];
-            const irX=[];
-            const irY=[];
+            const irX = [];
+            const irY = [];
             for (let i = 0; i < jeff.length; i++) {
               luxX.push(functions.convertTimeZonesNonGuess(jeff[i].dataValues.createdAt));
               luxY.push(JSON.parse(jeff[i].dataValues.lux));
@@ -152,23 +152,23 @@ const controller = {
               irY.push(JSON.parse(jeff[i].dataValues.ir));
             };
             const data = [{
-              x:luxX,
-              y:luxY,
-              name:'Lux',
+              x: luxX,
+              y: luxY,
+              name: 'Lux',
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'blue' },
             },
             {
-              x:irX,
-              y:irY,
-              name:'Infrared',
-                yaxis: "y2",
+              x: irX,
+              y: irY,
+              name: 'Infrared',
+              yaxis: "y2",
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
             }
-          ];
+            ];
             res.send(data);
           } catch (err) {
             console.log(err)
@@ -256,8 +256,8 @@ const controller = {
 
   create: async function (req, res) {
 
-    const CurrentTime =   moment().tz("America/Los_Angeles").format("hh:mm:ss a");
-    const timeToFormat =   moment().tz("America/Los_Angeles").format();
+    const CurrentTime = moment().tz("America/Los_Angeles").format("hh:mm:ss a");
+    const timeToFormat = moment().tz("America/Los_Angeles").format();
 
     let user = await db.users.findOne({
       where: {
@@ -285,21 +285,21 @@ const controller = {
       currentTime: CurrentTime
     })
       .then(dbModel => {
-       // console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj");
+        // console.log(dbModel.dataValues, "heyyyyyyyyyynhmn\bhjbj");
         let Tempature = null;
         let Humidity = null;
         let RGB = null;
-     let emailToSend=user.dataValues.email;
+        let emailToSend = user.dataValues.email;
         let ccEmail = '';
         let BccEmail = '';
         if (user.dataValues.email !== 'growai798@gmail.com') {
           BccEmail = 'growai798@gmail.com';
         }
-        else if(user.dataValues.email === 'growai798@gmail.com'){
-          emailToSend='lm@leafliftsystems.com';
+        else if (user.dataValues.email === 'growai798@gmail.com') {
+          emailToSend = 'lm@leafliftsystems.com';
           BccEmail = 'growai798@gmail.com';
         };
-        
+
         if (dbModel.dataValues.temperature >= 110) {
           db.warnings.create({
             userId: req.body.userId,
@@ -454,7 +454,7 @@ const controller = {
             to: emailToSend,
 
             cc: BccEmail,
-   
+
             from: 'LeafLiftSystems@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
