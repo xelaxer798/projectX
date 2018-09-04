@@ -39,16 +39,7 @@ class Dashboard extends Component {
     });
   };
 
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value,
-
-    }, this.changeGraphData);
-  };
-  checkWhichGraphToChange = (event) => {
-    console.log(event.target.graph);
-  };
-
+ 
   deleteUserWarnings = () => {
     let yesOrNo = window.confirm(`Are You Sure you want to Delete this users warnings with the user Id of ${this.props.userId}!?!`);
     if (yesOrNo === true) {
@@ -65,7 +56,12 @@ class Dashboard extends Component {
   render() {
     let notice=null;
     if(this.props.userId==='9b4c41ef-9e1d-492b-acce-a9bd9eca46a9'){
-notice=<p>The time that the node started reporting at 12:12 am</p>
+notice=<div>
+  <h4>Node start and stop reports</h4>
+  <li>The node started reported at 12:41 am and stopped at tbd</li>
+  <li>The node started reported at 12:12 am and stopped at 12:17 am</li>
+  <li>The node started reported at TBD and stopped at TDB</li>
+</div>
     };
     return (
       <div className='home' style={{ backgroundColor: 'white' }}>
