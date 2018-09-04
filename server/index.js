@@ -8,7 +8,9 @@ export default path => {
   // Create Instance of Express
   const app = express();
   // Run Morgan for Logging
+
   app.use(logger("dev"));
+  app.use(require("morgan")("combined", ));
   app.use(bodyParser.json());
   // autoServer.checkNodes(10);
   //1800000

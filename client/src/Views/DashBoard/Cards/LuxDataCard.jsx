@@ -34,14 +34,15 @@ class LuxDataCard extends Component {
 
   };
   getData = async () => {
-   let data=await Data.getById(this.props.userid)
+   let data=await Data.getById(this.props.userid);
+   console.log(data.data)
       try {
         this.setState({
-          lux: data.data[0].lux,
-          ir: data.data[0].ir,
-          visible: data.data[0].visible,
-          full: data.data[0].full,
-          time: functions.getFormateTime(data.data[0].createdAt, 'cards'),
+          lux: data.data.lux,
+          ir: data.data.ir,
+          visible: data.data.visible,
+          full: data.data.full,
+          time: functions.getFormateTime(data.data.createdAt, 'cards'),
           loading:false
         });
       } catch (err) {

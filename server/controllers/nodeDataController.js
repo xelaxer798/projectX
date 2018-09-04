@@ -179,8 +179,8 @@ const controller = {
   },
   findById: (req, res) => {
     // console.log(req.params)
-    db.nodes.findAll({
-      limit: 1,
+    db.nodes.findOne({
+     
       where: {
         userId: req.params.id
       },

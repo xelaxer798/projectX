@@ -40,10 +40,10 @@ let data =await Data.getById(this.props.userid);
 
       try {
         this.setState({
-          r: data.data[0].r,
-          g: data.data[0].g,
-          b: data.data[0].b,
-          time: functions.getFormateTime(data.data[0].createdAt, 'cards'),
+          r: data.data.r,
+          g: data.data.g,
+          b: data.data.b,
+          time: functions.getFormateTime(data.data.createdAt, 'cards'),
           loading:false
         });
       } catch (err) {

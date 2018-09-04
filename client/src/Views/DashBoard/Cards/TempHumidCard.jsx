@@ -39,9 +39,9 @@ class TempHumidCard extends Component {
 
             try {
                 this.setState({
-                    Temperature: data.data[0].temperature,
-                    Humidity: data.data[0].humidity,
-                    time: functions.getFormateTime(data.data[0].createdAt, 'cards'),
+                    Temperature: data.data.temperature,
+                    Humidity: data.data.humidity,
+                    time: functions.getFormateTime(data.data.createdAt, 'cards'),
                     loading:false
                 });
             } catch (err) {
