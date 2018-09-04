@@ -44,7 +44,7 @@ class HumidityGraph extends Component {
       selectorOptions: Options.selectorOptions,
       layout: layout
     });
-    setInterval(this.getData, 1000);
+    setInterval(this.getData, 5000);
   };
   getData = async() => {
  let data=await   Data.getAll(this.props.userid, 'humidity')

@@ -10,12 +10,12 @@ export default path => {
   // Run Morgan for Logging
 
   app.use(logger("dev"));
-  app.use(require("morgan")("combined", ));
+
   app.use(bodyParser.json());
   // autoServer.checkNodes(10);
   //1800000
   //30000
-  //Start the autoserver.checkNodes to see if the nodes are offline 
+  //Start the autoserver.checkNodes to cache the last recored time. so that next time it can compare to see if it has updated.
   autoServer.checkNodes();
   // Start the interval of the autoserver.checkNodes to see if nodes haven't reported in last 30 minutes
   setInterval(autoServer.checkNodes,1800000);

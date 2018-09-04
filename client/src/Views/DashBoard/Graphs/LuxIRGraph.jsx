@@ -11,19 +11,19 @@ class LuxIRGraph extends Component {
     data: [],
     CurrentTime: moment().tz("America/Los_Angeles").format(),
     layout: {},
-    loading:true
+    loading: true
   };
-  componentDidCatch=(error, info) =>{
-    console.log(error,'hi im errors at lux')
-    console.log(info,'hi im info at lux')
+  componentDidCatch = (error, info) => {
+    console.log(error, 'hi im errors at lux')
+    console.log(info, 'hi im info at lux')
   };
   componentDidMount = () => {
-  
+
     let layout = {
       width: 575,
       height: 700,
-        showlegend: true,
-        margin: {
+      showlegend: true,
+      margin: {
         // l: 50,
         // r: 50,
         // b: 100,
@@ -31,20 +31,20 @@ class LuxIRGraph extends Component {
         pad: 4
       },
 
-        legend: {
-            x: 130,
-            y: 30,
-       },
+      legend: {
+        x: 130,
+        y: 30,
+      },
 
-        yaxis: { title: "Lux", },
+      yaxis: { title: "Lux", },
       yaxis2: {
-            title: "IR",
-            titlefont: {color: "rgb(148, 103, 189)"},
-            tickfont: {color: "rgb(148, 103, 189)"},
-            overlaying: "y",
-            side: "right"
-        },
-        xaxis: {
+        title: "IR",
+        titlefont: { color: "rgb(148, 103, 189)" },
+        tickfont: { color: "rgb(148, 103, 189)" },
+        overlaying: "y",
+        side: "right"
+      },
+      xaxis: {
         tickfont: {
           family: 'Old Standard TT, serif',
           size: 12,
@@ -58,32 +58,32 @@ class LuxIRGraph extends Component {
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setInterval(this.getData, 1000);
+    setInterval(this.getData, 5000);
   };
-  getData =async () => {
-  let data=await  Data.getAll(this.props.userid, 'Lux,IR')
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
+  getData = async () => {
+    let data = await Data.getAll(this.props.userid, 'Lux,IR');
+    if (data.data !== null || data.data !== undefined || data.data !== []) {
 
-        this.setState({
-          data: data.data,
-          loading:false
-        });
-      };
-   
+      this.setState({
+        data: data.data,
+        loading: false
+      });
+    };
+
   };
   render() {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
-              {!this.state.loading?  <Plot
+          {!this.state.loading ? <Plot
 
-data={this.state.data}
-layout={this.state.layout}
-/>:<div>
+            data={this.state.data}
+            layout={this.state.layout}
+          /> : <div>
 
-  <img src={Images.loadingGif} alt='loading'/>
-  </div>}
+              <img src={Images.loadingGif} alt='loading' />
+            </div>}
         </div>
       </div>
     );

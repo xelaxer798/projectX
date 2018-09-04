@@ -42,10 +42,11 @@ class TestGraph extends Component {
       layout: layout
     });
 
-    setInterval(this.GetData, 1000);
+    setInterval(this.GetData, 5000);
   };
   GetData = async() => {
- let data=await   Data.getAll(this.props.userid, 'temperature')
+ let data=await   Data.getAll(this.props.userid, 'temperature');
+ console.log(data.data);
       if (data.data !== null || data.data !== undefined || data.data !== []) {
 
 
