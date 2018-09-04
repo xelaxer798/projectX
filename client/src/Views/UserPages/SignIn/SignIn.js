@@ -4,8 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import './Home.css';
-import Logo from '../../../Images/Leaf.png'
+import Images from '../../../Images/index';
 import usersAPI from '../../../Data/users-api';
+
 // var _ = require('lodash');
 // // Load the core build.
 // var _ = require('lodash/core');
@@ -26,7 +27,8 @@ class Home extends PureComponent {
     doesntMatch: false,
     noUser: false,
     checkBoxe: false,
-    zone: ''
+    zone: '',
+    loading: false
   };
   // componentWillReceiveProps (nextProps) {
   //   const changedProps = _.reduce(this.props, function (result, value, key) {
@@ -65,6 +67,11 @@ class Home extends PureComponent {
     });
   };
   onSubmit = async () => {
+    this.setState({
+      loading: true,
+      noUser: false,
+      doesntMatch: false
+    });
     if (this.state.checkBoxe === true) {
       localStorage.setItem('UserEmail', this.state.email)
     };
@@ -72,11 +79,12 @@ class Home extends PureComponent {
     let res = await usersAPI.signIn(lowerCaseEmail, this.state.password)
     const self = this;
     if (res.data === 'noMatch') {
-      self.setState({ doesntMatch: true, noUser: false });
+      self.setState({ doesntMatch: true, noUser: false, loading: false });
     } else if (res.data === 'noUser') {
-      self.setState({ noUser: true, doesntMatch: false });
+      self.setState({ noUser: true, doesntMatch: false, loading: false });
     }
     else {
+
       localStorage.setItem('auth', res.data)
       window.location = '/dashboard';
     };
@@ -109,7 +117,7 @@ class Home extends PureComponent {
           <Grid container spacing={24}>
             <Grid item md={12}>
               <img
-                src={Logo}
+                src={Images.companyLogo}
                 id="logo"
                 alt='logo'
               />
@@ -171,14 +179,17 @@ class Home extends PureComponent {
             </Grid>
 
             <Grid item md={12}>
-              <Button variant="contained" onClick={this.onSubmit} color="primary" >
-                Log in
-            </Button>
+              {this.state.loading ?
+                <img src={Images.loadingGif} alt='loading' width={30} height={40} /> :
+                <Button variant="contained" onClick={this.onSubmit} color="primary" >
+                  Log in
+            </Button>}
               {this.state.noUser &&
                 <p>There is no account associated with that email</p>}
               {this.state.doesntMatch &&
                 <p>Email or password dont match. Please try again.</p>
               }
+
             </Grid>
 
           </Grid>
