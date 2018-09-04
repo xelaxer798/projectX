@@ -35,7 +35,7 @@ class LuxDataCard extends Component {
   };
   getData = async () => {
    let data=await Data.getById(this.props.userid);
-   console.log(data.data)
+
       try {
         this.setState({
           lux: data.data.lux,

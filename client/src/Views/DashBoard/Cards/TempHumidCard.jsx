@@ -26,7 +26,7 @@ class TempHumidCard extends Component {
         Temperature: 0,
         Humidity: 0,
         time: '',
-        loading:true
+        loading: true
     };
 
     componentDidMount = () => {
@@ -35,46 +35,46 @@ class TempHumidCard extends Component {
     };
     getData = async () => {
 
-      let data=await Data.getById(this.props.userid);
+        let data = await Data.getById(this.props.userid);
 
-            try {
-                this.setState({
-                    Temperature: data.data.temperature,
-                    Humidity: data.data.humidity,
-                    time: functions.getFormateTime(data.data.createdAt, 'cards'),
-                    loading:false
-                });
-            } catch (err) {
+        try {
+            this.setState({
+                Temperature: data.data.temperature,
+                Humidity: data.data.humidity,
+                time: functions.getFormateTime(data.data.createdAt, 'cards'),
+                loading: false
+            });
+        } catch (err) {
 
-            };
+        };
 
-      
+
     };
     render() {
         const { classes } = this.props;
         return (
             <div>
-{!this.state.loading? <div>
-    <Card className={classes.card}>
+                {!this.state.loading ? <div>
+                    <Card className={classes.card}>
 
-        <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
-            Humidity/Temperature
+                        <CardContent>
+                            <Typography gutterBottom variant="headline" component="h2">
+                                Humidity/Temperature
         </Typography>
-            <Typography component="p">
-            Temperature: {this.state.Temperature}
-            </Typography>
-            <Typography component="p">
-            Humidity: {this.state.Humidity}
-            </Typography>
-            
-            <Typography component="p">
-                Date: {this.state.time}
-            </Typography>
-        </CardContent>
+                            <Typography component="p">
+                                Temperature: {this.state.Temperature}
+                            </Typography>
+                            <Typography component="p">
+                                Humidity: {this.state.Humidity}
+                            </Typography>
 
-    </Card>
-    </div>:<img src={Images.loadingGif} alt='loading' height={100} width={100}/>}
+                            <Typography component="p">
+                                Date: {this.state.time}
+                            </Typography>
+                        </CardContent>
+
+                    </Card>
+                </div> : <img src={Images.loadingGif} alt='loading' height={100} width={100} />}
 
             </div>
         );
