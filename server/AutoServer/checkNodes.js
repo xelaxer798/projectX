@@ -14,8 +14,8 @@ const checkNodes = async (id) => {
 
 
   const theCurrentTime = moment().tz("America/Los_Angeles").format();
-
-
+//   const test = moment('').tz("America/Los_Angeles").format();
+// console.log(test)
   let users = await db.users.findAll({
 
     where: {
@@ -59,6 +59,7 @@ console.log( theTime,"line 46")
             //  console.log(typeof JSON.stringify(theTime),"line 46")
             //  console.log(value.date,"line 57")
             //  console.log(typeof value.date,"line 57")
+
             if (JSON.stringify(ThenodeData.dataValues.createdAt)=== JSON.stringify(value.date)) {
               db.warnings.create({
                 userId: users[i].dataValues.id,
@@ -91,7 +92,7 @@ console.log( theTime,"line 46")
           
                 sgMail.send(msg);
             
-             
+            //  if(ThenodeData.dataValues.createdAt===)
 
 
             } else {

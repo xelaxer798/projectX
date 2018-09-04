@@ -63,6 +63,10 @@ class Dashboard extends Component {
     };
   };
   render() {
+    let notice=null;
+    if(this.props.userId==='9b4c41ef-9e1d-492b-acce-a9bd9eca46a9'){
+notice=<p>The time that the node started reporting at 12:12 am</p>
+    };
     return (
       <div className='home' style={{ backgroundColor: 'white' }}>
         <img src={Logo} alt='Logo' />
@@ -70,7 +74,8 @@ class Dashboard extends Component {
         {this.state.timeFormated}
         <br />  <br />  <br />
         This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
-
+        {notice}
+        
 
         <br />    <br />    <br />
         <Button onClick={this.deleteAllUserNodes} >Delete users node data</Button>
