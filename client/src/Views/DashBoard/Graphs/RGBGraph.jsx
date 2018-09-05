@@ -11,16 +11,17 @@ class RGBGraph extends Component {
     data: [],
     selectorOptions: {},
     layout: {},
-    loading:true
+    loading: true,
+    statusCode:'status code will appear here'
   };
-  componentDidCatch=(error, info) =>{
+  componentDidCatch = (error, info) => {
     console.log('hi i am catching RGB')
-    console.log(error,'hi im errors at RGB')
-    console.log(info,'hi im info at RGB')
+    console.log(error, 'hi im errors at RGB')
+    console.log(info, 'hi im info at RGB')
   };
 
   componentDidMount = async () => {
-  
+
     let layout = {
       width: 575,
       height: 700,
@@ -31,20 +32,21 @@ class RGBGraph extends Component {
         // t: 100,
         pad: 4
       },
-      yaxis: { fixedrange: true, range: [0, 100000] }, 
-      xaxis: {tickfont: {
-        family: 'Old Standard TT, serif',
-        size: 12,
-        color: 'black'
-      },
-      ticks: 'outside',
-        rangeselector:  Options.selectorOptions,
+      yaxis: { fixedrange: true, range: [0, 100000] },
+      xaxis: {
+        tickfont: {
+          family: 'Old Standard TT, serif',
+          size: 12,
+          color: 'black'
+        },
+        ticks: 'outside',
+        rangeselector: Options.selectorOptions,
         rangeslider: {}, autoRange: true, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'RGB '
     };
     this.setState({
 
-      selectorOptions:  Options.selectorOptions,
+      selectorOptions: Options.selectorOptions,
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
@@ -52,15 +54,16 @@ class RGBGraph extends Component {
 
   };
 
-  getData =async () => {
-  let data=await  Data.getAll(this.props.userid, 'RGB')
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
-        this.setState({
-          data: data.data,
-          loading:false
-        });
-      };
-   
+  getData = async () => {
+    let data = await Data.getAll(this.props.userid, 'RGB')
+    if (data.data !== null || data.data !== undefined || data.data !== []) {
+      this.setState({
+        data: data.data.RGB,
+        loading: false,
+        statusCode:`RGB Status Code: ${data.status}  `
+      });
+    };
+
   };
 
   render() {
@@ -69,14 +72,15 @@ class RGBGraph extends Component {
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
           <div >
-          {!this.state.loading?  <Plot
+            {this.state.statusCode}
+            {!this.state.loading ? <Plot
 
-data={this.state.data}
-layout={this.state.layout}
-/>:<div>
+              data={this.state.data}
+              layout={this.state.layout}
+            /> : <div>
 
-  <img src={Images.loadingGif} alt='loading'/>
-  </div>}
+                <img src={Images.loadingGif} alt='loading' />
+              </div>}
 
           </div>
         </div>

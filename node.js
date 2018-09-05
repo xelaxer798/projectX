@@ -33,7 +33,7 @@ function formatDate(date) {
     if(+tmpArr[0] == 12) {
     time12 = tmpArr[0] + ':' + tmpArr[1] + ' pm';
     } else {
-    if(+tmpArr[0] == 00) {
+    if(+tmpArr[0] == .00) {
     time12 = '12:' + tmpArr[1] + ' am';
     } else {
     if(+tmpArr[0] > 12) {

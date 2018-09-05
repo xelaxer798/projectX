@@ -46,17 +46,17 @@ const controller = {
         if (req.params.graph === 'temperature') {
 
           try {
-            const testx = [];
-            const testy = [];
+            const temperaturex = [];
+            const temperaturey = [];
             for (let i = 0; i < jeff.length; i++) {
 
             };
             for (let i = 0; i < jeff.length; i++) {
-              testx.push(functions.convertTimeZonesNonGuess(jeff[i].createdAt));
-              testy.push(JSON.parse(jeff[i].dataValues.temperature));
+              temperaturex.push(functions.convertTimeZonesNonGuess(jeff[i].createdAt));
+              temperaturey.push(JSON.parse(jeff[i].dataValues.temperature));
             };
-            const x = testx;
-            const y = testy;
+            const x = temperaturex;
+            const y = temperaturey;
             const data = [{
               x,
               y,
@@ -65,7 +65,7 @@ const controller = {
               marker: { color: 'red' },
               
             }];
-            res.send(data);
+            res.json({temperature:data,});
           } catch (err) {
             console.log(err);
           }
@@ -89,7 +89,7 @@ const controller = {
               marker: { color: 'red' },
              
             }];
-            res.send(data);
+            res.json({humidity:data});
           } catch (err) {
             console.log(err);
           };
@@ -135,7 +135,7 @@ const controller = {
               mode: 'lines',
               marker: { color: 'blue' },
             }];
-            res.send(data);
+            res.json({RGB:data});
           } catch (err) {
             console.log(err);
           };
@@ -169,7 +169,7 @@ const controller = {
               marker: { color: 'red' },
             }
             ];
-            res.send(data);
+            res.json({luxIr:data});
           } catch (err) {
             console.log(err)
           };

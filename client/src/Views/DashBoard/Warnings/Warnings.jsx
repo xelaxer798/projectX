@@ -13,6 +13,7 @@ class Warnings extends Component {
     tempLength: 0,
     humidLength: 0,
     deviceLength: 0,
+    statusCode:'status code will appear here'
 
   };
   componentDidCatch = (error, info) => {
@@ -27,7 +28,7 @@ class Warnings extends Component {
   };
   getWarnings = async () => {
     let warnings = await WarningsApi.getWarnings(this.props.userid);
-  
+  console.log(warnings.data.tempature.length);
       this.setState({
         tempLength: warnings.data.tempature.length,
         humidLength: warnings.data.humidity.length,
@@ -35,7 +36,8 @@ class Warnings extends Component {
         tempatureWarnings: warnings.data.tempature,
         humidityWarnings: warnings.data.humidity,
         deviceWarnings: warnings.data.device,
-        loading: false
+        loading: false,
+        statusCode:`Warnings Status Code: ${warnings.status}  `
       });
    
 
@@ -81,7 +83,11 @@ class Warnings extends Component {
     };
     return (
       <div>
+     
         <Button onClick={this.props.delete()} >Delete users warnings data</Button>
+        <br/>
+        {this.state.statusCode}
+      <br/>
         {!this.state.loading ?
           <Grid container spacing={16}>
             <Grid item xs={3}>

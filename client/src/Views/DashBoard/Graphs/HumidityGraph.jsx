@@ -10,7 +10,8 @@ class HumidityGraph extends Component {
     data: [],
     selectorOptions: {},
     layout: {},
-    loading: true
+    loading: true,
+    statusCode: 'status code will appear here'
   };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Humidity');
@@ -50,8 +51,9 @@ class HumidityGraph extends Component {
     let data = await Data.getAll(this.props.userid, 'humidity');
     if (data.data !== null || data.data !== undefined || data.data !== []) {
       this.setState({
-        data: data.data,
-        loading: false
+        data: data.data.humidity,
+        loading: false,
+        statusCode:`Humidity Status code: ${data.status}  `
       });
     };
 
@@ -60,7 +62,7 @@ class HumidityGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-
+          {this.state.statusCode}
           {!this.state.loading ? <Plot
 
             data={this.state.data}

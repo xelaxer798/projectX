@@ -11,7 +11,8 @@ class LuxIRGraph extends Component {
     data: [],
     CurrentTime: moment().tz("America/Los_Angeles").format(),
     layout: {},
-    loading: true
+    loading: true,
+    statusCode:'status code will appear here'
   };
   componentDidCatch = (error, info) => {
     console.log(error, 'hi im errors at lux')
@@ -61,12 +62,13 @@ class LuxIRGraph extends Component {
     setInterval(this.getData, 8000);
   };
   getData = async () => {
-    let data = await Data.getAll(this.props.userid, 'Lux,IR');
+    let data = await Data.getAll(this.props.userid, 'Lux/IR');
     if (data.data !== null || data.data !== undefined || data.data !== []) {
 
       this.setState({
-        data: data.data,
-        loading: false
+        data: data.data.luxIr,
+        loading: false,
+        statusCode: `Lux,IR Status Code: ${data.status}  `
       });
     };
 
@@ -75,7 +77,7 @@ class LuxIRGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-
+          {this.state.statusCode}
           {!this.state.loading ? <Plot
 
             data={this.state.data}

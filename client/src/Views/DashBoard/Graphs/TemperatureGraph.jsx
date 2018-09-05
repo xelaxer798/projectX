@@ -8,7 +8,8 @@ class TestGraph extends Component {
     data: [],
     selectorOptions: {},
     layout: {},
-    loading: true
+    loading: true,
+    statusCode:'status code will appear here'
   };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Temperature');
@@ -46,13 +47,14 @@ class TestGraph extends Component {
   };
   GetData = async () => {
     let data = await Data.getAll(this.props.userid, 'temperature');
-    console.log(data.data);
+    console.log(data.status);
     if (data.data !== null || data.data !== undefined || data.data !== []) {
 
 
       this.setState({
-        data: data.data,
-        loading: false
+        data: data.data.temperature,
+        loading: false,
+        statusCode:`Temperature Status Code: ${data.status}  `
       });
     };
 
@@ -62,6 +64,7 @@ class TestGraph extends Component {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
+          {this.state.statusCode}
           {!this.state.loading ? <Plot
 
             data={this.state.data}
