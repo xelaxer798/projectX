@@ -94,7 +94,7 @@
     "concurrently": "^3.5.1"
   },
   "scripts": {
-    "watch-server": "cross-env NODE_ENV=production nodemon app.js --exec babel-node",
+    "watch-server": "cross-env NODE_ENV=development nodemon app.js --exec babel-node",
     "watch-client": "node scripts/start.js",
     "watch": "concurrently \"yarn watch-client\" \"yarn watch-server\"",
     "build-client": "node scripts/build.js",
