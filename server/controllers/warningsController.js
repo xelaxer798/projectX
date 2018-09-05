@@ -70,13 +70,15 @@ const controller = {
                  console.log(err)
                }
              }
-             
-            res.json({device:deviceWarnings.slice(0, 5),humidity:humidityWarnings.slice(0, 5),tempature:tempatureWarnings.slice(0, 5)})}
+             const dWarnings=deviceWarnings.slice(0, 5);
+             const hWarnings=humidityWarnings.slice(0, 5);
+             const tWarnings=tempatureWarnings.slice(0, 5);
+            res.json({device:dWarnings,humidity:hWarnings,tempature:tWarnings})}
           )
           .catch(err => res.status(422).json(err));
       },
       removeWarning: function(req, res) {
-        console.log(req.params.userid,'hey cuntu')
+    
         db.warnings.destroy({
          where:{
        userId:req.params.userid

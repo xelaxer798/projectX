@@ -54,15 +54,8 @@ class Dashboard extends Component {
     };
   };
   render() {
-    let notice=null;
-    if(this.props.userId==='9b4c41ef-9e1d-492b-acce-a9bd9eca46a9'){
-notice=<div>
-  <h4>Node start and stop reports</h4>
-  <li>The node started reported at 12:41 am and stopped at tbd</li>
-  <li>The node started reported at 12:12 am and stopped at 12:17 am</li>
-  <li>The node started reported at TBD and stopped at TDB</li>
-</div>
-    };
+
+  
     return (
       <div className='home' style={{ backgroundColor: 'white' }}>
         <img src={Logo} alt='Logo' />
@@ -70,7 +63,7 @@ notice=<div>
         {this.state.timeFormated}
         <br />  <br />  <br />
         This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}
-        {notice}
+       
         
 
         <br />    <br />    <br />
@@ -88,7 +81,7 @@ notice=<div>
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
         </Grid>
         </Grid>
-        <Grid container spacing={40}>
+        <Grid container >
         <Grid item xs={8} lg={4}>
         <NodeData.Graphs.RGBGraph userid={this.props.userId} />
         </Grid>
