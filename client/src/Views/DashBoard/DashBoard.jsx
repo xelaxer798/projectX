@@ -80,32 +80,32 @@ notice=<div>
         <NodeData.Warnings.ThreeWarnings userid={this.props.userId} delete={()=>this.deleteUserWarnings} />
         <br /><br />
         <Grid container spacing={40}>
-        <Grid item xs={4} lg={5}>
+        <Grid item xs={8} lg={4}>
         <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
         </Grid>
      
-        <Grid item xs={4} lg={5}>
+        <Grid item xs={8} lg={4}>
         <NodeData.Graphs.HumidityGraph userid={this.props.userId} />
         </Grid>
         </Grid>
         <Grid container spacing={40}>
-        <Grid item xs={2} lg={6}>
+        <Grid item xs={8} lg={4}>
         <NodeData.Graphs.RGBGraph userid={this.props.userId} />
         </Grid>
-        <Grid item xs={2} lg={5}>
+        <Grid item xs={10}spacing={40} lg={5}>
         <NodeData.Graphs.LuxIRGraph userid={this.props.userId}  />
         </Grid>
       </Grid>
         {/* <NodeData.Graphs.LuxIRGraph userid={this.props.userId} tickType={'%a %I:%M%p %e-%b'} title={'Lux/IR Graph Last Day'} />
    <NodeData.Graphs.ResuseabelGraph userid={this.props.userId} tickType={'%a  %e-%b'} title={'Lux/IR Graph Last Month'} range={['2018-08-01', '2018-08-31']}datatype={'Lux,IR'}/> */}
    <Grid container spacing={16}>
-   <Grid item xs={4} lg={4}>
+   <Grid item xs={8} lg={4}>
         <NodeData.Cards.LuxDataCard userid={this.props.userId} />
         </Grid>
-        <Grid item xs={4} lg={4}>
+        <Grid item xs={8} lg={4}>
         <NodeData.Cards.RGBCardData userid={this.props.userId} />
         </Grid>
-        <Grid item xs={4} lg={4}>
+        <Grid item xs={8} lg={4}>
         <NodeData.Cards.TempHumidCard userid={this.props.userId} />
         </Grid>
         </Grid>

@@ -8,7 +8,7 @@ class TestGraph extends Component {
     data: [],
     selectorOptions: {},
     layout: {},
-    loading:true
+    loading: true
   };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Temperature');
@@ -44,33 +44,33 @@ class TestGraph extends Component {
 
     setInterval(this.GetData, 5000);
   };
-  GetData = async() => {
- let data=await   Data.getAll(this.props.userid, 'temperature');
- console.log(data.data);
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
+  GetData = async () => {
+    let data = await Data.getAll(this.props.userid, 'temperature');
+    console.log(data.data);
+    if (data.data !== null || data.data !== undefined || data.data !== []) {
 
 
-        this.setState({
-          data: data.data,
-          loading:false
-        });
-      };
-  
+      this.setState({
+        data: data.data,
+        loading: false
+      });
+    };
+
   };
 
   render() {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
-          {!this.state.loading?  <Plot
+          {!this.state.loading ? <Plot
 
-data={this.state.data}
-layout={this.state.layout}
-/>:<div>
-<h1>Your Graphs are Loading</h1>
-  <img src={Images.loadingGif} alt='loading'/>
-  </div>}
-        
+            data={this.state.data}
+            layout={this.state.layout}
+          /> : <div>
+              <h1>Your Graphs are Loading</h1>
+              <img src={Images.loadingGif} alt='loading' />
+            </div>}
+
         </div>
       </div>
     );

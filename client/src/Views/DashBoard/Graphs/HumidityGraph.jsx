@@ -10,8 +10,8 @@ class HumidityGraph extends Component {
     data: [],
     selectorOptions: {},
     layout: {},
-    loading:true
-  }; 
+    loading: true
+  };
   componentDidCatch = (error, info) => {
     console.log('hi i am catching Humidity');
     console.log(error, 'hi im errors at hum');
@@ -46,29 +46,29 @@ class HumidityGraph extends Component {
     });
     setInterval(this.getData, 5000);
   };
-  getData = async() => {
- let data=await   Data.getAll(this.props.userid, 'humidity')
-      if (data.data !== null || data.data !== undefined || data.data !== []) {
-        this.setState({
-          data: data.data,
-          loading:false
-        });
-      };
-    
+  getData = async () => {
+    let data = await Data.getAll(this.props.userid, 'humidity');
+    if (data.data !== null || data.data !== undefined || data.data !== []) {
+      this.setState({
+        data: data.data,
+        loading: false
+      });
+    };
+
   };
   render() {
     return (
       <div >
         <div style={{ paddingLeft: '10px', color: 'black' }}>
 
-            {!this.state.loading?  <Plot
+          {!this.state.loading ? <Plot
 
-data={this.state.data}
-layout={this.state.layout}
-/>:<div>
+            data={this.state.data}
+            layout={this.state.layout}
+          /> : <div>
 
-  <img src={Images.loadingGif} alt='loading'/>
-  </div>}
+              <img src={Images.loadingGif} alt='loading' />
+            </div>}
         </div>
       </div>
     );
