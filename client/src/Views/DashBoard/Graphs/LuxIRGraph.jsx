@@ -58,7 +58,7 @@ class LuxIRGraph extends Component {
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setInterval(this.getData, 5000);
+    setInterval(this.getData, 8000);
   };
   getData = async () => {
     let data = await Data.getAll(this.props.userid, 'Lux,IR');
