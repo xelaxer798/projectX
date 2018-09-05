@@ -23,7 +23,7 @@ class Warnings extends Component {
   componentDidMount = () => {
 
     setTimeout(this.getWarnings, 1000);
-    setInterval(this.getWarnings, 2000);
+    setInterval(this.getWarnings, 4000);
   };
   getWarnings = async () => {
     let warnings = await WarningsApi.getWarnings(this.props.userid);
