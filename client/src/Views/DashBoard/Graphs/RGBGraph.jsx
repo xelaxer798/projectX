@@ -48,7 +48,7 @@ class RGBGraph extends Component {
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setInterval(this.getData, 5000);
+    setInterval(this.getData, 7000);
 
   };
 
