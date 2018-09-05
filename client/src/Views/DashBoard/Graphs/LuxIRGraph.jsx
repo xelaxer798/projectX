@@ -62,7 +62,7 @@ class LuxIRGraph extends Component {
     setInterval(this.getData, 8000);
   };
   getData = async () => {
-    let data = await Data.getAll(this.props.userid, 'Lux/IR');
+    let data = await Data.getAll(this.props.userid, 'Lux,IR');
     if (data.data !== null || data.data !== undefined || data.data !== []) {
 
       this.setState({
