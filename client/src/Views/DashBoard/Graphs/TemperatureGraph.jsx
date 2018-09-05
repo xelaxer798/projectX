@@ -49,8 +49,6 @@ class TestGraph extends Component {
     let data = await Data.getAll(this.props.userid, 'temperature');
     console.log(data.status);
     if (data.data !== null || data.data !== undefined || data.data !== []) {
-
-
       this.setState({
         data: data.data.temperature,
         loading: false,
