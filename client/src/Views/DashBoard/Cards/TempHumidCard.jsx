@@ -30,8 +30,8 @@ class TempHumidCard extends Component {
     };
 
     componentDidMount = () => {
-        setTimeout(this.getData,2000);
-        setInterval(this.getData,11000);
+        setTimeout(this.GetData, 8000);
+        setInterval(this.getData, 42000);
 
     };
     getData = async () => {

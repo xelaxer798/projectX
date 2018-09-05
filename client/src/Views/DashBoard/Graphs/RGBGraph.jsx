@@ -50,7 +50,8 @@ class RGBGraph extends Component {
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setInterval(this.getData, 7000);
+    setTimeout(this.GetData, 4000);
+    setInterval(this.getData, 34000);
 
   };
 

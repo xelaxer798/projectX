@@ -31,7 +31,8 @@ class RGBCardData extends Component {
   };
 
   componentDidMount = () => {
-    setInterval(this.getData, 10000);
+    setTimeout(this.GetData, 7000);
+    setInterval(this.getData, 40000);
 
   };
   getData = async () => {

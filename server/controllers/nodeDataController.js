@@ -33,7 +33,7 @@ const controller = {
     // let end = endTime;
     db.nodes.findAll({
       order: [['createdAt', 'DESC']],
-
+      // limit: 1000,
       where: {
         userId: req.params.id
         // currentTime: {
@@ -63,9 +63,9 @@ const controller = {
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
-              
+
             }];
-            res.json({temperature:data,});
+            res.json({ temperature: data, });
           } catch (err) {
             console.log(err);
           }
@@ -87,9 +87,9 @@ const controller = {
               type: 'scatter',
               mode: 'lines',
               marker: { color: 'red' },
-             
+
             }];
-            res.json({humidity:data});
+            res.json({ humidity: data });
           } catch (err) {
             console.log(err);
           };
@@ -135,7 +135,7 @@ const controller = {
               mode: 'lines',
               marker: { color: 'blue' },
             }];
-            res.json({RGB:data});
+            res.json({ RGB: data });
           } catch (err) {
             console.log(err);
           };
@@ -169,7 +169,7 @@ const controller = {
               marker: { color: 'red' },
             }
             ];
-            res.json({luxIr:data});
+            res.json({ luxIr: data });
           } catch (err) {
             console.log(err)
           };
@@ -180,7 +180,7 @@ const controller = {
   findById: (req, res) => {
     // console.log(req.params)
     db.nodes.findOne({
-     
+
       where: {
         userId: req.params.id
       },

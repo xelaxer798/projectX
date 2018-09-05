@@ -30,7 +30,8 @@ class LuxDataCard extends Component {
   };
 
   componentDidMount = () => {
-    setInterval(this.getData, 9000);
+    setTimeout(this.GetData, 6000);
+    setInterval(this.getData, 38000);
 
   };
   getData = async () => {
