@@ -11,6 +11,12 @@ const selectorOptions = {
         stepmode: 'backward',
         count: 1,
         label: '1h'
+      },
+      {
+        step: 'hour',
+        stepmode: 'backward',
+        count: 12,
+        label: '12h'
       }, {
         step: 'day',
         stepmode: 'backward',
