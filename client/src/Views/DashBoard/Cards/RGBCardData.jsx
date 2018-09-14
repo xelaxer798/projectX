@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Data from '../../../Data/nodes-api';
 import functions from '../../../Functions/index';
 import Images from '../../../Images/index';
+import Constants from "../Constants";
+
 const styles = {
   card: {
     maxWidth: 345,
@@ -31,8 +33,8 @@ class RGBCardData extends Component {
   };
 
   componentDidMount = () => {
-    setTimeout(this.GetData, 7000);
-    setInterval(this.getData, 40000);
+      setTimeout(this.getData, Constants.timeoutAndIntervalSettings.cardTimeout);
+      setInterval(this.getData, Constants.timeoutAndIntervalSettings.cardUpdateInterval);
 
   };
   getData = async () => {

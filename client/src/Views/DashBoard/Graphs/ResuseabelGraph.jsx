@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
-import Options from '../Options/index';
+import Constants from '../Constants/index';
 
 class ResuseabelGraph extends Component {
   state = {
     data: []
   };
   componentDidMount = () => {
-  setInterval(this.getData, 1000);
+      setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+      setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
   };
   getData = () => {
     Data.getAll(this.props.userid, this.props.datatype).then(data => {

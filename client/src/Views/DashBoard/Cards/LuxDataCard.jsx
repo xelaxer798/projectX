@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Data from '../../../Data/nodes-api';
 import functions from '../../../Functions/index';
 import Images from '../../../Images/index';
+import Constants from '../Constants/index';
+
 // import CardActions from '@material-ui/core/CardActions';
 // import CardMedia from '@material-ui/core/CardMedia';
 // import Button from '@material-ui/core/Button';
@@ -30,8 +32,8 @@ class LuxDataCard extends Component {
   };
 
   componentDidMount = () => {
-    setTimeout(this.GetData, 6000);
-    setInterval(this.getData, 38000);
+    setTimeout(this.getData, Constants.timeoutAndIntervalSettings.cardTimeout);
+    setInterval(this.getData, Constants.timeoutAndIntervalSettings.cardUpdateInterval);
 
   };
   getData = async () => {
