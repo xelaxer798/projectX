@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Plot from 'react-plotly.js';
 import moment from 'moment';
 import 'moment-timezone';
-import Options from '../Options/index';
+import Constants from '../Constants/index';
 import Images from '../../../Images/index';
 class RGBGraph extends Component {
   state = {
@@ -40,18 +40,18 @@ class RGBGraph extends Component {
           color: 'black'
         },
         ticks: 'outside',
-        rangeselector: Options.selectorOptions,
+        rangeselector: Constants.selectorOptions,
         rangeslider: {}, autoRange: true, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'RGB '
     };
     this.setState({
 
-      selectorOptions: Options.selectorOptions,
+      selectorOptions: Constants.selectorOptions,
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setTimeout(this.GetData, 4000);
-    setInterval(this.getData, 34000);
+    setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+    setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
 
   };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
-import Options from '../Options/index';
+import Constants from '../Constants/index';
 import Images from '../../../Images/index';
 class TestGraph extends Component {
   state = {
@@ -33,19 +33,19 @@ class TestGraph extends Component {
           family: 'Old Standard TT, serif',
           size: 12,
           color: 'black'
-        }, ticks: 'outside', rangeselector: Options.selectorOptions,
+        }, ticks: 'outside', rangeselector: Constants.selectorOptions,
         rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       },
       title: 'Temperature'
     };
     this.setState({
-      selectorOptions: Options.selectorOptions,
+      selectorOptions: Constants.selectorOptions,
       layout: layout
     });
-    setTimeout(this.GetData, 2000);
-    setInterval(this.GetData, 30000);
+    setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+    setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
   };
-  GetData = async () => {
+  getData = async () => {
     let data = await Data.getAll(this.props.userid, 'temperature');
 
     if (data.data !== null || data.data !== undefined || data.data !== []) {

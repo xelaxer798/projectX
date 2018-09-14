@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { LineChart } from 'react-easy-chart';
 import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
-import Options from '../Options/index';
+import Constants from '../Constants/index';
 import Images from '../../../Images/index';
 
 class HumidityGraph extends Component {
@@ -36,17 +36,17 @@ class HumidityGraph extends Component {
           size: 12,
           color: 'black'
         },
-        ticks: 'outside', rangeselector: Options.selectorOptions, rangeslider: {},
+        ticks: 'outside', rangeselector: Constants.selectorOptions, rangeslider: {},
         tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: 'Humidity'
     };
 
     this.setState({
-      selectorOptions: Options.selectorOptions,
+      selectorOptions: Constants.selectorOptions,
       layout: layout
     });
-    setTimeout(this.GetData, 3000);
-    setInterval(this.getData, 32000);
+    setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+    setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
   };
   getData = async () => {
     let data = await Data.getAll(this.props.userid, 'humidity');
