@@ -359,7 +359,7 @@ const controller = {
         if (req.body.humidity >= 90) {
           HumidityHighLow = 'spiked';
         }
-        else if (req.body.humidity <= 10) {
+        else if (req.body.humidity <= 9) {
           HumidityHighLow = 'dropped';
         }
         if (Tempature !== null && Humidity !== null && RGB == null) {
