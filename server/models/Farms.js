@@ -1,14 +1,14 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-    var Rooms = sequelize.define("Rooms", {
-        roomId: {
+    var Farms = sequelize.define("Farms", {
+        farmId: {
             primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
         },
      
-        roomName: {
+        farmName: {
             type: DataTypes.STRING,
             allowNull: true
         },
@@ -16,11 +16,11 @@ module.exports = function (sequelize, DataTypes) {
 
 
     });
-    Rooms.associate = (models) => {
-        Rooms.hasMany(models.Nodes, { foreignKey: 'nodeId' });
-        Rooms.belongsTo(models.Farms, { foreignKey: 'farmId' });
+    Farms.associate = (models) => {
+        Farms.hasMany(models.Rooms, { foreignKey: 'roomId' });
+        Farms.hasMany(models.Users, { foreignKey: 'userId' });
     };
 
-    return Rooms;
+    return Farms;
 
 };

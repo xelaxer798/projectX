@@ -74,7 +74,7 @@ class Dashboard extends Component {
         <br /><br />
         <Grid container spacing={40}>
         <Grid item xs={8} lg={4}>
-        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} />
+        <NodeData.Graphs.TemperatureGraph userid={this.props.userId} Graph={'Temp'}/>
         </Grid>
      
         <Grid item xs={8} lg={4}>

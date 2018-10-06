@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
-    var users = sequelize.define("users", {
-        id: {
+    var Users = sequelize.define("Users", {
+        userId: {
             primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
@@ -37,9 +37,11 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: false
         },
     });
-    users.associate =  (models)=> {
-        users.hasOne(models.rooms);
+    Users.associate =  (models)=> {
+       
+        Users.belongsTo(models.Farms , { foreignKey: 'farmsId' });
+        Users.belongsToMany(models.Alerts, { through:'alertUsers' });
         };
-return users;
+return Users;
   };
 //   users.belongsTo(models.Farms, { foreignKey: 'farmId' });

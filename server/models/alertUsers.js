@@ -1,26 +1,25 @@
 
 
+
 module.exports = function (sequelize, DataTypes) {
-    var Rooms = sequelize.define("Rooms", {
-        roomId: {
+    var alertUsers = sequelize.define("alertUsers", {
+        alertUserId: {
             primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
         },
      
-        roomName: {
+        NotificationMethod: {
             type: DataTypes.STRING,
+            allowNull: true
+        },
+        NotificationInterval: {
+            type: DataTypes.INTEGER,
             allowNull: true
         },
         
 
-
     });
-    Rooms.associate = (models) => {
-        Rooms.hasMany(models.Nodes, { foreignKey: 'nodeId' });
-        Rooms.belongsTo(models.Farms, { foreignKey: 'farmId' });
-    };
-
-    return Rooms;
+    return alertUsers;
 
 };
