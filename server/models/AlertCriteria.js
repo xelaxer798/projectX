@@ -2,7 +2,7 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-    var alertCriteria = sequelize.define("alertCriteria", {
+    var AlertCriteria = sequelize.define("AlertCriteria", {
         alertCriteriaId: {
             primaryKey: true,
             type: DataTypes.UUID,
@@ -31,11 +31,11 @@ module.exports = function (sequelize, DataTypes) {
         }
 
     });
-    alertCriteria.associate = (models) => {
-        alertCriteria.hasOne(models.Sensors, { foreignKey: 'sensorId' });
-        alertCriteria.hasOne(models.Alerts, { foreignKey: 'alertId' });
+    AlertCriteria.associate = (models) => {
+        AlertCriteria.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
+        AlertCriteria.belongsTo(models.Alerts, { foreignKey: 'alertId' });
     };
 
-    return alertCriteria;
+    return AlertCriteria;
 
 };

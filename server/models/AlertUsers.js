@@ -2,7 +2,7 @@
 
 
 module.exports = function (sequelize, DataTypes) {
-    var alertUsers = sequelize.define("alertUsers", {
+    var AlertUsers = sequelize.define("AlertUsers", {
         alertUserId: {
             primaryKey: true,
             type: DataTypes.UUID,
@@ -20,6 +20,6 @@ module.exports = function (sequelize, DataTypes) {
         
 
     });
-    return alertUsers;
+    return AlertUsers;
 
 };
