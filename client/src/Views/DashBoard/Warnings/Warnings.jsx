@@ -3,6 +3,8 @@ import WarningsApi from "../../../Data/warnings-api";
 import Grid from '@material-ui/core/Grid';
 import Images from '../../../Images/index';
 import Button from '@material-ui/core/Button';
+import Constants from '../Constants/index';
+
 class Warnings extends Component {
   state = {
     tempatureWarnings: [],
@@ -23,8 +25,8 @@ class Warnings extends Component {
   };
   componentDidMount = () => {
 
-    setTimeout(this.getWarnings, 1000);
-    setInterval(this.getWarnings, 4000);
+    setTimeout(this.getWarnings, Constants.timeoutAndIntervalSettings.warningTimeout);
+    setInterval(this.getWarnings, Constants.timeoutAndIntervalSettings.warningUpdateInterval);
   };
   getWarnings = async () => {
     let warnings = await WarningsApi.getWarnings(this.props.userid);

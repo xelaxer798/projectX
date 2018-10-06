@@ -328,7 +328,7 @@ const controller = {
           });
           Humidity = req.body.Humidity;
         }
-        else if (dbModel.dataValues.humidity <= 30) {
+        else if (dbModel.dataValues.humidity <= 10) {
           db.warnings.create({
             userId: req.body.userId,
             nodeId: req.body.nodeId,
@@ -356,10 +356,10 @@ const controller = {
         else if (req.body.temperature <= 60) {
           TempHighLow = 'dropped';
         }
-        if (req.body.humidity >= 85) {
+        if (req.body.humidity >= 90) {
           HumidityHighLow = 'spiked';
         }
-        else if (req.body.humidity <= 30) {
+        else if (req.body.humidity <= 10) {
           HumidityHighLow = 'dropped';
         }
         if (Tempature !== null && Humidity !== null && RGB == null) {

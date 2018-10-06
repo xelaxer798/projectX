@@ -3,7 +3,7 @@ import Data from '../../../Data/nodes-api';
 import Plot from 'react-plotly.js';
 import moment from 'moment';
 import 'moment-timezone';
-import Options from '../Options/index';
+import Constants from '../Constants/index';
 import Images from '../../../Images/index';
 
 class LuxIRGraph extends Component {
@@ -50,7 +50,7 @@ class LuxIRGraph extends Component {
           family: 'Old Standard TT, serif',
           size: 12,
           color: 'black'
-        }, ticks: 'outside', rangeselector: Options.selectorOptions,
+        }, ticks: 'outside', rangeselector: Constants.selectorOptions,
         rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
       }, title: "Lux/Infrared"
     };
@@ -59,8 +59,8 @@ class LuxIRGraph extends Component {
       layout: layout
       //  tickFormat:'%I:%M %p'
     });
-    setTimeout(this.GetData, 5000);
-    setInterval(this.getData, 36000);
+    setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+    setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
   };
   getData = async () => {
     let data = await Data.getAll(this.props.userid, 'Lux,IR');
