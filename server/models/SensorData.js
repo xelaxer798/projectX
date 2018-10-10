@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
     });
     SensorData.associate = (models) => {
 
-        SensorData.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
+        SensorData.belongsTo(models.Sensors, { foreignKey: 'sensorId' , constraints: false});
     };
 
     return SensorData;
