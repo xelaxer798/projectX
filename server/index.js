@@ -23,10 +23,11 @@ export default path => {
   app.use(express.static(`${path}/client`));
 
   // Where the node data will be sent aka www....../api/nodeData
-  app.use("/api/nodes", routers.nodeData);
+  app.use("/api/nodes", routers.nodes);
   app.use("/api/warnings", routers.warnings);
   app.use("/api/users",routers.users);
-  app.use("/api/rooms",routers.rooms);
+    app.use("/api/rooms",routers.rooms);
+    app.use("/api/sensorData",routers.sensorData);
   // Any non API GET routes will be directed to our React App and handled by React Router
   app.get("*", (req, res) => {
     res.sendFile(`${path}/client/index.html`);
