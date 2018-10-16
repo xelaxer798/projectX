@@ -12,7 +12,8 @@ class ReusableGraph extends Component {
         loading: true,
         statusCode: 'status code will appear here'
     };
-    componentDidMount = () => {
+
+    generateLayout = () => {
         let layout = {
             width: 575,
             height: 700,
@@ -23,6 +24,9 @@ class ReusableGraph extends Component {
                 // t: 100,
                 pad: 1
             },
+            yaxis: {
+                title: this.props.units
+            },
             xaxis: {
                 tickfont: {
                     family: 'Old Standard TT, serif',
@@ -31,8 +35,13 @@ class ReusableGraph extends Component {
                 }, ticks: 'outside', rangeselector: Constants.selectorOptions,
                 rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
             },
-            title: 'pH'
+            title: this.props.sensorName
         };
+        return layout;
+    };
+
+    componentDidMount = () => {
+        let layout = this.generateLayout();
         this.setState({
             selectorOptions: Constants.selectorOptions,
             layout: layout
@@ -41,13 +50,23 @@ class ReusableGraph extends Component {
         setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
         setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
     };
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.sensorId != prevProps.sensorId) {
+            let layout = this.generateLayout();
+            this.setState({
+                loading: true,
+                layout: layout
+            });
+            setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+        }
+    };
+
     getData = () => {
-        console.log("get data");
         SensorDataAPI.getAll(this.props.sensorId).then(data => {
-            console.log("Data: " + JSON.stringify(data.data));
             if (data.data !== null || data.data !== undefined || data.data !== []) {
                 this.setState({
-                    data: data.data.pH,
+                    data: data.data.sensorData,
                     loading: false,
                     statusCode: `Temperature Status Code: ${data.status}  `
                 });
@@ -68,6 +87,7 @@ class ReusableGraph extends Component {
             <div>
                 <div style={{paddingLeft: '10px', color: 'black'}}>
                     {this.state.statusCode}
+                    {this.props.sensorId}
                     {!this.state.loading ? <Plot
 
                         data={this.state.data}

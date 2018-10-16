@@ -13,7 +13,6 @@ const controller = {
             }
         })
             .then(results => {
-                console.log("In then: " + JSON.stringify(results));
 
                 try {
                     const pHx = [];
@@ -35,7 +34,7 @@ const controller = {
                         marker: { color: 'red' },
 
                     }];
-                    res.json({ pH: data, });
+                    res.json({ sensorData: data, });
                 } catch (err) {
                     console.log("Error: " + err);
                 }

@@ -5,7 +5,7 @@ import 'moment-timezone';
 import Navbar from './Navbar2/Navbar';
 import './app.scss';
 import Dashboard from './DashBoard/DashBoard';
-import Dashboard2 from './DashBoard/DashBoard2';
+import Dashboard3 from './DashBoard/Dashboard3'
 import UserPages from './UserPages/index';
 import userAPI from '../Data/users-api';
 import HelpPages from './Help/index';
@@ -14,7 +14,7 @@ import Footer from './Footer/Footer';
 import AdminPages from './Admin/index';
 import functions from '../Functions/index';
 import NotFound from './404Page/404Page'
- 
+
 class App extends Component {
     state = {
         logged: false,
@@ -124,13 +124,13 @@ class App extends Component {
                 />
             );
         };
-        const RoutedDashBoard2 = (props) => {
+        const RoutedDashBoard3 = (props) => {
 
             return (
-                <Dashboard2
+                <Dashboard3
 
                     logged={this.state.logged}
-                    component={Dashboard2}
+                    component={Dashboard3}
                     // userId={this.state.theId}
                     // theUser={this.state.userDataObj}
                     {...props}
@@ -169,7 +169,7 @@ class App extends Component {
                         )} />
 
                         <Route exact path='/dashboard' render={RoutedDashBoard} />
-                        <Route exact path='/dashboard2' render={RoutedDashBoard2} />
+                        <Route exact path='/dashboard3' render={RoutedDashBoard3} />
                         <Route exact path='/user/view/all'component={AdminPages.AdminData.ViewAll} />
                         <Route exact path='/user/most/recent'  component={AdminPages.AdminData.MostRecent} />
                         <Route exact path='/signup' component={UserPages.SignUp} />

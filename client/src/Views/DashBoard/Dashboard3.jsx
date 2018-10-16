@@ -9,15 +9,15 @@ import Grid from '@material-ui/core/Grid';
 // import moment from 'moment';
 
 // "2018-04-25T04:41:30.000Z"
-class Dashboard2 extends Component {
+class Dashboard3 extends Component {
     state = {
         CurrentTime: moment().tz("America/Los_Angeles").format(),
         timeFormated: functions.getDashboardFormateTime('dont'),
     };
     componentDidCatch = (error, info) => {
-        console.log('hi i am catching Dashboard2');
-        console.log(error, 'hi im errors at dash2')
-        console.log(info, 'hi im info at dash2')
+        console.log('hi i am catching Dashboard3');
+        console.log(error, 'hi im errors at dash3')
+        console.log(info, 'hi im info at dash3')
     };
     updateTime = () => {
         this.setState({
@@ -53,7 +53,7 @@ class Dashboard2 extends Component {
                         <Graphs.Widgets.GraphWidget  sensorId={'7159BF2DE6B4-EC'}/>
                     </Grid>
                     <Grid item xs={8} lg={4}>
-                        <Graphs.Widgets.GraphWidget  sensorId={'7159BF2DE6B4-Humidity'}/>
+                        <Graphs.Widgets.GraphWidget  sensorId={'6943B32DE6B4-pH'}/>
                     </Grid>
 
                 </Grid>
@@ -62,4 +62,4 @@ class Dashboard2 extends Component {
         );
     };
 };
-export default Dashboard2;
+export default Dashboard3;
