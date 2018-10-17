@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Graphs from "../index";
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 import sensorApi from "../../../Data/sensor-api"
 
 
@@ -10,6 +10,7 @@ class GraphWidget extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.state = {
             dropdownOpen: false,
             dropDownValue: 'Select a graph',
@@ -39,6 +40,10 @@ class GraphWidget extends Component {
         console.log("Dropdown state after: " + this.state.dropdownOpen);
     }
 
+    handleClose() {
+        console.log("clicked close");
+    }
+
     handleSelect(e) {
         console.log("Handle select");
         for(let i=0; i<this.state.list.length; i++) {
@@ -60,16 +65,17 @@ class GraphWidget extends Component {
     render() {
         return (
             <div>
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} size={"sm"}>
                     <DropdownToggle caret>
                         {this.state.dropDownValue}
                     </DropdownToggle>
                     <DropdownMenu>
                         {!this.state.loading && this.state.list.map((item) =>
-                            <DropdownItem key={item.sensorId}  onClick={this.handleSelect}>{item.sensorId}</DropdownItem>
+                            <DropdownItem key={item.sensorId}  onClick={this.handleSelect} >{item.sensorId}</DropdownItem>
                         )}
                       </DropdownMenu>
                 </Dropdown>
+                <Button close onClick={this.handleClose}/>
                 <Graphs.Graphs.ReusableGraph  sensorId={this.state.sensorId} sensorName={this.state.sensorName} units={this.state.units}/>
             </div>
         )
