@@ -2,12 +2,12 @@ import TemperatureGraph from './TemperatureGraph';
 import HumidityGraph from './HumidityGraph';
 import RGBGraph from './RGBGraph';
 import LuxIRGraph from './LuxIRGraph';
-import ResuseabelGraph from './ResuseabelGraph';
+import ReusableGraph from './ReusableGraph';
 const Graphs={
     TemperatureGraph,
     HumidityGraph,
     RGBGraph,
     LuxIRGraph,
-    ResuseabelGraph
+    ReusableGraph
 };
 export default Graphs;

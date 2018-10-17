@@ -7,12 +7,18 @@ const selectorOptions = {
         label: '30m'
       }, 
       {
-        step: 'hour',
-        stepmode: 'backward',
-        count: 1,
-        label: '1h'
+          step: 'hour',
+          stepmode: 'backward',
+          count: 1,
+          label: '1h'
       },
-      {
+        {
+            step: 'hour',
+            stepmode: 'backward',
+            count: 6,
+            label: '6h'
+        },
+        {
         step: 'hour',
         stepmode: 'backward',
         count: 12,

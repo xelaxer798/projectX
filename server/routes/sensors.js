@@ -1,12 +1,10 @@
 import express from "express";
-import sensorData from "../controllers/sensorDataController";
+import sensors from "../controllers/sensorsController"
 
 const router = express.Router();
 
 // Route to get list of crypto currencies for drop down.
-
-router.post("/create",sensorData.create)
-router.get("/findBySensorId/:sensorId",sensorData.findBySensorId)
+router.get("/getSensors", sensors.getSensors);
 
 // Export routes for server.js to use.
 export default router;

@@ -1,21 +1,48 @@
 import db from "../models";
-import sgMail from '@sendgrid/mail';
-
+import functions from "../Functions";
 
 const controller = {
-    findById: function (req, res) {
-
-        db.Nodes.findAll({
+    findBySensorId: function (req, res) {
+        console.log("In find by sensor id: " + req.params.sensorId);
+        db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
-            limit: 25,
             where: {
 
-                userId: req.params.id
+                sensorId: req.params.sensorId
 
             }
         })
-            .then(dbModel => res.json(dbModel))
-            .catch(err => res.status(422).json(err));
+            .then(results => {
+
+                try {
+                    const pHx = [];
+                    const pHy = [];
+
+                    for (let i = 0; i < results.length; i++) {
+                    };
+                    for (let i = 0; i < results.length; i++) {
+                        pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
+                        pHy.push(JSON.parse(results[i].dataValueFloat));
+                    };
+                    const x = pHx;
+                    const y = pHy;
+                    const data = [{
+                        x,
+                        y,
+                        type: 'scatter',
+                        mode: 'lines',
+                        marker: { color: 'red' },
+
+                    }];
+                    res.json({ sensorData: data, });
+                } catch (err) {
+                    console.log("Error: " + err);
+                }
+            })
+            .catch(err => {
+                console.log("In catch");
+                res.status(422).json(err);
+            });
     },
     create: function (req, res) {
         console.log("JSON input: " + req.body);

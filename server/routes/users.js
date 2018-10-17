@@ -11,7 +11,7 @@ router.post("/new/user", users.create);
 router.post("/reset/pass", users.ResetPassword);
 router.post("/check/pass/jwt", users.authResetPass);
 router.post('/auth',users.authUser);
-router.put("/verification/:id",users.verification)
+router.put("/verification/:id",users.verification);
 router.put("/change/password", users.ChangePassword);
 router.delete("/:id", users.remove);
 
