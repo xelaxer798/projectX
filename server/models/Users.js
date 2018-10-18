@@ -39,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
     });
     Users.associate =  (models)=> {
        
-        Users.belongsTo(models.Farms , { foreignKey: 'farmId' });
+        Users.belongsTo(models.Farms , { foreignKey: 'farmId'});
         Users.belongsToMany(models.Alerts, { through:'AlertUsers' });
         };
 return Users;

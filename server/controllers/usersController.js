@@ -16,7 +16,7 @@ const saltRounds = 10;
 
 const controller = {
   findAll: (req, res) => {
-    db.users.findAll({
+    db.Users.findAll({
       where: {
         inactive: false
       }
@@ -60,7 +60,7 @@ const controller = {
       }
     });
     console.log(authenticateUser)
-    db.users.findOne({
+    db.Users.findOne({
       where: {
         id: authenticateUser
       }
@@ -91,7 +91,7 @@ const controller = {
 
 
     // console.log(req.body)
-    db.users.findOne({
+    db.Users.findOne({
       where: {
         email: req.body.email
       }
@@ -150,7 +150,7 @@ const controller = {
       if (err) {
         console.log(err)
       }
-      db.users.findOne({
+      db.Users.findOne({
         where: {
           email: req.body.email
         }
@@ -162,18 +162,19 @@ const controller = {
 
         }
         else {
-          db.users.create({
+          db.Users.create({
             email: req.body.email,
             password: hash,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             address: req.body.address,
             phone: req.body.phone,
-            subscription: req.body.subscription
+            subscription: req.body.subscription,
+              farmId: "2389d496-d2ee-11e8-a8d5-f2801f1b9fd1"
           })
             .then(dbModel => {
 
-              db.users.findOne({
+              db.Users.findOne({
                 where: {
                   email: req.body.email
                 }
@@ -201,7 +202,7 @@ const controller = {
   },
   verification: function (req, res) {
 
-    db.users.update({
+    db.Users.update({
       verified: true
     }, {
         where: {
@@ -211,7 +212,7 @@ const controller = {
       })
       .then(dbModel => {
 
-        db.users.findOne({
+        db.Users.findOne({
           where: {
             id: req.params.id
           }
@@ -228,7 +229,7 @@ const controller = {
   ResetPassword: function (req, res) {
     console.log(req.body)
 
-    db.users.findOne({
+    db.Users.findOne({
 
       where: {
         email: req.body.email
@@ -305,7 +306,7 @@ const controller = {
 
         console.log(err)
       }
-      db.users.update({
+      db.Users.update({
 
         password: hash
       }, {
