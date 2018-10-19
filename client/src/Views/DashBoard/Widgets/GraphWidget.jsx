@@ -17,8 +17,8 @@ class GraphWidget extends Component {
             loading: true,
             list: [],
             sensorId: this.props.sensorId,
-            sensorName: 'sensorData',
-            units: 'units'
+            sensorName: this.props.sensorName,
+            units: this.props.units
         };
     }
 

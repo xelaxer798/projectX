@@ -84,7 +84,7 @@ class Home extends PureComponent {
       self.setState({ noUser: true, doesntMatch: false, loading: false });
     }
     else {
-
+console.log("Authenticated user: " + res.data);
       localStorage.setItem('auth', res.data)
       window.location = '/dashboard';
     };

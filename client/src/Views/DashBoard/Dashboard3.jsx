@@ -50,10 +50,10 @@ class Dashboard3 extends Component {
 
                 <Grid container spacing={40}>
                     <Grid item xs={8} lg={4}>
-                        <Graphs.Widgets.GraphWidget  sensorId={'7159BF2DE6B4-EC'}/>
+                        <Graphs.Widgets.GraphWidget  sensorId={'7159BF2DE6B4-EC'} sensorName={'EC'} units={'mS'}/>
                     </Grid>
                     <Grid item xs={8} lg={4}>
-                        <Graphs.Widgets.GraphWidget  sensorId={'6943B32DE6B4-pH'}/>
+                        <Graphs.Widgets.GraphWidget  sensorId={'6943B32DE6B4-pH'} sensorName={'pH'} units={''}/>
                     </Grid>
 
                 </Grid>
