@@ -65,8 +65,10 @@ class ReusableGraph extends Component {
     getData = () => {
         SensorDataAPI.getAll(this.props.sensorId).then(data => {
             if (data.data !== null || data.data !== undefined || data.data !== []) {
+                console.log("Sensor Data: " + JSON.stringify(data.data.sensorData[0].y[0]));
                 this.setState({
                     data: data.data.sensorData,
+                    currentData: data.data.sensorData[0].y[0],
                     loading: false,
                     statusCode: `Temperature Status Code: ${data.status}  `
                 });
@@ -86,8 +88,8 @@ class ReusableGraph extends Component {
         return (
             <div>
                 <div style={{paddingLeft: '10px', color: 'black'}}>
-                    {this.state.statusCode}
-                    {this.props.sensorId}
+                    Sensor ID: {this.props.sensorId}
+                    <span style={{ color: 'purple', fontWeight: 'bold'}}> - Current Value: {this.state.currentData} {this.props.units}</span>
                     {!this.state.loading ? <Plot
 
                         data={this.state.data}

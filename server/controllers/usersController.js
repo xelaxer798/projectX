@@ -180,18 +180,18 @@ const controller = {
                                     email: req.body.email
                                 }
                             }).then(newUser => {
-                                console.log(newUser.dataValues.id)
+                                console.log(newUser.dataValues.userId)
                                 const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
                                 const msg = {
                                     to: req.body.email,
                                     from: 'LeafLiftSystems@donotreply.com',
                                     subject: 'Reqister Your Email With Leaf Lift Systems ',
                                     text: 'Click me ',
-                                    html: name + ` <br><h2>This is your User Id ${newUser.dataValues.id}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.id}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
+                                    html: name + ` <br><h2>This is your User Id ${newUser.dataValues.userId}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.userId}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
                                 };
 
                                 sgMail.send(msg);
-                                res.send(newUser.dataValues.id)
+                                res.send(newUser.dataValues.userId)
                             })
 
                         })
@@ -278,7 +278,7 @@ const controller = {
 
                 res.json({
                     AuthStatus: 'AuthOkay',
-                    userId: decoded.currentUser.forgottenUser.id,
+                    userId: decoded.currentUser.forgottenUser.userId,
                     email: decoded.currentUser.forgottenUser.email,
                     name: `${decoded.currentUser.forgottenUser.firstName} ${decoded.currentUser.forgottenUser.lastName}`
                 })
@@ -311,7 +311,7 @@ const controller = {
                 password: hash
             }, {
                 where: {
-                    userId: req.body.userid,
+                    userId: req.body.userId,
                     inactive: false
                 }
             })
