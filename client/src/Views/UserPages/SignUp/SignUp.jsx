@@ -103,11 +103,11 @@ class SignUp extends React.Component {
                 fieldValidationErrors.email = emailValid ? '' : ' is invalid';
                 break;
             case 'password':
-                passwordValid = value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/);
+                passwordValid = value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&^]{6,}$/);
                 fieldValidationErrors.password = passwordValid ? '' : 'Password is not secure enough';
                 break;
             case 'passwordConfirm':
-                passwordValid = value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$/);
+                passwordValid = value.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&^]{6,}$/);
                 fieldValidationErrors.password = passwordValid ? '' : 'Password is not secure enough';
                 break;
             // case 'phoneNumber':

@@ -26,7 +26,7 @@ const controller = {
             .catch(err => res.status(422).json(err));
     },
     findById: function (req, res) {
-        db.nodeData.findOne({
+        db.Users.findOne({
             where: {
                 userId: req.params.id,
                 inactive: false
@@ -44,7 +44,6 @@ const controller = {
             .catch(err => res.status(422).json(err));
     },
     authUser: (req, res) => {
-        // console.log(req.body)
         let authenticateUser;
         jwt.verify(req.body.userToken, secret, function (err, decoded) {
             if (err) {
@@ -53,6 +52,7 @@ const controller = {
 
                 //if everything is good, save to request for use in other routes
                 req.decoded = decoded;
+                console.log("Current user: " + JSON.stringify(decoded.currentUser));
                 authenticateUser = decoded.currentUser.currentUser.userId
                 return authenticateUser
                 //console.log(decoded.currentUser.currentUser.userId)
@@ -60,7 +60,6 @@ const controller = {
 
             }
         });
-        console.log(authenticateUser)
         db.Users.findOne({
             where: {
                 userId: authenticateUser
@@ -71,7 +70,7 @@ const controller = {
 
 
                 const userInfo = {
-                    userId: user.dataValues.id,
+                    userId: user.dataValues.userId,
                     email: user.dataValues.email,
                     firstName: user.dataValues.firstName,
                     lastName: user.dataValues.lastName,
@@ -86,7 +85,10 @@ const controller = {
                 }
                 res.json(userInfo)
             })
-            .catch(err => res.status(422).json(err));
+            .catch(err => {
+                console.log("Error in autentication");
+                res.status(422).json(err);
+            });
     },
     signIn: function (req, res) {
 
@@ -113,7 +115,7 @@ const controller = {
                     const homeZipCode = splitAddy[4]
                     const fullName = userSign.dataValues.firstName + ' ' + userSign.dataValues.lastName;
                     const currentUser = {
-                        userId: userSign.dataValues.id,
+                        userId: userSign.dataValues.userId,
                         email: userSign.dataValues.email,
                         firstName: userSign.dataValues.firstName,
                         lastName: userSign.dataValues.lastName,
