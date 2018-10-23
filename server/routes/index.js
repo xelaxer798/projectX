@@ -5,6 +5,7 @@ import rooms from './rooms';
 import nodes from './nodes';
 import sensorData from './sensorData';
 import sensors from './sensors'
+import alerts from './alerts'
 
 const routers = {
     nodeData,
@@ -13,7 +14,8 @@ const routers = {
     rooms,
     nodes,
     sensorData,
-    sensors
+    sensors,
+    alerts
 };
 export {
     routers as default,
