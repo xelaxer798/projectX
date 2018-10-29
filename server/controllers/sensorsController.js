@@ -4,17 +4,34 @@ const controller = {
     getSensors: function(req, res) {
 
         db.Sensors.findAll({
-            include: [
+             include: [
                 {
-                    model: db.Nodes
+                    model: db.Nodes,
+                    attributes: ['nodeName']
                 }
             ]
         })
             .then(dbModel => {
-                console.log(JSON.stringify(dbModel));
-                res.json(dbModel);
+                console.log("Model: " + JSON.stringify(dbModel));
+                const resObj = dbModel.map(sensor => {
+                    return Object.assign(
+                        {},
+                        {
+                            sensorId: sensor.sensorId,
+                            sensorName: sensor.sensorName,
+                            units: sensor.units,
+                            nodeName: sensor.Node.nodeName,
+                            dropdownLabel: sensor.Node.nodeName + "-" + sensor.sensorName
+                        }
+                    )
+                });
+                console.log("Model new: " + JSON.stringify(resObj));
+                res.json(resObj);
             })
-            .catch(err => res.status(422).json(err));
+            .catch(err => {
+                console.log("Error " + err);
+                res.status(422).json(err);
+            });
     }
 };
 
