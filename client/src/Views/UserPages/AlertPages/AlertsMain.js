@@ -9,44 +9,83 @@ import Paper from '@material-ui/core/Paper';
 import AlertsApi from '../../../Data/alerts-api'
 import Plot from "react-plotly.js";
 import Images from "../../../Images";
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import './AlertsMain.css'
 
 
 // import Grid from '@material-ui/core/Grid';
 // import moment from 'moment';
 
 
-const styles = theme => ({
-    root: {
-        width: '100%',
-        marginTop: theme.spacing.unit * 3,
-        overflowX: 'auto',
-    },
-    table: {
-        minWidth: 700,
-    },
-});
-
 class AlertsMain extends Component {
 
     constructor(props) {
         super(props);
+        let height = 400;
+
         this.state = {
             isLoading: false,
-            alerts: []
-        }
+            alerts: [],
+            tableHeight: height + "px"
+        };
+        // this.tableStyle = this.tableStyle.bind(this);
+
+        // this.onAfterInsertRow = this.onAfterInsertRow.bind(this);
+
     }
 
+    selectRow = {
+        mode: 'checkbox', // or checkbox
+        clickToSelectAndEditCell: true
+    };
 
-    rows = [];
+    renderShowsTotal = (start, to, total) => {
+        return (
+            <p style={ { color: 'blue' } }>
+                From { start } to { to }, totals is { total }
+            </p>
+        );
+    };
 
     componentDidMount = () => {
+        this.getAlerts();
+    };
+
+    getAlerts() {
         AlertsApi.getAlerts().then(results => {
             this.setState({
                 alerts: results.data,
                 loading: false
             });
-            this.rows = results.data;
         });
+    }
+
+    onAfterInsertRow = (row) => {
+        console.log("New record: " + JSON.stringify(row));
+        console.log("Rows: " + JSON.stringify(this.state));
+        AlertsApi.createAlert(row).then(data => {
+            this.getAlerts();
+        });
+    };
+
+    options = {
+        afterInsertRow: this.onAfterInsertRow,   // A hook for after insert rows
+        page: 1,  // which page you want to show as default
+        sizePerPageList: [ {
+            text: '5', value: 5
+        }, {
+            text: '10', value: 10
+        } ], // you can change the dropdown list for size per page
+        sizePerPage: 5,  // which size per page you want to locate as default
+        pageStartIndex: 1, // where to start counting the pages
+        paginationSize: 3,  // the pagination bar size.
+        alwaysShowAllBtns: true,
+        withFirstAndLast: true,
+        paginationShowsTotal: this.renderShowsTotal,  // Accept bool or function
+    };
+
+    cellEdit = {
+        mode: 'click' // click cell to edit
     };
 
     render() {
@@ -59,35 +98,33 @@ class AlertsMain extends Component {
             )
         } else
             return (
-            <div className='home' style={{backgroundColor: 'white'}}>
-                <img src={Logo} alt='Logo'/>
-                <br/> <br/> <br/>
-                <Paper className={styles.root}>
-                    <Table className={styles.table}>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Alert</TableCell>
-                                <TableCell>Active</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {this.state.alerts.map(row => {
-                                return (
-                                    <TableRow key={row.alertId}>
-                                        <TableCell component="th" scope="row">
-                                            {row.alertName}
-                                        </TableCell>
-                                        <TableCell>Active</TableCell>
+                <div className='home' style={{ backgroundColor: 'white' }}>
 
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </Paper>
-
-            </div>
-        );
+                <BootstrapTable
+                    data={this.state.alerts}
+                    insertRow={true}
+                    deleteRow={true}
+                    condensed={true}
+                    pagination={true}
+                    cellEdit={this.cellEdit}
+                    selectRow={this.selectRow}
+                    options={this.options}
+                    maxHeight={this.state.tableHeight}>
+                    <TableHeaderColumn
+                        dataField='alertId'
+                        isKey visible={false}
+                        hiddenOnInsert={true}
+                        autoValue={true}
+                        hidden={true}
+                    width='5%'>Alert ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='alertName'>Alert Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='highValue'>High Value</TableHeaderColumn>
+                    <TableHeaderColumn dataField='lowValue'>Low Value</TableHeaderColumn>
+                    <TableHeaderColumn dataField='status'>Status</TableHeaderColumn>
+                    <TableHeaderColumn dataField='active'>Active</TableHeaderColumn>
+                </BootstrapTable>
+                </div>
+            );
 
     };
 

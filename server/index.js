@@ -21,6 +21,12 @@ export default path => {
     // Start the interval of the autoserver.checkNodes to see if nodes haven't reported in last 30 minutes
     setInterval(autoServer.checkNodes, 1800000);
 
+    autoServer.autoAlerts.checkAlerts();
+    setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);
+
+    autoServer.autoAlerts.processAlerts();
+    setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
+
     app.use(express.static(`${path}/client`));
 
     // Where the node data will be sent aka www....../api/nodeData

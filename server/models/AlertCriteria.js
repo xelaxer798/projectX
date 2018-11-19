@@ -32,8 +32,8 @@ module.exports = function (sequelize, DataTypes) {
 
     });
     AlertCriteria.associate = (models) => {
-        AlertCriteria.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
-        AlertCriteria.belongsTo(models.Alerts, { foreignKey: 'alertId' });
+        // AlertCriteria.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
+        // AlertCriteria.belongsTo(models.Alerts, { foreignKey: 'alertId' });
     };
 
     return AlertCriteria;

@@ -28,9 +28,8 @@ module.exports = function (sequelize, DataTypes) {
 
     });
     Alerts.associate = (models) => {
-        Alerts.hasMany(models.AlertCriteria, { foreignKey: 'alertCriteriaId' });
-        // Alerts.belongsToMany(models.Users, { through: 'AlertUsers' });
-        Alerts.belongsTo(models.Sensors);
+        Alerts.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
+        Alerts.belongsToMany(models.Users, { through: 'AlertUsers' });
     };
     return Alerts;
 };

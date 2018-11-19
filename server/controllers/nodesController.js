@@ -7,8 +7,8 @@ sgMail.setApiKey(sengrido);
 const createSensorRecords = (sensorArray) => {
     db.Sensors.bulkCreate(sensorArray,
         {
-            fields: ["sensorId", "sensorName", "units"],
-            updateOnDuplicate: ["sensorName", "units"]
+            fields: ["sensorId", "sensorName", "units","nodeId"],
+            updateOnDuplicate: ["sensorName", "units","nodeId"]
         })
         .then(() => { // Notice: There are no arguments here, as of right now you'll have to...
             return db.Sensors.findAll();

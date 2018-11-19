@@ -9,17 +9,27 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: DataTypes.UUIDV4,
         },
      
-        NotificationMethod: {
+        notificationMethod: {
             type: DataTypes.STRING,
             allowNull: true
         },
-        NotificationInterval: {
+        notificationInterval: {
             type: DataTypes.INTEGER,
             allowNull: true
         },
+        lastNotification: {
+            type: DataTypes.DATE,
+            allowNull:true
+        }
         
 
     });
+
+    AlertUsers.association = (models) => {
+        AlertUsers.hasOne(models.Users);
+        AlertUsers.hasOne(models.Alerts);
+    };
+
     return AlertUsers;
 
 };

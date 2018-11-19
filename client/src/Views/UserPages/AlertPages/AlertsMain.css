@@ -1,0 +1,14 @@
+.table-class {
+    font-size: small;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px
+    }
+
+.status-ok {
+    color: green
+}
+
+.status-danger {
+    color: red
+}

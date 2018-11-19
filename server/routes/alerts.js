@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/getAll", alerts.getAlerts);
 router.post("/create",alerts.createAlert);
+router.post("/update",alerts.updateAlert);
 
 // Export routes for server.js to use.
 export default router;

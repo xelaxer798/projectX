@@ -47,18 +47,19 @@ class GraphWidget extends Component {
     handleSelect(e) {
         console.log("Handle select");
         for(let i=0; i<this.state.list.length; i++) {
-            if(this.state.list[i].sensorId === e.currentTarget.textContent) {
+            if(this.state.list[i].dropdownLabel === e.currentTarget.textContent) {
                 console.log("Found it");
                 this.setState({
-                    sensorName: this.state.list[i].sensorName,
-                    units: this.state.list[i].units
+                    sensorName: this.state.list[i].dropdownLabel,
+                    units: this.state.list[i].units,
+                    sensorId: this.state.list[i].sensorId
                 });
                 break;
             }
         }
         this.setState({
             dropDownValue: e.currentTarget.textContent,
-            sensorId: e.currentTarget.textContent
+
         });
     }
 
@@ -71,7 +72,7 @@ class GraphWidget extends Component {
                     </DropdownToggle>
                     <DropdownMenu>
                         {!this.state.loading && this.state.list.map((item) =>
-                            <DropdownItem key={item.sensorId}  onClick={this.handleSelect} >{item.sensorId}</DropdownItem>
+                            <DropdownItem key={item.sensorId}  onClick={this.handleSelect} >{item.dropdownLabel}</DropdownItem>
                         )}
                       </DropdownMenu>
                 </Dropdown>

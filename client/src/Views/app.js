@@ -15,7 +15,9 @@ import AdminPages from './Admin/index';
 import functions from '../Functions/index';
 import AlertPages from './UserPages/AlertPages/index'
 import NotFound from './404Page/404Page'
-import AlertsMain from "./UserPages/AlertPages/AlertsMain";
+import AlertsMain  from "./UserPages/AlertPages/AlertsMain";
+import AlertsMain2 from "./UserPages/AlertPages/AlertsMain2";
+import AlertsMain3 from "./UserPages/AlertPages/AlertsMain3";
 
 class App extends Component {
     state = {
@@ -93,9 +95,9 @@ class App extends Component {
         };
         const RoutedAlertsPage = (props) => {
             return (
-                <AlertsMain
+                <AlertsMain3
                     logged={this.state.logged}
-                    component={AlertPages.AlertsMain}
+                    component={AlertPages.AlertsMain3}
                     userId={this.state.theId}
                     theUser={this.state.userDataObj}
                     {...props}
