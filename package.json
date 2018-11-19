@@ -122,7 +122,9 @@
     "prod": "yarn prod-build && yarn prod-start",
     "heroku-postbuild": "yarn build"
   },
-  "engines": {},
+  "engines": {
+    "node": "8.9.4"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}",
