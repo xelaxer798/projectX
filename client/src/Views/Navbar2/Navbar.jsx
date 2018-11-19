@@ -154,6 +154,13 @@ class Navbar extends Component {
                 </ListItem></a> : <div/>}
                 {this.props.logged ? <Divider/> : <div/>}
 
+                {this.props.logged ? <a href='/alerts'> <ListItem button>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Alerts"/>
+                </ListItem></a> : <div/>}
+
                 {this.props.logged ? <a href='/user/account'> <ListItem button>
                     <ListItemIcon>
                         <SettingsIcon/>

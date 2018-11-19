@@ -13,7 +13,11 @@ import HelpPages from './Help/index';
 import Footer from './Footer/Footer';
 import AdminPages from './Admin/index';
 import functions from '../Functions/index';
+import AlertPages from './UserPages/AlertPages/index'
 import NotFound from './404Page/404Page'
+import AlertsMain  from "./UserPages/AlertPages/AlertsMain";
+import AlertsMain2 from "./UserPages/AlertPages/AlertsMain2";
+import AlertsMain3 from "./UserPages/AlertPages/AlertsMain3";
 
 class App extends Component {
     state = {
@@ -83,6 +87,17 @@ class App extends Component {
                 <AdminPages.Admin
                     logged={this.state.logged}
                     component={AdminPages.Admin}
+                    userId={this.state.theId}
+                    theUser={this.state.userDataObj}
+                    {...props}
+                />
+            );
+        };
+        const RoutedAlertsPage = (props) => {
+            return (
+                <AlertsMain3
+                    logged={this.state.logged}
+                    component={AlertPages.AlertsMain3}
                     userId={this.state.theId}
                     theUser={this.state.userDataObj}
                     {...props}
@@ -174,6 +189,7 @@ class App extends Component {
                         <Route exact path='/user/most/recent'  component={AdminPages.AdminData.MostRecent} />
                         <Route exact path='/signup' component={UserPages.SignUp} />
                         <Route exact path='/user/account' render={RoutedAccountPage} />
+                        <Route exact path='/alerts' render={RoutedAlertsPage} />
                         <Route exact path='/verification/:id' component={UserPages.Verification} />
                         <Route exact path='/reset/:token' component={UserPages.ResetPassword.resetPassword} />
                         <Route exact path='/password/reset' component={UserPages.ResetPassword.recover} />

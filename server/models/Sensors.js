@@ -24,7 +24,7 @@ module.exports = function (sequelize, DataTypes) {
         Sensors.hasMany(models.SensorData, { foreignKey: 'sensorId' , constraints: false});
         Sensors.belongsTo(models.Nodes, { foreignKey: 'nodeId' });
         // Sensors.hasMany(models.AlertCriteria, { foreignKey: 'alertCriteriaId' });
-        Sensors.hasMany(models.Alerts, { foreignKey: 'alertId' });
+        Sensors.hasMany(models.Alerts, { foreignKey: 'sensorId' });
     };
 
     return Sensors;

@@ -12,7 +12,6 @@ const controller = {
             ]
         })
             .then(dbModel => {
-                console.log("Model: " + JSON.stringify(dbModel));
                 const resObj = dbModel.map(sensor => {
                     return Object.assign(
                         {},
@@ -25,11 +24,9 @@ const controller = {
                         }
                     )
                 });
-                console.log("Model new: " + JSON.stringify(resObj));
-                res.json(resObj);
+                 res.json(resObj);
             })
             .catch(err => {
-                console.log("Error " + err);
                 res.status(422).json(err);
             });
     }
