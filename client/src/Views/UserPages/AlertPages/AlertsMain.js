@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import AlertsApi from '../../../Data/alerts-api'
 import Plot from "react-plotly.js";
 import Images from "../../../Images";
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+// import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import './AlertsMain.css'
 
 
@@ -100,29 +100,29 @@ class AlertsMain extends Component {
             return (
                 <div className='home' style={{ backgroundColor: 'white' }}>
 
-                <BootstrapTable
-                    data={this.state.alerts}
-                    insertRow={true}
-                    deleteRow={true}
-                    condensed={true}
-                    pagination={true}
-                    cellEdit={this.cellEdit}
-                    selectRow={this.selectRow}
-                    options={this.options}
-                    maxHeight={this.state.tableHeight}>
-                    <TableHeaderColumn
-                        dataField='alertId'
-                        isKey visible={false}
-                        hiddenOnInsert={true}
-                        autoValue={true}
-                        hidden={true}
-                    width='5%'>Alert ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='alertName'>Alert Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='highValue'>High Value</TableHeaderColumn>
-                    <TableHeaderColumn dataField='lowValue'>Low Value</TableHeaderColumn>
-                    <TableHeaderColumn dataField='status'>Status</TableHeaderColumn>
-                    <TableHeaderColumn dataField='active'>Active</TableHeaderColumn>
-                </BootstrapTable>
+                {/*<BootstrapTable*/}
+                    {/*data={this.state.alerts}*/}
+                    {/*insertRow={true}*/}
+                    {/*deleteRow={true}*/}
+                    {/*condensed={true}*/}
+                    {/*pagination={true}*/}
+                    {/*cellEdit={this.cellEdit}*/}
+                    {/*selectRow={this.selectRow}*/}
+                    {/*options={this.options}*/}
+                    {/*maxHeight={this.state.tableHeight}>*/}
+                    {/*<TableHeaderColumn*/}
+                        {/*dataField='alertId'*/}
+                        {/*isKey visible={false}*/}
+                        {/*hiddenOnInsert={true}*/}
+                        {/*autoValue={true}*/}
+                        {/*hidden={true}*/}
+                    {/*width='5%'>Alert ID</TableHeaderColumn>*/}
+                    {/*<TableHeaderColumn dataField='alertName'>Alert Name</TableHeaderColumn>*/}
+                    {/*<TableHeaderColumn dataField='highValue'>High Value</TableHeaderColumn>*/}
+                    {/*<TableHeaderColumn dataField='lowValue'>Low Value</TableHeaderColumn>*/}
+                    {/*<TableHeaderColumn dataField='status'>Status</TableHeaderColumn>*/}
+                    {/*<TableHeaderColumn dataField='active'>Active</TableHeaderColumn>*/}
+                {/*</BootstrapTable>*/}
                 </div>
             );
 

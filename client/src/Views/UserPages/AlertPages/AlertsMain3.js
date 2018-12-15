@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import AlertsApi from '../../../Data/alerts-api'
 import SensorApi from '../../../Data/sensor-api'
+import NodeApi from '../../../Data/nodes-api'
 import Images from "../../../Images";
 import BootstrapTable from 'react-bootstrap-table-next';
 import './AlertsMain.css'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import cellEditFactory, {Type} from 'react-bootstrap-table2-editor';
 import Modal from 'react-modal';
 import Form from 'react-validation/build/form';
@@ -13,6 +13,7 @@ import Select from 'react-validation/build/select';
 import Button from 'react-validation/build/button'
 import {isEmail} from 'validator';
 import './foundation-flex.css';
+import EditAlertModal from './EditAlertModal'
 
 class AlertsMain3 extends Component {
 
@@ -24,18 +25,27 @@ class AlertsMain3 extends Component {
             isLoading: false,
             alerts: [],
             modalIsOpen: false,
+            modal2IsOpen: false,
             tableHeight: height + "px",
             selectedAlert: this.blankAlert,
-            sensors: []
+            sensors: [],
+            nodes: []
         };
         this.newRecord = this.newRecord.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.isRelative = this.isRelative.bind(this);
         this.editRecord = this.editRecord.bind(this);
-        this.renderColumns = this.renderColumns.bind(this);
+        AlertsMain3.renderColumns = AlertsMain3.renderColumns.bind(this);
         this.editRecord = this.editRecord.bind(this);
-        this.setStatusColor = this.setStatusColor.bind(this);
+        AlertsMain3.setStatusColor = AlertsMain3.setStatusColor.bind(this);
+        this.newRecord2 = this.newRecord2.bind(this);
+        this.closeModal2 = this.closeModal2.bind(this);
+        this.required = this.required.bind(this);
+        this.requiredSensorAlert = this.requiredSensorAlert.bind(this);
+        this.requiredNodeAlert = this.requiredNodeAlert.bind(this);
+        this.isInputGroupHidden = this.isInputGroupHidden.bind(this);
+        this.handleAlertTypeDropdown = this.handleAlertTypeDropdown.bind(this);
     }
 
     blankAlert = {
@@ -49,6 +59,7 @@ class AlertsMain3 extends Component {
         const selectedAlert = this.state.alerts.find((alert) => {
             return (alert.alertId === alertId)
         });
+        console.log("Selected alert: " + JSON.stringify(selectedAlert));
         this.setState({
             selectedAlert: selectedAlert,
             newRecord: false,
@@ -58,6 +69,12 @@ class AlertsMain3 extends Component {
     }
 
     closeModal() {
+        this.setState({
+            modalIsOpen: false
+        });
+    }
+
+    closeModal2() {
         this.setState({
             modalIsOpen: false
         });
@@ -75,6 +92,7 @@ class AlertsMain3 extends Component {
     componentDidMount = () => {
         this.getAlerts();
         this.getSensors();
+        this.getNodes();
     };
 
     getAlerts() {
@@ -99,6 +117,22 @@ class AlertsMain3 extends Component {
         })
     }
 
+    getNodes() {
+        NodeApi.getNodes().then(results => {
+            const nodes = [];
+            results.data.forEach(node => {
+                nodes.push({value: node.nodeId, label: node.nodeName})
+            });
+            this.setState({
+                nodes: nodes
+            });
+
+        })
+            .catch(err => {
+                console.log("Error: " + err);
+            })
+    }
+
 
     options = {
         afterInsertRow: this.onAfterInsertRow,   // A hook for after insert rows
@@ -120,46 +154,85 @@ class AlertsMain3 extends Component {
         mode: 'click' // click cell to edit
     };
 
-    setStatusColor(cell, row, rowIndex, colIndex) {
-        if (row.status === 'a-ok') {
-            return "status-ok"
-        } else {
-            return "status-danger"
+    static setStatusColor(cell, row, rowIndex, colIndex) {
+        if(row.alertType === "Node") {
+            if (row.status === 'a-ok') {
+                return "status-ok node-alert"
+            } else {
+                return "status-danger node-alert"
+            }
+        } else if (row.alertType === "Sensor") {
+            if (row.status === 'a-ok') {
+                return "status-ok sensor-alert"
+            } else {
+                return "status-danger sensor-alert"
+            }
+
         }
     }
 
-    renderColumns() {
+    static checkBoxFormatter(cell, row) {
+        if (row.active) {
+            return ("︎︎✅");
+        } else {
+            return ("︎❌");
+        }
+    }
+
+    static renderColumns() {
         const columns = [{
             dataField: 'alertId',
             text: 'Alert ID',
             sort: true,
-            hidden: true
+            hidden: true,
+            classes: AlertsMain3.setStatusColor
         }, {
             dataField: 'alertName',
             text: 'Alert Name',
-            sort: true
+            sort: true,
+            hidden: true
         }, {
-            dataField: 'lowValue',
-            text: 'Low Value'
+            dataField: 'target',
+            text: 'Target',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
         }, {
-            dataField: 'highValue',
-            text: 'High Value'
-        }, {
-            dataField: 'status',
-            text: 'Status',
-            classes: this.setStatusColor
-        }, {
-            dataField: 'sensorName',
-            text: 'Sensor Name',
-        }, {
-            dataField: 'active',
-            text: 'Active',
-
-            editor: {
-                type: Type.CHECKBOX,
-                value: 'Y:N'
+            dataField: 'criteria',
+            text: 'Criteria',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
+        },
+            //     {
+            //     dataField: 'lowValue',
+            //     text: 'Low Value',
+            //     style: {
+            //         width: '20px'
+            //     },
+            //     classes: this.setStatusColor
+            // }, {
+            //     dataField: 'highValue',
+            //     text: 'High Value',
+            //     classes: this.setStatusColor
+            // },
+            //     {
+            //     dataField: 'currentValue',
+            //     text: 'Current Value',
+            //     classes: this.setStatusColor
+            // },
+            {
+                dataField: 'status',
+                text: 'Status',
+                classes: AlertsMain3.setStatusColor
+            }, {
+                dataField: 'sensorName',
+                text: 'Sensor Name',
+                hidden: true
+            }, {
+                dataField: 'active',
+                text: 'Active',
+                classes: AlertsMain3.setStatusColor,
+                formatter: AlertsMain3.checkBoxFormatter
             }
-        }
         ];
 
         return columns;
@@ -175,15 +248,44 @@ class AlertsMain3 extends Component {
         this.setState({
             newRecord: true,
             modalIsOpen: true,
+            selectedAlert: this.blankAlert
+        });
+        // this.openModal();
+    };
+
+    newRecord2 = () => {
+        this.setState({
+            newRecord: true,
+            modal2IsOpen: true,
+            selectedAlert: this.blankAlert
         });
         // this.openModal();
     };
 
     required = (value, props) => {
+        console.log("In required - value: " + value + " Props: " + props);
         if (!value || (props.isCheckable && !props.checked)) {
             return <span className="form-error is-visible">Required</span>;
         }
     };
+
+    requiredSensorAlert = (value, props) => {
+        // console.log("In required sensor alert - value: " +  value + " Props: " + props);
+        if (this.state.selectedAlert.alertType === "Sensor") {
+            if (!value || (props.isCheckable && !props.checked)) {
+                return <span className="form-error is-visible">Required</span>;
+            }
+        }
+    };
+
+    requiredNodeAlert = (value, props) => {
+        // console.log("In required sensor alert - value: " +  value + " Props: " + props);
+        if (this.state.selectedAlert.alertType === "Node") {
+            if (!value || (props.isCheckable && !props.checked)) {
+                return <span className="form-error is-visible">Required</span>;
+            }
+        }
+     };
 
     email = (value) => {
         if (!isEmail(value)) {
@@ -219,9 +321,29 @@ class AlertsMain3 extends Component {
 
     };
 
+    handleAlertTypeDropdown = (event) => {
+        let selectedAlert = this.state.selectedAlert;
+        selectedAlert.alertType = event.target.value;
+        this.setState({
+            selectedAlert: selectedAlert
+        })
+    }
+
     handleClick = () => {
         this.form.validateAll();
     };
+
+    static removeUnusedProperties(alert) {
+        if(alert.alertType === "Sensor") {
+            delete alert.nodeNonReportingTimeLimit;
+            delete alert.nodeId
+        } else if (alert.alertType === "Node") {
+            delete alert.highValue;
+            delete alert.lowValue;
+            delete alert.sensorId;
+        }
+
+    }
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -231,17 +353,28 @@ class AlertsMain3 extends Component {
         });
         if (this.state.newRecord) {
             let newAlert = Object.assign(this.form.getValues());
+            newAlert.active = this.state.selectedAlert.active;
             newAlert.status = "a-ok";
+             AlertsMain3.removeUnusedProperties(newAlert);
             AlertsApi.createAlert(newAlert).then(data => {
                 this.getAlerts();
             });
         } else {
             let updatedAlert = Object.assign({alertId: this.state.selectedAlert.alertId}, this.form.getValues());
             updatedAlert.active = this.state.selectedAlert.active;
+            AlertsMain3.removeUnusedProperties(updatedAlert);
             AlertsApi.updateAlert(updatedAlert).then(data => {
                 console.log("Return from update alert: " + data);
                 this.getAlerts();
             });
+        }
+    };
+
+    isInputGroupHidden = (groupType) => {
+        if (this.state.selectedAlert.alertType === groupType) {
+            return false;
+        } else {
+            return true;
         }
     };
 
@@ -272,6 +405,7 @@ class AlertsMain3 extends Component {
             return (
                 <div>
                     <button className="btn btn-default" onClick={this.newRecord}>New</button>
+                    <button className="btn btn-default" onClick={this.newRecord2}>New2</button>
 
                     <BootstrapTable
                         ref={n => this.node = n}
@@ -285,9 +419,10 @@ class AlertsMain3 extends Component {
                         keyField='alertId'
                         selectRow={this.selectRow}
                         rowEvents={this.rowEvents}
-                        columns={this.renderColumns()}>
+                        columns={AlertsMain3.renderColumns()}>
 
                     </BootstrapTable>
+                    <EditAlertModal isOpen={this.state.modal2IsOpen} closeModal={this.closeModal2}/>
                     <Modal
                         isOpen={this.state.modalIsOpen}
                         ariaHideApp={false}
@@ -297,13 +432,17 @@ class AlertsMain3 extends Component {
                             this.form = c
                         }} onSubmit={this.handleSubmit}>
                             <div className="row">
-                                <div className="small-12 columns">
-                                    <h3>New Alert</h3>
-                                    <button className="button" type="button" onClick={this.handleClick}>Validate all
-                                    </button>
+                                <div className="small-12 medium-4 columns">
+                                    Alert Type
+                                    <Select name="alertType"
+                                            value={this.state.selectedAlert.alertType}
+                                            onChange={this.handleAlertTypeDropdown}
+                                            validations={[this.required]}>
+                                        <option value=''>Alert Type</option>
+                                        <option key="Sensor" value="Sensor">Sensor</option>
+                                        <option key="Node" value="Node">Node</option>
+                                    </Select>
                                 </div>
-                            </div>
-                            <div className="row">
                                 <div className="small-12 medium-4 columns">
                                     <label>
                                         Alert Name*
@@ -312,39 +451,42 @@ class AlertsMain3 extends Component {
                                             type="text"
                                             name="alertName"
                                             value={this.state.selectedAlert.alertName}
-                                            validations={[this.required]}
+                                            validations={[this.requiredSensorAlert]}
                                         />
                                     </label>
                                 </div>
-                                <div className="small-12 medium-4 columns">
+                                <div className="small-12 medium-2 columns">
                                     <label>
-                                        High Value*
+                                        Status
                                         <Input
-                                            type="number"
-                                            name="highValue"
-                                            value={this.state.selectedAlert.highValue}
-                                            validations={[this.required, this.isRelative]}
+                                            placeholder="Status"
+                                            type="text"
+                                            disabled="true"
+                                            value={this.state.selectedAlert.status}
+                                            name="status"
                                         />
                                     </label>
                                 </div>
-                                <div className="small-12 medium-4 columns">
+                                <div className="small-12 medium-2 columns">
                                     <label>
-                                        Low Value*
+                                        Active
                                         <Input
-                                            type="number"
-                                            name="lowValue"
-                                            value={this.state.selectedAlert.lowValue}
-                                            validations={[this.required, this.isRelative]}
+                                            type="checkbox"
+                                            name="active"
+                                            // value="true"
+                                            checked={this.state.selectedAlert.active}
+                                            // ref={active => this.active = active}
+                                            onChange={this.handleCheckboxClick}
                                         />
                                     </label>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="small-12 medium-6 columns">
+                            <div className="row" hidden={this.isInputGroupHidden("Sensor")}>
+                                <div className="small-12 medium-4 columns">
                                     <label>
                                         Sensor
                                         <Select name='sensorId' value={this.state.selectedAlert.sensorId}
-                                                validations={[this.required]}>
+                                                validations={[this.requiredSensorAlert]}>
                                             <option value=''>Choose a sensor</option>
                                             {this.state.sensors.map(sensor => {
                                                 return (
@@ -358,35 +500,70 @@ class AlertsMain3 extends Component {
                                         </Select>
                                     </label>
                                 </div>
-                                <div className="small-12 medium-6 columns">
+                                <div className="small-12 medium-2 columns">
                                     <label>
-                                        Status
+                                        High Value*
                                         <Input
-                                            placeholder="Status"
-                                            type="text"
-                                            disabled="true"
-                                            value={this.state.selectedAlert.status}
-                                            name="status"
+                                            type="number"
+                                            name="highValue"
+                                            value={this.state.selectedAlert.highValue}
+                                            validations={[this.requiredSensorAlert, this.isRelative]}
                                         />
                                     </label>
                                 </div>
-                                <div className="small-12 medium-6 columns">
+                                <div className="small-12 medium-2 columns">
                                     <label>
-                                        Active
+                                        Low Value*
                                         <Input
-                                            type="checkbox"
-                                            name="active"
-                                            // value="true"
-                                            checked={this.state.selectedAlert.active}
-                                            ref={active => this.active = active}
-                                            onChange={this.handleCheckboxClick}
+                                            type="number"
+                                            name="lowValue"
+                                            value={this.state.selectedAlert.lowValue}
+                                            validations={[this.requiredSensorAlert, this.isRelative]}
+                                        />
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="row" hidden={this.isInputGroupHidden("Node")}>
+                                <div className="small-12 medium-4 columns">
+                                    <label>
+                                        Node
+                                        <Select name='nodeId' value={this.state.selectedAlert.nodeId}
+                                                validations={[this.requiredNodeAlert]}>
+                                            <option value=''>Choose a node</option>
+                                            {this.state.nodes.map(node => {
+                                                return (
+                                                    <option
+                                                        key={node.value}
+                                                        value={node.value}>{node.label}</option>
+
+                                                )
+
+                                            })}
+                                        </Select>
+                                    </label>
+                                </div>
+                                <div className="small-12 medium-3 columns">
+                                    <label>
+                                        Node Non-Reporting Time Limit*
+                                        <Input
+                                            type="number"
+                                            name="nodeNonReportingTimeLimit"
+                                            value={this.state.selectedAlert.nodeNonReportingTimeLimit}
+                                            validations={[this.requiredNodeAlert]}
                                         />
                                     </label>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="small-12 medium-6 columns">
-                                    <Button className="button">Submit</Button>
+                                <div className="small-3 medium-2 columns">
+                                    <Button className="btn btn-primary">Submit</Button>
+                                </div>
+                                <div className="small-3 medium-2 columns">
+                                    <button className="btn btn-danger" type="button" onClick={this.closeModal}>Cancel</button>
+                                </div>
+                                <div className="small-3 medium-2 columns">
+                                    <button className="btn btn-primary" type="button" onClick={this.handleClick}>Validate all
+                                    </button>
                                 </div>
                             </div>
                         </Form>

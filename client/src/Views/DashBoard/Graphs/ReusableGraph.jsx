@@ -5,13 +5,21 @@ import Constants from '../Constants/index';
 import Images from "../../../Images";
 
 class ReusableGraph extends Component {
-    state = {
-        data: [],
-        selectorOptions: {},
-        layout: {},
-        loading: true,
-        statusCode: 'status code will appear here'
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data1: [],
+            selectorOptions: {},
+            layout: {},
+            loading1: true,
+            loading2: true,
+            statusCode: 'status code will appear here'
+        };
+
+        this.conCatData = this.conCatData.bind(this);
+        // this.onSliderChange = this.onSliderChange.bind(this);
+    }
 
     generateLayout = () => {
         let layout = {
@@ -24,6 +32,7 @@ class ReusableGraph extends Component {
                 // t: 100,
                 pad: 1
             },
+            showlegend: false,
             yaxis: {
                 title: this.props.units
             },
@@ -35,7 +44,6 @@ class ReusableGraph extends Component {
                 }, ticks: 'outside', rangeselector: Constants.selectorOptions,
                 rangeslider: {}, tickangle: -45, tickformat: '%a %I:%M%p %e-%b', tickcolor: '#000', autotick: true
             },
-            title: this.props.sensorName
         };
         return layout;
     };
@@ -49,33 +57,69 @@ class ReusableGraph extends Component {
         console.log("component did mount");
         setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
         setInterval(this.getData, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
+        setTimeout(this.getData2, Constants.timeoutAndIntervalSettings.graphTimeout);
+        setInterval(this.getData2, Constants.timeoutAndIntervalSettings.graphUpdateInterval);
     };
 
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.sensorId != prevProps.sensorId) {
             let layout = this.generateLayout();
             this.setState({
-                loading: true,
+                loading1: true,
                 layout: layout
             });
             setTimeout(this.getData, Constants.timeoutAndIntervalSettings.graphTimeout);
+            setTimeout(this.getData2, Constants.timeoutAndIntervalSettings.graphTimeout);
         }
     };
 
     getData = () => {
         SensorDataAPI.getAll(this.props.sensorId).then(data => {
             if (data.data !== null || data.data !== undefined || data.data !== []) {
-                console.log("Sensor Data: " + JSON.stringify(data.data.sensorData[0].y[0]));
+                // console.log("Sensor Data: " + JSON.stringify(data.data.sensorData[0].y[0]));
+                data.data.sensorData[0].name = this.props.sensorId;
                 this.setState({
-                    data: data.data.sensorData,
-                    currentData: data.data.sensorData[0].y[0],
-                    loading: false,
+                    data1: data.data.sensorData,
+                    currentData1: data.data.sensorData[0].y[0],
+                    loading1: false,
                     statusCode: `Temperature Status Code: ${data.status}  `
                 });
             }
             ;
         });
     };
+
+    getData2 = () => {
+        const sensorId = "4564C02DE6B4-TempF";
+        SensorDataAPI.getAll(sensorId).then(data => {
+            if (data.data !== null || data.data !== undefined || data.data !== []) {
+                console.log("Sensor Data: " + JSON.stringify(data.data.sensorData[0].y[0]));
+                data.data.sensorData[0].marker = {color: 'blue'};
+                data.data.sensorData[0].name = sensorId;
+                this.setState({
+                    data2: data.data.sensorData,
+                    currentData2: data.data.sensorData[0].y[0],
+                    loading2: false,
+                    statusCode: `Temperature Status Code: ${data.status}  `
+                });
+            }
+            ;
+        });
+    };
+
+    conCatData = () => {
+        let returnData = [];
+        returnData.push(this.state.data1[0]);
+        returnData.push(this.state.data2[0]);
+        return returnData;
+    }
+
+    onSliderChange = (figure) => {
+        console.log("Figure: " + JSON.stringify(figure.data[0].x.length ));
+        // console.log("Graph DIV: " + JSON.stringify(graphDiv));
+    }
+
+
 //   render() {
 //     return(
 //     <div>
@@ -88,11 +132,12 @@ class ReusableGraph extends Component {
         return (
             <div>
                 <div style={{paddingLeft: '10px', color: 'black'}}>
-                    Sensor ID: {this.props.sensorId}
-                    <span style={{ color: 'purple', fontWeight: 'bold'}}> - Current Value: {this.state.currentData} {this.props.units}</span>
-                    {!this.state.loading ? <Plot
+                    <span style={{ color: 'blue', fontWeight: 'bold'}}>Sensor ID: {this.props.sensorId}</span>
+                    <span style={{ color: 'purple', fontWeight: 'bold'}}> - Current Value: {this.state.currentData1} {this.props.units}</span>
+                    {!this.state.loading1 && !this.state.loading2 ? <Plot
 
-                        data={this.state.data}
+                        data={this.props.graphData}
+                        onSelected={this.onSliderChange}
                         layout={this.state.layout}
                     /> : <div>
                         <h1>Your Graphs are Loading</h1>

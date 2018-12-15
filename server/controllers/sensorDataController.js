@@ -6,6 +6,7 @@ const controller = {
         console.log("In find by sensor id: " + req.params.sensorId);
         db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
+            // limit: 5,
             where: {
 
                 sensorId: req.params.sensorId
@@ -19,8 +20,6 @@ const controller = {
                     const pHy = [];
 
                     for (let i = 0; i < results.length; i++) {
-                    };
-                    for (let i = 0; i < results.length; i++) {
                         pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
                         pHy.push(JSON.parse(results[i].dataValueFloat));
                     };
@@ -29,12 +28,15 @@ const controller = {
                     const data = [{
                         x,
                         y,
+                        showlegend: false,
                         type: 'scatter',
                         mode: 'lines',
                         marker: { color: 'red' },
 
                     }];
-                    res.json({ sensorData: data, });
+                    res.json({
+                        sensorId: req.params.sensorId,
+                        sensorData: data, });
                 } catch (err) {
                     console.log("Error: " + err);
                 }

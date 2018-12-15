@@ -12,3 +12,10 @@
 .status-danger {
     color: red
 }
+
+.node-alert {
+    background-color: MistyRose
+}
+.sensor-alert {
+    background-color: LightCyan
+}

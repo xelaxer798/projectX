@@ -18,6 +18,16 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DOUBLE,
             allowNull: true
         },
+        currentValue: {
+            type: DataTypes.DOUBLE,
+            allowNull: true
+        },
+        alertType: {
+            type: DataTypes.STRING
+        },
+        nodeNonReportingTimeLimit: {
+            type: DataTypes.INTEGER
+        },
         status: {
             type: DataTypes.STRING,
             allowNull: true
@@ -28,6 +38,7 @@ module.exports = function (sequelize, DataTypes) {
 
     });
     Alerts.associate = (models) => {
+        Alerts.belongsTo(models.Nodes, {foreignKey: 'nodeId'});
         Alerts.belongsTo(models.Sensors, { foreignKey: 'sensorId' });
         Alerts.belongsToMany(models.Users, { through: 'AlertUsers' });
     };

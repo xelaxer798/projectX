@@ -33,7 +33,7 @@ const controller = {
     },
     updateAlertUsers: function (req, res){
         let updatedRecord = req.body.alert;
-        db.AlertUserss.update(updatedRecord,
+        db.AlertUsers.update(updatedRecord,
             {where:
                     {alertUsersId: updatedRecord.alertUsersId}
             })
@@ -44,7 +44,42 @@ const controller = {
                 console.log("Error: " + err);
                 res.status(422).json(err)
             })
+    },
+    updateAlertUsersLastNotification: function (lastNotification, alertUsersId) {
+        db.AlertUsers.update(
+            {
+                lastNotification: lastNotification
+            },
+            {
+                where: {alertUserId: alertUsersId}
+            }
+        )
+            .then(updatedUserAlert => {
+                console.log("Updated user alert: " + JSON.stringify(updatedUserAlert))
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+            })
+
+    },
+    resetLastNotification: function (alertUsersId) {
+        db.AlertUsers.update(
+            {
+                lastNotification: null
+            },
+            {
+                where: {alertUserId: alertUsersId}
+            }
+        )
+            .then(updatedUserAlert => {
+                console.log("Updated user alert: " + JSON.stringify(updatedUserAlert))
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+            })
+
     }
+
 };
 
 export {controller as default};

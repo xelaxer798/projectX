@@ -132,7 +132,7 @@ class App extends Component {
                 <Dashboard
      
                     logged={this.state.logged}
-                    component={Dashboard}
+                    component={Dashboard3}
                     userId={this.state.theId}
                     theUser={this.state.userDataObj}
                     {...props}
@@ -183,7 +183,7 @@ class App extends Component {
                                 )
                         )} />
 
-                        <Route exact path='/dashboard' render={RoutedDashBoard} />
+                        <Route exact path='/dashboard' render={RoutedDashBoard3} />
                         <Route exact path='/dashboard3' render={RoutedDashBoard3} />
                         <Route exact path='/user/view/all'component={AdminPages.AdminData.ViewAll} />
                         <Route exact path='/user/most/recent'  component={AdminPages.AdminData.MostRecent} />

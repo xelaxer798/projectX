@@ -49,11 +49,11 @@ class Dashboard3 extends Component {
                 {/*This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}*/}
 
                 <Grid container spacing={40}>
-                    <Grid item xs={8} lg={4}>
-                        <Graphs.Widgets.GraphWidget  sensorId={'7159BF2DE6B4-EC'} sensorName={'EC'} units={'mS'}/>
+                    <Grid item xs={12} lg={6}>
+                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget1"/>
                     </Grid>
-                    <Grid item xs={8} lg={4}>
-                        <Graphs.Widgets.GraphWidget  sensorId={'6943B32DE6B4-pH'} sensorName={'pH'} units={''}/>
+                    <Grid item xs={12} lg={6}>
+                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget2"/>
                     </Grid>
 
                 </Grid>

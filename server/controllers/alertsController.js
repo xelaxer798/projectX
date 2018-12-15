@@ -21,6 +21,9 @@ const controller = {
                     model: db.Users
                 },
                 {
+                    model: db.Nodes
+                },
+                {
                     all: true
                 }
             ],
@@ -35,6 +38,16 @@ const controller = {
                         displaySensorName = alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                     }
 
+                    let target = "";
+                    let criteria = "test";
+                    if(alert.alertType === "Sensor") {
+                        target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
+                        criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue;
+                    } else {
+                        target = "Node: " + alert.Node.nodeName;
+                        criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
+                    }
+
                     return Object.assign(
                         {},
                         {
@@ -42,15 +55,22 @@ const controller = {
                             alertName: alert.alertName,
                             highValue: alert.highValue,
                             lowValue: alert.lowValue,
+                            currentValue: alert.currentValue,
                             status: alert.status,
                             active: alert.active,
                             createdAt: alert.createdAt,
                             updatedAt: alert.updatedAt,
                             sensorId: alert.sensorId,
-                            sensorName: displaySensorName
+                            nodeId: alert.nodeId,
+                            alertType: alert.alertType,
+                            nodeNonReportingTimeLimit: alert.nodeNonReportingTimeLimit,
+                            sensorName: displaySensorName,
+                            target: target,
+                            criteria: criteria
                         }
                     )
                 });
+                console.log("ResObj: " + JSON.stringify(resObj));
                 res.json(resObj)
             })
             .catch(err => {
@@ -78,6 +98,25 @@ const controller = {
                 console.log("Error: " + err);
                 res.status(422).json(err)
             })
+    },
+
+    updateCurrentValueAndStatus: function(currentSensorValue, status, alertId) {
+        db.Alerts.update(
+            {
+                currentValue: currentSensorValue,
+                status: status
+
+            },
+            {
+                where: {alertId: alertId}
+            })
+            .then(updatedAlert => {
+                console.log("Updated alert: " + JSON.stringify(updatedAlert))
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+            })
+
     }
 };
 

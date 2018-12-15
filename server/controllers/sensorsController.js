@@ -29,6 +29,20 @@ const controller = {
             .catch(err => {
                 res.status(422).json(err);
             });
+    },
+
+    getSensorIdByNodeId: function(nodeId) {
+        console.log("Node ID: " + nodeId);
+        db.Sensors.findAll({
+            where: {
+                nodeId: nodeId
+            },
+            limit:1
+        })
+            .then(sensors => {
+                console.log("Return sensor: " + sensors[0].sensorId);
+                return sensors[0].sensorId
+            })
     }
 };
 
