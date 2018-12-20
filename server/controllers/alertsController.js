@@ -40,6 +40,7 @@ const controller = {
 
                     let target = "";
                     let criteria = "test";
+                    let relevantInfo = "";
                     if(alert.alertType === "Sensor") {
                         target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                         criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue;

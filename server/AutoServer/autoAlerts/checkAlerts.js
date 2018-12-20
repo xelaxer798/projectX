@@ -5,7 +5,8 @@ import alertsController from '../../controllers/alertsController';
 import sensorsController from '../../controllers/sensorsController';
 import moment from 'moment'
 
-const sengrido = process.env.sendgrid || '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';
+const sengrido = process.env.sendgrid;
+console.log("Mail api key: " + sengrido);
 sgMail.setApiKey(sengrido);
 
 
@@ -126,6 +127,7 @@ function hasReportingIntervalPassed(lastNotification, interval) {
 }
 
 export function processAlerts() {
+    console.log("Processing alerts");
 
     db.Users.findAll({
         include: [
@@ -151,9 +153,10 @@ export function processAlerts() {
             console.log("Alert Users Data: " + JSON.stringify(allUsers));
             allUsers.forEach((user) => {
                 user.Alerts.forEach((alert) => {
-                    console.log("Alert: " + JSON.stringify(alert));
+                    console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
                     if (alert.status === 'danger Will Robinson') {
-                        if (alert.AlertUsers.lastNotification == null) {
+                        console.log("We have a problem: " + JSON.stringify(alert));
+                        if (alert.AlertUsers.lastNotification === null) {
                             console.log("First time notification");
                             sgMail.send(createWarningMessage(alert, user.email));
                             alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);

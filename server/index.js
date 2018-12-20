@@ -17,9 +17,9 @@ export default path => {
     //1800000
     //30000
     //Start the autoserver.checkNodes to cache the last recored time. so that next time it can compare to see if it has updated.
-    autoServer.checkNodes();
+    // autoServer.checkNodes();
     // Start the interval of the autoserver.checkNodes to see if nodes haven't reported in last 30 minutes
-    setInterval(autoServer.checkNodes, 1800000);
+    // setInterval(autoServer.checkNodes, 1800000);
 
     autoServer.autoAlerts.checkAlerts();
     setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);

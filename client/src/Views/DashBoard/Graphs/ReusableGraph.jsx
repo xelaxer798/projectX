@@ -136,7 +136,7 @@ class ReusableGraph extends Component {
                     <span style={{ color: 'purple', fontWeight: 'bold'}}> - Current Value: {this.state.currentData1} {this.props.units}</span>
                     {!this.state.loading1 && !this.state.loading2 ? <Plot
 
-                        data={this.props.graphData}
+                        data={this.props.graphDataToPlot}
                         onSelected={this.onSliderChange}
                         layout={this.state.layout}
                     /> : <div>

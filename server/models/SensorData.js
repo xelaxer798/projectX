@@ -1,5 +1,3 @@
-
-
 module.exports = function (sequelize, DataTypes) {
     var SensorData = sequelize.define("SensorData", {
         sensorDataId: {
@@ -7,7 +5,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
         },
-     
+
         dataValueInt: {
             type: DataTypes.BIGINT,
             allowNull: true
@@ -20,13 +18,22 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        
 
+    }, {
+        indexes: [
+            {
+                fields: ['createdAt']
+            },
+            {
+                fields: ['sensorId']
+            }
+
+        ]
 
     });
     SensorData.associate = (models) => {
 
-        SensorData.belongsTo(models.Sensors, { foreignKey: 'sensorId' , constraints: false});
+        SensorData.belongsTo(models.Sensors, {foreignKey: 'sensorId', constraints: false});
     };
 
     return SensorData;

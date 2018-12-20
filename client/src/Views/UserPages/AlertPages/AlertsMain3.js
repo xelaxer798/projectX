@@ -14,6 +14,7 @@ import Button from 'react-validation/build/button'
 import {isEmail} from 'validator';
 import './foundation-flex.css';
 import EditAlertModal from './EditAlertModal'
+import Constants from "../../DashBoard/Constants";
 
 class AlertsMain3 extends Component {
 
@@ -46,6 +47,7 @@ class AlertsMain3 extends Component {
         this.requiredNodeAlert = this.requiredNodeAlert.bind(this);
         this.isInputGroupHidden = this.isInputGroupHidden.bind(this);
         this.handleAlertTypeDropdown = this.handleAlertTypeDropdown.bind(this);
+        this.getAlerts = this.getAlerts.bind(this);
     }
 
     blankAlert = {
@@ -93,6 +95,8 @@ class AlertsMain3 extends Component {
         this.getAlerts();
         this.getSensors();
         this.getNodes();
+        setInterval(this.getAlerts, 1000*60);
+
     };
 
     getAlerts() {

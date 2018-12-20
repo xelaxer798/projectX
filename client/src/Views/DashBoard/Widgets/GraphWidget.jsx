@@ -30,6 +30,9 @@ class GraphWidget extends Component {
         this.onSliderChange = this.onSliderChange.bind(this);
         this.handleOnSelect = this.handleOnSelect.bind(this);
         this.handleOnSelectAll = this.handleOnSelectAll.bind(this);
+        this.removePlots = this.removePlots.bind(this);
+        this.concatSensorData = this.concatSensorData.bind(this);
+        this.getVisibleBySensorId = this.getVisibleBySensorId.bind(this);
 
         this.state = {
             dropdownOpen1: false,
@@ -40,12 +43,14 @@ class GraphWidget extends Component {
             sensorName1: this.props.sensorName,
             units1: this.props.units,
             sensors: [],
-            graphs: [],
-            graphData: [],
+            graphDataToPlot: [],
             selectedGraphs: [],
             yAxis: [],
             layout: {},
-            clearPlotLabel: "Clear Plots",
+            removePlotLabel: {
+                label: "Remove Plot(s)",
+                disabled: true
+            },
             selected: []
         };
     }
@@ -125,10 +130,43 @@ class GraphWidget extends Component {
             dataField: 'lastReported',
             text: 'Last Reported',
             sort: true
+        }, {
+            dataField: 'visible',
+            text: 'Visible'
+        }, {
+            dataField: 'sensorData',
+            hidden: true
+
+        }, {
+            dataField: 'graphColor',
+            hidden: true
+        }, {
+            dataField: 'toggleVisible',
+            isDummyField: true,
+            text: '',
+            formatter: this.togleVisibility
         }
-        ];
+         ];
 
     }
+
+    togleVisibility = (cell, row, rowIndex, formatExtraData) => {
+        let buttonLabel="";
+        if(row.visible) {
+            buttonLabel = 'Hide'
+        } else {
+            buttonLabel = 'Show'
+        }
+        return (
+            <Button onClick={() => {
+                row.visible = !row.visible;
+                this.setState({
+                    graphDataToPlot: this.concatSensorData(this.state.selectedGraphs)
+                })
+            }}>
+                {buttonLabel}
+            </Button> );
+    };
 
     getSensors() {
         SensorApi.getAll().then(results => {
@@ -157,11 +195,15 @@ class GraphWidget extends Component {
             sensorId: optionSelected.value,
             sensorName: optionSelected.label,
             currentValue: 0,
-            lastReported: 0
+            lastReported: 0,
+            visible: true,
+            sensorData: [],
+            graphColor: {}
         });
-        // this.setState({graphs: graphs});
         console.log("Graphs1: " + JSON.stringify(this.state.selectedGraphs));
         this.setState({
+            selectedGraphs: selectedGraphs,
+            removePlotLabel: this.configRemovePlotBotton(selectedGraphs.length),
             loading: true
         });
         this.getData();
@@ -176,6 +218,29 @@ class GraphWidget extends Component {
             };
         }
     };
+
+    configRemovePlotBotton = (numberOfGraphs) => {
+
+        let disabled = true;
+        let label = "";
+        if(numberOfGraphs === 0) {
+            disabled = true;
+            label = "Remove Plot(s)"
+        } else if (numberOfGraphs === 1) {
+            disabled = false;
+            label = "Remove Plot"
+        } else {
+            disabled = false;
+            label = "Remove Plots"
+        }
+
+        return {
+            label: label,
+            disabled: disabled
+        }
+    };
+
+
 
     pushyAxisIfNecessary(units, arrayOfAxis) {
         const numberOfAxis = arrayOfAxis.length;
@@ -346,20 +411,21 @@ class GraphWidget extends Component {
             {color: 'magenta'}
         ];
         let yaxises = [];
-        let returnData = [];
+        // let returnData = [];
         // let temp = [];
         let promises = this.state.selectedGraphs.map(function (selectedGraphs) {
             console.log("Create promise: " + selectedGraphs.sensorId);
             return SensorDataAPI.getAll(selectedGraphs.sensorId);
         });
         let self = this;
-        let graphList = [];
+        let _selectedGraphs = [];
         Promise.all(promises).then(function (data) {
             console.log("in promise: " + JSON.stringify(data));
 
             if (data.data !== null || data.data !== undefined || data.data !== []) {
                 data.map(function (individualData, index) {
                     console.log("Individual data: " + JSON.stringify(individualData.data.sensorData));
+                    console.log("Individual data.visible: " + JSON.stringify(individualData));
                     let yAxis = self.pushyAxisIfNecessary(self.getUnitsBySensorId(individualData.data.sensorId), yaxises);
                     console.log("looking for a hit axisqq: " + JSON.stringify(yAxis));
                     if (yAxis !== "") {
@@ -368,14 +434,16 @@ class GraphWidget extends Component {
                     }
                     individualData.data.sensorData[0].marker = plotColors[index];
                     individualData.data.sensorData[0].name = self.getSensorNameBySensorId(individualData.data.sensorId);
-                    returnData.push(individualData.data.sensorData[0]);
+                    console.log("Individual data.visible: " + JSON.stringify(individualData));
                     const formattedDateTime = moment(individualData.data.sensorData[0].x[0]).format('MMM. D, YYYY [at] h:mm A z');
-                    graphList.push({
+                    _selectedGraphs.push({
                         sensorId: individualData.data.sensorId,
                         sensorName: self.getSensorNameBySensorId(individualData.data.sensorId),
+                        sensorData: individualData.data.sensorData[0],
                         currentValue: individualData.data.sensorData[0].y[0],
                         lastReported: formattedDateTime,
-                        graphColor: plotColors[index]
+                        graphColor: plotColors[index],
+                        visible: self.getVisibleBySensorId(individualData.data.sensorId)
                     });
                 })
 
@@ -386,15 +454,39 @@ class GraphWidget extends Component {
             console.log("Y axis: " + JSON.stringify(yaxises));
             console.log("Graphs2.1: " + JSON.stringify(this.state.graphs));
             this.setState({
-                graphData: returnData,
-                graphs: graphList,
+                graphDataToPlot: this.concatSensorData(_selectedGraphs),
+                selectedGraphs: _selectedGraphs,
                 loading: false
             });
             console.log("Graphs2.2: " + JSON.stringify(this.state.graphs));
-            console.log("Data 2.2: " + JSON.stringify(this.state.graphData));
+            console.log("Data 2.2: " + JSON.stringify(this.state.graphDataToPlot));
 
         })
     }
+
+    getVisibleBySensorId = (sensorId) =>{
+        for(let i = 0 ; i < this.state.selectedGraphs.length; i++) {
+            if(this.state.selectedGraphs[i].sensorId === sensorId) {
+                return this.state.selectedGraphs[i].visible;
+            }
+        }
+        //if we got here there are no hits
+        return null;
+    };
+
+    concatSensorData = (selectedGraphs) => {
+        // console.log("Entering concat data: " + JSON.stringify(selectedGraphs));
+        let returnData = [];
+        selectedGraphs.forEach(graph =>{
+            if(graph.visible) {
+                returnData.push(graph.sensorData)
+            }
+
+        });
+        // console.log("Return concat data: " + JSON.stringify(returnData));
+        return returnData;
+    };
+
 
     handleOnSelect = (row, isSelect) => {
         console.log("Selected rows before: " + this.state.selected);
@@ -424,6 +516,22 @@ class GraphWidget extends Component {
         console.log("Selected rows: " + this.state.selected);
     };
 
+    removePlots = (event) => {
+        // console.log("Remove plot event: " + JSON.stringify(event.target.value));
+        // console.log("Selected rows for remove: " + JSON.stringify(this.state.selected));
+        // console.log("Selected graphs before removal: " + JSON.stringify(this.state.selectedGraphs));
+        let _selectedGraphs = this.state.selectedGraphs.filter(graph => {
+            return this.state.selected.indexOf(graph.sensorId) === -1
+        });
+        // console.log("Selected graphs after removal: " + JSON.stringify(_selectedGraphs));
+        this.setState({
+            selected: [],
+            selectedGraphs: _selectedGraphs,
+            removePlotLabel: this.configRemovePlotBotton(_selectedGraphs.length),
+            graphDataToPlot: this.concatSensorData(_selectedGraphs)
+        });
+    };
+
 
 
     render() {
@@ -446,19 +554,16 @@ class GraphWidget extends Component {
                             onChange={this.handleSelectChange}/>
                     </Grid>
                     <Grid item xs={2} lg={2}>
-                        <Button onClick={this.clearSensors}>{this.state.clearPlotLabel}</Button>
+                        <Button
+                            onClick={this.removePlots}
+                        disabled={this.state.removePlotLabel.disabled}>{this.state.removePlotLabel.label}</Button>
                     </Grid>
-                    <Grid  item xs={2} lg={2}>
-                        <button onClick={() => clearStorage(this.props.uniqueId)}>
-                            clearStorage
-                        </button>
-                    </Grid>
-                </Grid>
+                 </Grid>
 
 
                 <BootstrapTable
                     ref={n => this.node = n}
-                    data={this.state.graphs}
+                    data={this.state.selectedGraphs}
                     striped={true}
                     condensed={true}
                     bootstrap4={true}
@@ -474,7 +579,7 @@ class GraphWidget extends Component {
                     <div style={{paddingLeft: '10px', color: 'black'}}>
                         {!this.state.loading ? <Plot
 
-                            data={this.state.graphData}
+                            data={this.state.graphDataToPlot}
                             onSelected={this.onSliderChange}
                             layout={this.state.layout}
                             useResizeHandler={true}
@@ -487,10 +592,6 @@ class GraphWidget extends Component {
                     </div>
                 </div>
 
-                {/*<Graphs.Graphs.ReusableGraph sensorId={this.state.sensorId1}*/}
-                {/*sensorName={this.state.sensorName1}*/}
-                {/*graphData={this.state.graphData}*/}
-                {/*units={this.state.units1}/>*/}
             </div>
         )
     }

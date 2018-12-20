@@ -6,7 +6,7 @@ const controller = {
         console.log("In find by sensor id: " + req.params.sensorId);
         db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
-            // limit: 5,
+            // limit: 2,
             where: {
 
                 sensorId: req.params.sensorId

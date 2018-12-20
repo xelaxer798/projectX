@@ -31,3 +31,7 @@ yarn-error.log*
 react-paypal-express-checkout.zip
 #DONT IGNORE YARN.LOCK, THIS IS NEEDED FOR HEROKU
 !yarn.lock
+20181120sensorData.csv
+20181120sensorData.json
+20181120sensors.csv
+database
