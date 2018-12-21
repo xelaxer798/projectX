@@ -135,12 +135,12 @@ class Navbar extends Component {
 
         const sideList = (
             <div styles={styles.list}>
-                {!this.props.logged ? <a href='/'> <ListItem button on>
+                {!this.props.logged ? <a href='/'> <ListItem button >
                     <ListItemIcon>
                         <HomeIcon/>
                     </ListItemIcon>
                     <ListItemText primary="Home"/>
-                </ListItem> </a> : <a href='/dashboard'> <ListItem button on>
+                </ListItem> </a> : <a href='/dashboard'> <ListItem button >
                     <ListItemIcon>
                         <DashboardIcon/>
                     </ListItemIcon>
@@ -159,6 +159,13 @@ class Navbar extends Component {
                         <SettingsIcon/>
                     </ListItemIcon>
                     <ListItemText primary="Alerts"/>
+                </ListItem></a> : <div/>}
+
+                {this.props.logged ? <a href='/nodes'> <ListItem button>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Nodes"/>
                 </ListItem></a> : <div/>}
 
                 {this.props.logged ? <a href='/user/account'> <ListItem button>

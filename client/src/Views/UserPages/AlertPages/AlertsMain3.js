@@ -239,7 +239,60 @@ class AlertsMain3 extends Component {
             }
         ];
 
-        return columns;
+        return [{
+            dataField: 'alertId',
+            text: 'Alert ID',
+            sort: true,
+            hidden: true,
+            classes: AlertsMain3.setStatusColor
+        }, {
+            dataField: 'alertName',
+            text: 'Alert Name',
+            sort: true,
+            hidden: true
+        }, {
+            dataField: 'target',
+            text: 'Target',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
+        }, {
+            dataField: 'criteria',
+            text: 'Criteria',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
+        },
+            //     {
+            //     dataField: 'lowValue',
+            //     text: 'Low Value',
+            //     style: {
+            //         width: '20px'
+            //     },
+            //     classes: this.setStatusColor
+            // }, {
+            //     dataField: 'highValue',
+            //     text: 'High Value',
+            //     classes: this.setStatusColor
+            // },
+            //     {
+            //     dataField: 'currentValue',
+            //     text: 'Current Value',
+            //     classes: this.setStatusColor
+            // },
+            {
+                dataField: 'status',
+                text: 'Status',
+                classes: AlertsMain3.setStatusColor
+            }, {
+                dataField: 'sensorName',
+                text: 'Sensor Name',
+                hidden: true
+            }, {
+                dataField: 'active',
+                text: 'Active',
+                classes: AlertsMain3.setStatusColor,
+                formatter: AlertsMain3.checkBoxFormatter
+            }
+        ];
 
     }
 
@@ -408,8 +461,7 @@ class AlertsMain3 extends Component {
         } else
             return (
                 <div>
-                    <button className="btn btn-default" onClick={this.newRecord}>New</button>
-                    <button className="btn btn-default" onClick={this.newRecord2}>New2</button>
+
 
                     <BootstrapTable
                         ref={n => this.node = n}

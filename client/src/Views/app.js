@@ -18,6 +18,7 @@ import NotFound from './404Page/404Page'
 import AlertsMain  from "./UserPages/AlertPages/AlertsMain";
 import AlertsMain2 from "./UserPages/AlertPages/AlertsMain2";
 import AlertsMain3 from "./UserPages/AlertPages/AlertsMain3";
+import NodesMain from "./UserPages/NodesPages/NodesMain";
 
 class App extends Component {
     state = {
@@ -104,6 +105,12 @@ class App extends Component {
                 />
             );
         };
+        const RoutedNodesPage = (props) => {
+            return (
+                <NodesMain/>
+            )
+        };
+
         const RoutedHelpPage = (props) => {
             return (
                 <HelpPages.Help
@@ -190,6 +197,7 @@ class App extends Component {
                         <Route exact path='/signup' component={UserPages.SignUp} />
                         <Route exact path='/user/account' render={RoutedAccountPage} />
                         <Route exact path='/alerts' render={RoutedAlertsPage} />
+                        <Route exact path='/nodes' render={RoutedNodesPage} />
                         <Route exact path='/verification/:id' component={UserPages.Verification} />
                         <Route exact path='/reset/:token' component={UserPages.ResetPassword.resetPassword} />
                         <Route exact path='/password/reset' component={UserPages.ResetPassword.recover} />

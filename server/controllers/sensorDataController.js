@@ -47,11 +47,24 @@ const controller = {
             });
     },
     create: function (req, res) {
-        console.log("JSON input: " + req.body);
+        console.log("zzJSON input: " + JSON.stringify(req.body));
         db.SensorData.bulkCreate(req.body.sensorData)
             .then(dbModel => {
                 console.log("DB Model: " + dbModel);
                 res.json(dbModel);
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+                res.status(422).json(err)
+            });
+        db.Nodes.update(
+            {lastUpdate: new Date()},
+            {where: {
+                nodeId: req.body.nodeId
+                }}
+        )
+            .then(dbModel => {
+                console.log("zzJSON input update node: " + JSON.stringify(dbModel))
             })
             .catch(err => {
                 console.log("Error: " + err);
