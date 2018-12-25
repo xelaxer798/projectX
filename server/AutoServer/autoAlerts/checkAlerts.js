@@ -24,50 +24,89 @@ export function checkAlerts() {
                     whereClause = {
                         sensorId: alert.sensorId
                     }
-                } else if (alert.alertType === "Node") {
-                    // const nodeSensorId = sensorsController.getSensorIdByNodeId(alert.nodeId);
-                    // console.log("Sensor ID from node: " + nodeSensorId);
-                    // sensorId = nodeSensorId;
-                    includeClause = [{
-                        model: db.Sensors,
-                         where: {
-                            nodeId: alert.nodeId
-                         }
-                    }]
 
-                }
-                db.SensorData.findAll({
-                    where: whereClause,
-                    include: includeClause,
-                    limit: 1,
-                    order: [['createdAt', 'DESC']]
-                })
-                    .then(sensorData => {
-                        let currentSensorData = sensorData[0];
-                        if(alert.alertType === "Sensor") {
-                            let currentSensorValue = currentSensorData.dataValueFloat;
-                            console.log("Sensor Dataz: " + JSON.stringify(sensorData));
+                    db.Sensors.findAll({
+                        where: {sensorId: alert.sensorId}
+                    })
+                        .then((sensor) => {
+                            console.log("Returned sensor: " + JSON.stringify(sensor))
+                            console.log("Alert high value: " + alert.highValue + " low value: " + alert.lowValue)
                             let highValue = alert.highValue;
                             let lowValue = alert.lowValue;
                             let newStatus = "";
-                            if (currentSensorValue >= lowValue && currentSensorValue <= highValue) {
+                            if (sensor[0].currentValue >= lowValue && sensor[0].currentValue <= highValue) {
+                                console.log("set ot a-ok");
                                 newStatus = "a-ok"
                             } else {
+                                console.log("set to danger");
                                 newStatus = "danger Will Robinson"
                             }
-                            alertsController.updateCurrentValueAndStatus(currentSensorValue, newStatus, alert.alertId)
+                            alertsController.updateCurrentValueAndStatus(sensor.currentValue, newStatus, alert.alertId)
 
-                        } else if (alert.alertType === "Node") {
-                            console.log("Checking node alert: " + JSON.stringify(currentSensorData));
+                        })
+                    return null;
+                } else if (alert.alertType === "Node") {
+
+                    db.Nodes.findAll({
+                        where: {nodeId: alert.nodeId}
+                    })
+                        .then((node) => {
+                            console.log("Checking node alert: " + JSON.stringify(node));
                             let newStatus = "";
-                            if (hasReportingIntervalPassed(moment(currentSensorData.createdAt), alert.nodeNonReportingTimeLimit)) {
+                            if (hasReportingIntervalPassed(moment(node.lastUpdate), alert.nodeNonReportingTimeLimit)) {
                                 newStatus = "danger Will Robinson"
                             } else {
                                 newStatus = "a-ok"
                             }
                             alertsController.updateCurrentValueAndStatus(0, newStatus, alert.alertId)
-                        }
-                   })
+
+                        })
+                    return null
+                    // const nodeSensorId = sensorsController.getSensorIdByNodeId(alert.nodeId);
+                    // console.log("Sensor ID from node: " + nodeSensorId);
+                    // sensorId = nodeSensorId;
+                    // includeClause = [{
+                    //     model: db.Sensors,
+                    //      where: {
+                    //         nodeId: alert.nodeId
+                    //      }
+                    // }]
+
+                }
+
+
+                // db.SensorData.findAll({
+                //     where: whereClause,
+                //     include: includeClause,
+                //     limit: 1,
+                //     order: [['createdAt', 'DESC']]
+                // })
+                //     .then(sensorData => {
+                //         let currentSensorData = sensorData[0];
+                //         if(alert.alertType === "Sensor") {
+                //             let currentSensorValue = currentSensorData.dataValueFloat;
+                //             console.log("Sensor Dataz: " + JSON.stringify(sensorData));
+                //             let highValue = alert.highValue;
+                //             let lowValue = alert.lowValue;
+                //             let newStatus = "";
+                //             if (currentSensorValue >= lowValue && currentSensorValue <= highValue) {
+                //                 newStatus = "a-ok"
+                //             } else {
+                //                 newStatus = "danger Will Robinson"
+                //             }
+                //             alertsController.updateCurrentValueAndStatus(currentSensorValue, newStatus, alert.alertId)
+                //
+                //         } else if (alert.alertType === "Node") {
+                //             console.log("Checking node alert: " + JSON.stringify(currentSensorData));
+                //             let newStatus = "";
+                //             if (hasReportingIntervalPassed(moment(currentSensorData.createdAt), alert.nodeNonReportingTimeLimit)) {
+                //                 newStatus = "danger Will Robinson"
+                //             } else {
+                //                 newStatus = "a-ok"
+                //             }
+                //             alertsController.updateCurrentValueAndStatus(0, newStatus, alert.alertId)
+                //         }
+                //    })
             })
         })
 
