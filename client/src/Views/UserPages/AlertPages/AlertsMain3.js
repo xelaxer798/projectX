@@ -461,6 +461,7 @@ class AlertsMain3 extends Component {
         } else
             return (
                 <div>
+                    <button className="btn btn-default" onClick={this.newRecord}>New</button>
 
 
                     <BootstrapTable

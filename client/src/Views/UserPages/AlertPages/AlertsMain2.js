@@ -13,7 +13,6 @@ import CRUDTable,
     DeleteForm,
 } from 'react-crud-table';
 
-import './react-crud-table.css';
 
 class AlertsMain2 extends Component {
 
