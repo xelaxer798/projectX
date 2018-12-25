@@ -1,4 +1,5 @@
 import db from "../models";
+import moment from "moment";
 
 const controller = {
 
@@ -41,12 +42,22 @@ const controller = {
                     let target = "";
                     let criteria = "test";
                     let relevantInfo = "";
+                    let current = "";
                     if(alert.alertType === "Sensor") {
                         target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
-                        criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue;
+                        criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue + " " + alert.Sensor.units;
+                        current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
                     } else {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
+                        console.log("zzzNode: " + JSON.stringify(alert.Node));
+                        const now = moment(new Date());
+                        let lastUpdate = moment(alert.Node.lastUpdate);
+                        let elapsedTime = moment.duration(now.diff(lastUpdate));
+                        let elapseTimeMinutes = Math.ceil(elapsedTime.asMinutes());
+                        console.log("Minutes: " + elapseTimeMinutes);
+                        current = "Last Reported: " + lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
+                            + " (" + elapseTimeMinutes +   " min)"
                     }
 
                     return Object.assign(
@@ -67,7 +78,8 @@ const controller = {
                             nodeNonReportingTimeLimit: alert.nodeNonReportingTimeLimit,
                             sensorName: displaySensorName,
                             target: target,
-                            criteria: criteria
+                            criteria: criteria,
+                            current: current
                         }
                     )
                 });

@@ -205,6 +205,11 @@ class AlertsMain3 extends Component {
             text: 'Criteria',
             sort: true,
             classes: AlertsMain3.setStatusColor
+        }, {
+            dataField: 'current',
+            text: 'Current',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
         },
             //     {
             //     dataField: 'lowValue',
@@ -260,9 +265,14 @@ class AlertsMain3 extends Component {
             text: 'Criteria',
             sort: true,
             classes: AlertsMain3.setStatusColor
-        },
+        }, {
             //     {
-            //     dataField: 'lowValue',
+            dataField: 'current',
+            text: 'Current',
+            sort: true,
+            classes: AlertsMain3.setStatusColor
+    },
+    //     dataField: 'lowValue',
             //     text: 'Low Value',
             //     style: {
             //         width: '20px'
