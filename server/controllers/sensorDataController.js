@@ -1,6 +1,5 @@
 import db from "../models";
 import functions from "../Functions";
-import SensorDataAPI from "../../client/src/Data/sensorData-api";
 
 const controller = {
     findBySensorId: function (req, res) {
