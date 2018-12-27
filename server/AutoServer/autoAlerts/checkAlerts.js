@@ -53,7 +53,7 @@ export function checkAlerts() {
                         .then((node) => {
                             console.log("Checking node alert: " + JSON.stringify(node));
                             let newStatus = "";
-                            if (hasReportingIntervalPassed(moment(node.lastUpdate), alert.nodeNonReportingTimeLimit)) {
+                            if (hasReportingIntervalPassed(moment(node[0].lastUpdate), alert.nodeNonReportingTimeLimit)) {
                                 newStatus = "danger Will Robinson"
                             } else {
                                 newStatus = "a-ok"
@@ -120,7 +120,7 @@ function createSensorWarningHTML(alert, color) {
         returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
         returnHtml += "<strong>High limit: </strong>" + alert.highValue + "<br/>";
         returnHtml += "<strong>Low Limit: </strong>" + alert.lowValue + "<br/>";
-        returnHtml += "<span style=\"color:" + color + "\"><strong>Current Value: </strong>" + alert.currentValue + "<br/></span>";
+        returnHtml += "<span style=\"color:" + color + "\"><strong>Current Value: </strong>" + alert.Sensor.currentValue + "<br/></span>";
 
     } else if (alert.alertType === "Node") {
         returnHtml += "<strong>Node Name: </strong>" + alert.Node.nodeName + "<br/>";
@@ -153,8 +153,12 @@ function createBackToNormalMessage(alert, recipient) {
     }
 }
 function hasReportingIntervalPassed(lastNotification, interval) {
+    console.log("Last notification:  " + lastNotification.format('MMM. D, YYYY [at] h:mm A z'));
     const currentTime = moment(new Date());
-    const difference = currentTime.diff(lastNotification, 'minutes');
+    const duration = moment.duration(currentTime.diff(lastNotification));
+    const difference = duration.asMinutes();
+    console.log("Current Time: " + currentTime.format('MMM. D, YYYY [at] h:mm A z'));
+    console.log("Last notification:  " + lastNotification.format('MMM. D, YYYY [at] h:mm A z'));
     console.log("Difference: " + difference);
     console.log("Interval: " + interval);
     if (difference >= interval) {
