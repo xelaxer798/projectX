@@ -15,6 +15,7 @@ import {isEmail} from 'validator';
 import './foundation-flex.css';
 import EditAlertModal from './EditAlertModal'
 import Constants from "../../DashBoard/Constants";
+import moment from 'moment';
 
 class AlertsMain3 extends Component {
 
@@ -100,7 +101,9 @@ class AlertsMain3 extends Component {
     };
 
     getAlerts() {
-        AlertsApi.getAlerts().then(results => {
+        let timezone = encodeURIComponent(moment.tz.guess());
+        console.log("Timezone: " + timezone);
+        AlertsApi.getAlerts(timezone).then(results => {
             this.setState({
                 alerts: results.data,
                 loading: false

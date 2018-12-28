@@ -5,6 +5,8 @@ const controller = {
 
     getAlerts: function (req, res) {
         console.log("Get alerts");
+        let timezone = decodeURIComponent(req.params.timezone);
+        console.log("Timezone: " + timezone);
         db.Alerts.findAll({
             include: [
                 {
@@ -51,8 +53,8 @@ const controller = {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
                         console.log("zzzNode: " + JSON.stringify(alert.Node));
-                        const now = moment(new Date());
-                        let lastUpdate = moment(alert.Node.lastUpdate);
+                        const now = moment(new Date()).tz(timezone);
+                        let lastUpdate = moment(alert.Node.lastUpdate).tz(timezone);
                         let elapsedTime = moment.duration(now.diff(lastUpdate));
                         let elapseTimeMinutes = Math.ceil(elapsedTime.asMinutes());
                         console.log("Minutes: " + elapseTimeMinutes);

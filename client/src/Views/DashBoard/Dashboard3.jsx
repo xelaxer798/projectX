@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 // "2018-04-25T04:41:30.000Z"
 class Dashboard3 extends Component {
     state = {
-        CurrentTime: moment().tz("America/Los_Angeles").format(),
+        CurrentTime: moment().format(),
         timeFormated: functions.getDashboardFormateTime('dont'),
     };
     componentDidCatch = (error, info) => {
@@ -21,7 +21,7 @@ class Dashboard3 extends Component {
     };
     updateTime = () => {
         this.setState({
-            CurrentTime: moment().tz("America/Los_Angeles").format(),
+            CurrentTime: moment().format(),
             timeFormated: functions.getDashboardFormateTime('dont')
         });
     };
