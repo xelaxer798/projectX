@@ -3,7 +3,10 @@ import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import NodeApi from '../../../Data/nodes-api'
 import moment from "moment";
-
+import ReactTable from "react-table";
+import 'react-table/react-table.css'
+import './NodeMain.css'
+import EditNodeModal from "./EditNodeModal";
 
 class NodesMain extends Component {
 
@@ -13,13 +16,25 @@ class NodesMain extends Component {
             nodes: [{
                 nodeId: '1',
                 nodeName: 'placeholder'
-            }]
-        }
-        this.getNodes = this.getNodes.bind(this);
+            }],
+            modalIsOpen: false,
+            nodeToEdit: {}
+
+        };
+        // this.getNodes = this.getNodes.bind(this);
+        // this.closeModal = this.closeModal.bind(this);
+        // this.editNode = this.editNode.bind(this);
 
     }
 
-    getNodes() {
+    closeModal = () => {
+        this.setState({
+            modalIsOpen: false
+        });
+    };
+
+
+    getNodes = () => {
         console.log("Get all nodes");
         NodeApi.getNodes().then(results => {
             console.log("Get all nodes: " + JSON.stringify(results.data));
@@ -39,8 +54,7 @@ class NodesMain extends Component {
             .catch(err => {
                 console.log("Error: " + err);
             })
-    }
-
+    };
 
 
     componentDidMount = () => {
@@ -49,48 +63,85 @@ class NodesMain extends Component {
 
     };
 
+    editNode = (state, rowInfo, column, instance, e) => {
+        console.log("Edit node: " + e);
+        console.log("Cell - onDoubleClick", {
+            state,
+            rowInfo,
+            column,
+            instance,
+            e: e
+        })
+        this.setState({
+            modalIsOpen:true,
+            nodeToEdit: this.state.nodes[rowInfo.index]
+        })
+    };
+
 
     render() {
         const columns = [{
-            dataField: 'nodeId',
-            text: 'Node ID'
+            accessor: 'nodeId',
+            Header: 'Node ID'
         }, {
-            dataField: 'nodeName',
-            text: 'Node Name'
+            accessor: 'nodeName',
+            Header: 'Node Name'
         }, {
-            dataField: 'lastUpdate',
-            text: 'Last Update',
-            formatter:  dateFormatter
+            accessor: 'lastUpdate',
+            Header: 'Last Update',
+            Cell: dateFormatter
         }];
 
-        function dateFormatter(cell, row) {
-            console.log("Cell contents: " + JSON.stringify(cell));
-            if (cell) {
-                return moment(cell).format('MMM. D, YYYY [at] h:mm A z');
+        function dateFormatter(row, Object) {
+            console.log("Cell contents: " + JSON.stringify(row.value));
+            if (row.value) {
+                return moment(row.value).format('MMM. D, YYYY [at] h:mm A z');
             } else {
                 return "";
             }
-           // ?const formattedDateTime = moment(cell.getDate()).format('MMM. D, YYYY [at] h:mm A z');
+            // ?const formattedDateTime = moment(cell.getDate()).format('MMM. D, YYYY [at] h:mm A z');
 
             // return `${('0' + cell.getDate()).slice(-2)}/${('0' + (cell.getMonth() + 1)).slice(-2)}/${cell.getFullYear()}`;
-         }
+        }
+
 
         return (
-            <BootstrapTable
-                ref={n => this.node = n}
-                data={this.state.nodes}
-                striped={true}
-                condensed={true}
-                // defaultSorted={this.defaultSorted}
-                bootstrap4={true}
-                classes="table-class"
-                // cellEdit={cellEditFactory({mode: 'click', blurToSave: true})}
-                keyField='nodeId'
-                // selectRow={this.selectRow}
-                // rowEvents={this.rowEvents}
-                columns={columns}>
+            <div>
+                {/*<BootstrapTable*/}
+                {/*ref={n => this.node = n}*/}
+                {/*data={this.state.nodes}*/}
+                {/*striped={true}*/}
+                {/*condensed={true}*/}
+                {/*// defaultSorted={this.defaultSorted}*/}
+                {/*bootstrap4={true}*/}
+                {/*classes="table-class"*/}
+                {/*// cellEdit={cellEditFactory({mode: 'click', blurToSave: true})}*/}
+                {/*keyField='nodeId'*/}
+                {/*// selectRow={this.selectRow}*/}
+                {/*// rowEvents={this.rowEvents}*/}
+                {/*columns={columns}>*/}
 
-            </BootstrapTable>
+                {/*</BootstrapTable>*/}
+                <ReactTable
+                    data={this.state.nodes}
+                    columns={columns}
+                    className="-striped -highlight"
+                    defaultPageSize={10}
+                     getTdProps={(state, rowInfo, column, instance) => {
+                        return {
+                            onDoubleClick: (e) => {
+                                this.editNode(state,rowInfo,column,instance,e)
+                            }
+                        };
+                    }}
+                />
+                <EditNodeModal isOpen={this.state.modalIsOpen}
+                               closeModal={this.closeModal}
+                nodeToEdit={this.state.nodeToEdit}/>
+
+            </div>
+
+
         )
 
     }

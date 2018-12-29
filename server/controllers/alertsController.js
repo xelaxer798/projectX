@@ -1,5 +1,6 @@
 import db from "../models";
 import moment from "moment";
+import functions from "../Functions/index"
 
 const controller = {
 
@@ -53,13 +54,9 @@ const controller = {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
                         console.log("zzzNode: " + JSON.stringify(alert.Node));
-                        const now = moment(new Date()).tz(timezone);
-                        let lastUpdate = moment(alert.Node.lastUpdate).tz(timezone);
-                        let elapsedTime = moment.duration(now.diff(lastUpdate));
-                        let elapseTimeMinutes = Math.ceil(elapsedTime.asMinutes());
-                        console.log("Minutes: " + elapseTimeMinutes);
+                        let {lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings(timezone, alert);
                         current = "Last Reported: " + lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
-                            + " (" + elapseTimeMinutes +   " min)"
+                            + " (" + elapseTimeString +   ")"
                     }
 
                     return Object.assign(

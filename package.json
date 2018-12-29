@@ -83,6 +83,7 @@
     "react-router-dom": "^4.2.2",
     "react-select": "^2.1.2",
     "react-simple-storage": "^1.4.0",
+    "react-table": "^6.8.6",
     "react-validation": "^3.0.7",
     "reactstrap": "^6.5.0",
     "sass-loader": "^6.0.6",
