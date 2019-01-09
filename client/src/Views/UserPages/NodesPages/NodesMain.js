@@ -7,6 +7,7 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import './NodeMain.css'
 import EditNodeModal from "./EditNodeModal";
+import functions from "../../../Functions/index";
 
 class NodesMain extends Component {
 
@@ -94,8 +95,9 @@ class NodesMain extends Component {
 
         function dateFormatter(row, Object) {
             console.log("Cell contents: " + JSON.stringify(row.value));
+            let {lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", row.value);
             if (row.value) {
-                return moment(row.value).format('MMM. D, YYYY [at] h:mm A z');
+                return moment(row.value).format('MMM. D, YYYY [at] h:mm A z') + "(" + elapseTimeString + ")";
             } else {
                 return "";
             }

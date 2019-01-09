@@ -21,11 +21,11 @@ export default path => {
     // Start the interval of the autoserver.checkNodes to see if nodes haven't reported in last 30 minutes
     // setInterval(autoServer.checkNodes, 1800000);
 
-    autoServer.autoAlerts.checkAlerts();
-    setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);
-
-    autoServer.autoAlerts.processAlerts();
-    setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
+    // autoServer.autoAlerts.checkAlerts();
+    // setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);
+    //
+    // autoServer.autoAlerts.processAlerts();
+    // setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
 
     app.use(express.static(`${path}/client`));
 
@@ -37,6 +37,7 @@ export default path => {
     app.use("/api/sensorData", routers.sensorData);
     app.use("/api/sensors", routers.sensors);
     app.use("/api/alerts", routers.alerts);
+    app.use("/api/sensorErrors", routers.sensorErrors);
     // Any non API GET routes will be directed to our React App and handled by React Router
     app.get("*", (req, res) => {
         res.sendFile(`${path}/client/index.html`);

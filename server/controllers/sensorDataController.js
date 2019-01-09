@@ -1,15 +1,19 @@
 import db from "../models";
 import functions from "../Functions";
+import moment from 'moment';
+import {Op} from 'sequelize'
 
 const controller = {
     findBySensorId: function (req, res) {
         console.log("In find by sensor id: " + req.params.sensorId);
+        let onDayAgo = moment().subtract(req.params.timePeriod, 'hours');
         db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
             // limit: 2,
             where: {
 
-                sensorId: req.params.sensorId
+                sensorId: req.params.sensorId,
+                createdAt: {[Op.gte]: onDayAgo}
 
             }
         })

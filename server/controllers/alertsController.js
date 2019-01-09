@@ -34,7 +34,7 @@ const controller = {
             order: ['alertName'],
         })
             .then(dbModel => {
-                console.log("Alerts: " + JSON.stringify(dbModel));
+                console.log("Alerts returned: " + JSON.stringify(dbModel));
                 const resObj = dbModel.map(alert => {
                     console.log("Alert: " + JSON.stringify(alert));
                     let displaySensorName = "";
@@ -49,13 +49,14 @@ const controller = {
                     if(alert.alertType === "Sensor") {
                         target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                         criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue + " " + alert.Sensor.units;
-                        current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
+                        // current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
                     } else {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
                         console.log("zzzNode: " + JSON.stringify(alert.Node));
-                        let {lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings(timezone, alert);
-                        current = "Last Reported: " + lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
+                        let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings(timezone, alert.Node.lastUpdate);
+                        console.log("Another last update: " + _lastUpdate + " " + elapseTimeString);
+                        current = "Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
                             + " (" + elapseTimeString +   ")"
                     }
 

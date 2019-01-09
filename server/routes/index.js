@@ -6,6 +6,7 @@ import nodes from './nodes';
 import sensorData from './sensorData';
 import sensors from './sensors'
 import alerts from './alerts'
+import sensorErrors from './sensorErrors';
 
 const routers = {
     nodeData,
@@ -15,7 +16,8 @@ const routers = {
     nodes,
     sensorData,
     sensors,
-    alerts
+    alerts,
+    sensorErrors
 };
 export {
     routers as default,

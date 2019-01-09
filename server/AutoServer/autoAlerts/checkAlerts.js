@@ -126,8 +126,8 @@ function createSensorWarningHTML(alert, color) {
     } else if (alert.alertType === "Node") {
         returnHtml += "<strong>Node Name: </strong>" + alert.Node.nodeName + "<br/>";
         returnHtml += "<strong>Has not reported in at least: </strong>" + alert.nodeNonReportingTimeLimit + " minutes<br/>";
-        let {lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert);
-        returnHtml += "<strong>Last Reported: </strong>" + lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
+        let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
+        returnHtml += "<strong>Last Reported: </strong>" + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
             + " (" + elapseTimeString +   ")"
 
     }
