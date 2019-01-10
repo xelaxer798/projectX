@@ -49,7 +49,7 @@ const controller = {
                     if(alert.alertType === "Sensor") {
                         target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                         criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue + " " + alert.Sensor.units;
-                        // current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
+                        current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
                     } else {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
