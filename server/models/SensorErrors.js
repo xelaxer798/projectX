@@ -1,6 +1,6 @@
 module.exports = function (sequelize, DataTypes) {
     var SensorErrors = sequelize.define("SensorErrors", {
-        sensorDataId: {
+        sensorErrorId: {
             primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,

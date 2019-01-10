@@ -25,6 +25,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star'
 import {otherMailFolderListItems} from './DataFile';
+import LeafLiftLogo from "../../Images/Leaf.png";
+import TheProfessorLogo from "../../Images/TheProfessorLogo.png"
+import {Col, Container, Row} from 'react-grid-system';
+import moment from "moment";
+import functions from "../../Functions";
+
 
 const styles = {
     root: {
@@ -60,7 +66,9 @@ class Navbar extends Component {
         anchorEl: null,
         openMenu: false,
         menu: false,
-        admin: false
+        admin: false,
+        CurrentTime: moment().format(),
+        timeFormated: functions.getDashboardFormateTime('dont'),
 
     };
     componentDidMount = () => {
@@ -69,8 +77,16 @@ class Navbar extends Component {
                 admin: true
             });
         }
-        ;
+        setInterval(this.updateTime, 1000);
+
     };
+    updateTime = () => {
+        this.setState({
+            CurrentTime: moment().format(),
+            timeFormated: functions.getDashboardFormateTime('dont')
+        });
+    };
+
     toggleDrawer = (side, open) => () => {
         this.setState({
             [side]: open,
@@ -122,10 +138,25 @@ class Navbar extends Component {
         const homeLink = (
             <div>
                 {this.props.logged ?
-                    <a href='/dashboard' style={styles.homeButton}> <Typography variant="title" color="inherit"
-                                                                                style={styles.flex}>
-                        Leaf Lift Systems
-                    </Typography></a> :
+                    <div>
+                        <Row>
+                            <Col>
+                                <a href='/dashboard' style={styles.homeButton}>
+                                    <img src={LeafLiftLogo} width="150" alt='Leaf Lift Logo'/>
+                                </a>
+                            </Col>
+                            <Col>
+                                <a href='/dashboard' style={styles.homeButton}>
+                                    <img src={TheProfessorLogo} width="150" alt='The Professor Logo'/>
+                                </a>
+                            </Col>
+                            <Col>
+                                {this.state.timeFormated}
+                            </Col>
+
+                        </Row>
+                    </div>
+                    :
                     <a href='/' style={styles.homeButton}> <Typography variant="title" color="inherit"
                                                                        style={styles.flex}>
                         Leaf Lift Systems
@@ -135,12 +166,12 @@ class Navbar extends Component {
 
         const sideList = (
             <div styles={styles.list}>
-                {!this.props.logged ? <a href='/'> <ListItem button >
+                {!this.props.logged ? <a href='/'> <ListItem button>
                     <ListItemIcon>
                         <HomeIcon/>
                     </ListItemIcon>
                     <ListItemText primary="Home"/>
-                </ListItem> </a> : <a href='/dashboard'> <ListItem button >
+                </ListItem> </a> : <a href='/dashboard'> <ListItem button>
                     <ListItemIcon>
                         <DashboardIcon/>
                     </ListItemIcon>

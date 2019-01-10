@@ -37,26 +37,26 @@ const footer = () => {
     right:'0',
   }}>
       <Container style={{}} >
-        <Row className='FooterRowOne'>
-          <Col sm={4} style={{ display: 'inline-block', margin: 'auto'}}>
+        {/*<Row className='FooterRowOne'>*/}
+          {/*<Col sm={4} style={{ display: 'inline-block', margin: 'auto'}}>*/}
 
-            {/* <div><Link to='/'><Button> Home </Button></Link></div>          
-            <div><Link to='/registration'><Button>  Registration</Button> </Link> </div> */}
-          
-          </Col>
-          <Col sm={4}>
-            {/* <img src="https://i.imgur.com/heRuT1H.png" alt="TClogo" style={{ margin: '35px auto auto auto', maxWidth: '100%' }} /> */}
-            {/* <h1  style={{ margin: '35px auto auto auto', maxWidth: '100%',color:'white'}}> Leaf Lift Systems</h1> */}
-          </Col>
-          <Col sm={4}>
-            <div className="footer-icons">
-              <ExtLink href="#"><i className="fa fa-facebook fa-2x"></i></ExtLink>
-              <ExtLink href="#"><i className="fa fa-twitter fa-2x"></i></ExtLink>
-              <ExtLink href="#"><i className="fa fa-linkedin fa-2x"></i></ExtLink>
-              <ExtLink href="#"><i className="fa fa-github fa-2x"></i></ExtLink>
-            </div>
-          </Col>
-        </Row>
+            {/*/!* <div><Link to='/'><Button> Home </Button></Link></div>          */}
+            {/*<div><Link to='/registration'><Button>  Registration</Button> </Link> </div> *!/*/}
+          {/**/}
+          {/*</Col>*/}
+          {/*<Col sm={4}>*/}
+            {/*/!* <img src="https://i.imgur.com/heRuT1H.png" alt="TClogo" style={{ margin: '35px auto auto auto', maxWidth: '100%' }} /> *!/*/}
+            {/*/!* <h1  style={{ margin: '35px auto auto auto', maxWidth: '100%',color:'white'}}> Leaf Lift Systems</h1> *!/*/}
+          {/*</Col>*/}
+          {/*<Col sm={4}>*/}
+            {/*<div className="footer-icons">*/}
+              {/*<ExtLink href="#"><i className="fa fa-facebook fa-2x"></i></ExtLink>*/}
+              {/*<ExtLink href="#"><i className="fa fa-twitter fa-2x"></i></ExtLink>*/}
+              {/*<ExtLink href="#"><i className="fa fa-linkedin fa-2x"></i></ExtLink>*/}
+              {/*<ExtLink href="#"><i className="fa fa-github fa-2x"></i></ExtLink>*/}
+            {/*</div>*/}
+          {/*</Col>*/}
+        {/*</Row>*/}
         <Row style={{padding: '15px 0px',color:'white'}}>
           <Col sm={12} >
             <Copyright css="padding-right: 0.5em"><b>&copy; 2017</b></Copyright>

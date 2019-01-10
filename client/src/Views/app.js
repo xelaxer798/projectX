@@ -153,8 +153,8 @@ class App extends Component {
 
                     logged={this.state.logged}
                     component={Dashboard3}
-                    // userId={this.state.theId}
-                    // theUser={this.state.userDataObj}
+                    userId={this.state.theId}
+                    theUser={this.state.userDataObj}
                     {...props}
                 />
             );
@@ -179,7 +179,6 @@ class App extends Component {
 
                     </Navbar>
 
-                    <p>{this.state.timezone} </p>
                     <Switch>
                         <Route exact path='/' render={() => (
                             !this.state.logged ? (

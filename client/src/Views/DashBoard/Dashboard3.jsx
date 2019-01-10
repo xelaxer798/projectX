@@ -1,11 +1,11 @@
 
 import React, { Component } from 'react';
-import Logo from '../../Images/Leaf.png';
 import Graphs from './index';
 import moment from 'moment';
 import 'moment-timezone';
 import functions from '../../Functions/index';
 import Grid from '@material-ui/core/Grid';
+import './Dashboard.css'
 // import moment from 'moment';
 
 // "2018-04-25T04:41:30.000Z"
@@ -41,13 +41,7 @@ class Dashboard3 extends Component {
 
 
         return (
-            <div className='home' style={{ backgroundColor: 'white' }}>
-                <img src={Logo} alt='Logo' />
-                <br />    <br />    <br />
-                {this.state.timeFormated}
-                <br />  <br />  <br />
-                {/*This is your Dashboard {this.props.theUser.firstName} {this.props.theUser.lastName}*/}
-
+            <div >
                 <Grid container spacing={40}>
                     <Grid item xs={12} lg={6}>
                         <Graphs.Widgets.GraphWidget uniqueId="graphWidget2"/>
