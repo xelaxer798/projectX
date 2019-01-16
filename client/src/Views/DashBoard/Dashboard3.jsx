@@ -41,8 +41,8 @@ class Dashboard3 extends Component {
 
 
         return (
-            <div >
-                <Grid container spacing={40}>
+            <div style={{ padding: 20 , backgroundColor: 'white'}}>
+                <Grid container spacing={32}>
                     <Grid item xs={12} lg={6}>
                         <Graphs.Widgets.GraphWidget uniqueId="graphWidget2"/>
                     </Grid>

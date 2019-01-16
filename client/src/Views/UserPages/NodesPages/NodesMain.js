@@ -60,7 +60,7 @@ class NodesMain extends Component {
 
     componentDidMount = () => {
         this.getNodes();
-        setInterval(this.getNodes, 1000 * 60 * 5);
+        setInterval(this.getNodes, 1000 * 60);
 
     };
 

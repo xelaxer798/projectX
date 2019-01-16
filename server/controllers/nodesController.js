@@ -5,16 +5,14 @@ const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
 
 const createSensorRecords = (sensorArray) => {
-    db.Sensors.bulkCreate(sensorArray,
+     db.Sensors.bulkCreate(sensorArray,
         {
             fields: ["sensorId", "sensorName", "units","nodeId"],
-            updateOnDuplicate: ["sensorName", "units","nodeId"]
+            updateOnDuplicate: ["units","nodeId"]
         })
         .then(() => { // Notice: There are no arguments here, as of right now you'll have to...
             return db.Sensors.findAll();
-        }).then(sensors => {
-        console.log("Sensors: " + sensors) // ... in order to get the array of user objects
-    })
+        })
 
 };
 
@@ -52,10 +50,25 @@ const controller = {
             nodeId: req.body.nodeId,
             nodeName: req.body.nodeName
         })
-            .then(dbModel => {
-                console.log("DB Model: " + dbModel);
-                res.json(dbModel);
-                createSensorRecords(req.body.sensors)
+            .then(() => {
+                db.Sensors.bulkCreate(req.body.sensors,
+                    {
+                        fields: ["sensorId", "sensorName", "units","nodeId"],
+                        updateOnDuplicate: ["units","nodeId"]
+                    })
+                    .then((dbModel) => { // Notice: There are no arguments here, as of right now you'll have to...
+                        db.Nodes.findAll({
+                            where: {nodeId: req.body.nodeId
+                            },
+                            include: [{
+                                model: db.Sensors
+                            }]
+                        })
+                            .then(dbModel => {
+                                res.json(dbModel);
+                            })
+
+                    })
             })
             .catch(err => {
                 console.log("Error: " + err);

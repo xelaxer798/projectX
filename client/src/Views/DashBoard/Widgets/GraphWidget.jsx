@@ -30,6 +30,7 @@ class GraphWidget extends Component {
         this.getSensorNameBySensorId = this.getSensorNameBySensorId.bind(this);
         GraphWidget.updateGraphInfo = GraphWidget.updateGraphInfo.bind(this);
         this.onSliderChange = this.onSliderChange.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
         this.handleOnSelect = this.handleOnSelect.bind(this);
         this.handleOnSelectAll = this.handleOnSelectAll.bind(this);
         this.removePlots = this.removePlots.bind(this);
@@ -107,10 +108,10 @@ class GraphWidget extends Component {
             // parse the localStorage string and setState
             try {
                 value = JSON.parse(value);
-                this.setState({ selectedGraphs: value },this.getData);
+                this.setState({selectedGraphs: value}, this.getData);
             } catch (e) {
                 // handle empty string
-                this.setState({ selectedGraphs: value },this.getData);
+                this.setState({selectedGraphs: value}, this.getData);
             }
 
         }
@@ -536,7 +537,8 @@ class GraphWidget extends Component {
             {color: 'red'},
             {color: 'chocolate'},
             {color: 'darkslategray'},
-            {color: 'magenta'}
+            {color: 'magenta'},
+            {color: 'RoyalBlue'}
         ];
         let yaxises = [];
         // let returnData = [];
@@ -670,6 +672,15 @@ class GraphWidget extends Component {
 
     };
 
+    handleUpdate = (figure) => {
+        console.log("Figure: " + figure);
+        this.setState(figure)
+
+    };
+
+    updateHandler = () => {
+        console.log("Updatedzzzz");
+    };
 
     render() {
         const selectRow = {
@@ -720,14 +731,18 @@ class GraphWidget extends Component {
                     />
                 </div>
                 <div>
-                    <div style={{paddingLeft: '10px', color: 'black'}}>
+                    <div style={{paddingLeft: '10px', color: 'white'}}>
                         {!this.state.loading ? <Plot
 
                             data={this.state.graphDataToPlot}
                             onSelected={this.onSliderChange}
                             layout={this.state.layout}
                             useResizeHandler={true}
-                            style={{width: "100%", height: "100%"}}
+                            onInitialized={(figure) => {
+                                console.log("Initialized: " + figure)
+                                this.setState(figure)}}
+                            onUpdate={this.updateHandler}
+                            style={{width: "90%", height: "90%", color: 'black'}}
                         /> : <div>
                             <h1>Your Graphs are Loading</h1>
                             <img src={Images.loadingGif} alt='loading'/>

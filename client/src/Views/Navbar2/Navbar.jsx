@@ -220,8 +220,8 @@ class Navbar extends Component {
 
 
         return (
-            <div style={styles.root}>
-                <AppBar position="static">
+            <div >
+                <AppBar position="static" color="default">
                     {/* signIn Modal */}
 
                     {/* Drawer opens from the left */}
@@ -237,25 +237,25 @@ class Navbar extends Component {
                     </Drawer>
                     <Toolbar>
                         {/* Icon button top left of screen next to comany name:GrowAI */}
-                        <IconButton style={styles.menuButton} onClick={this.toggleDrawer('left', true)} color="inherit"
+                        <IconButton style={styles.menuButton} onClick={this.toggleDrawer('left', true)} color="purple"
                                     aria-label="Menu">
                             <MenuIcon/>
                         </IconButton>
                         {/* {CompanyName} top left hand side of screen */}
                         {homeLink}
-                        <Typography variant="title" color="inherit" style={styles.flex}>
+                        <Typography variant="title" color="green" style={styles.flex}>
 
 
                         </Typography>
 
                         {this.props.logged ?
-                            <LoggedIn color="inherit" User={this.props.theUser} toggleMenuFunc={this.toggleMenu}
+                            <LoggedIn color="black" User={this.props.theUser} toggleMenuFunc={this.toggleMenu}
                                       menu={this.state.menu} closeMenuFunction={this.handleMenuClose}
                                       anchorel={anchorEl} userdata={this.props.userdata}
                                       photoSource={this.props.photoSource}
                                       logout={this.props.logoutfunction}>Login</LoggedIn> : <div/>}
-                        {!this.props.logged ?
-                            <a href='/signup'> <Button style={{color: 'white'}}>Sign Up</Button> </a> : <div></div>}
+                        {/*{!this.props.logged ?*/}
+                            {/*<a href='/signup'> <Button style={{color: 'blue'}}>Sign Up</Button> </a> : <div></div>}*/}
                     </Toolbar>
                 </AppBar>
             </div>
