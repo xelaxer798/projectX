@@ -1,3 +1,8 @@
 .ReactTable .rt-thead .rt-tr {
-    text-align: left
+    text-align: left;
+    font-size: 14px;
+}
+
+.ReactTable .rt-tbody {
+    font-size: 14px;
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Graphs from "../index";
-import {Button} from 'reactstrap';
+import {Button} from 'react-bootstrap';
 import SensorApi from "../../../Data/sensor-api";
 import SensorDataAPI from '../../../Data/sensorData-api';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -228,7 +228,8 @@ class GraphWidget extends Component {
         // console.log("Row Index: " + rowIndex);
         return {
             color: row.graphColor.color,
-            fontSize: 'small'
+            fontSize: 'xs',
+            padding:30
         };
     }
 
@@ -277,7 +278,7 @@ class GraphWidget extends Component {
             buttonLabel = 'Show'
         }
         return (
-            <Button onClick={() => {
+            <Button bsSize="xs" bsStyle="info" onClick={() => {
                 row.visible = !row.visible;
                 this.setState({
                     graphDataToPlot: this.concatSensorData(this.state.selectedGraphs)

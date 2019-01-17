@@ -191,7 +191,6 @@ class AlertsMain3 extends Component {
             dataField: 'alertId',
             text: 'Alert ID',
             sort: true,
-            hidden: true,
             classes: AlertsMain3.setStatusColor
         }, {
             dataField: 'alertName',
@@ -251,7 +250,7 @@ class AlertsMain3 extends Component {
             dataField: 'alertId',
             text: 'Alert ID',
             sort: true,
-            hidden: true,
+            hidden: false,
             classes: AlertsMain3.setStatusColor
         }, {
             dataField: 'alertName',

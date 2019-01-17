@@ -97,7 +97,7 @@ class NodesMain extends Component {
             console.log("Cell contents: " + JSON.stringify(row.value));
             let {lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", row.value);
             if (row.value) {
-                return moment(row.value).format('MMM. D, YYYY [at] h:mm A z') + "(" + elapseTimeString + ")";
+                return moment(row.value).format('M/D/YY h:mm A z') + "(" + elapseTimeString + ")";
             } else {
                 return "";
             }
