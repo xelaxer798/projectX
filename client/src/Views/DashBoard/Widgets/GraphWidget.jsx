@@ -102,19 +102,32 @@ class GraphWidget extends Component {
         //     "beforeunload",
         //     this.saveStateToLocalStorage.bind(this)
         // );
+        let selectedGraphs = [];
+        let timePeriod = 24;
         if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
-            let value = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
-
-            // parse the localStorage string and setState
-            try {
-                value = JSON.parse(value);
-                this.setState({selectedGraphs: value}, this.getData);
-            } catch (e) {
-                // handle empty string
-                this.setState({selectedGraphs: value}, this.getData);
-            }
-
+             selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
         }
+        if (localStorage.hasOwnProperty(this.props.uniqueId + "timePeriod")) {
+            timePeriod = localStorage.getItem(this.props.uniqueId + "timePeriod");
+        }
+
+        // parse the localStorage string and setState
+        try {
+            selectedGraphs = JSON.parse(selectedGraphs);
+            timePeriod = JSON.parse(timePeriod);
+            this.setState({
+                selectedGraphs: selectedGraphs,
+                timePeriod: timePeriod
+            }, this.getData);
+        } catch (e) {
+            // handle empty string
+            this.setState({
+                selectedGraphs: selectedGraphs,
+                timePeriod: timePeriod
+            }, this.getData);
+        }
+
+
         SensorApi.getAll().then(results => {
             const sensors = [];
             results.data.forEach(sensor => {
@@ -444,10 +457,10 @@ class GraphWidget extends Component {
         let layout = {
             autosize: true,
             margin: {
-                // l: 50,
-                // r: 50,
-                // b: 100,
-                // t: 100,
+                l: 50,
+                r: 0,
+                b: 100,
+                t: 10,
                 pad: 1
             },
             showlegend: false,
@@ -461,7 +474,8 @@ class GraphWidget extends Component {
                 // rangeselector: Constants.selectorOptions,
                 // rangeslider: {},
                 tickangle: -45,
-                tickformat: '%a %I:%M%p %e-%b',
+                // tickformat: '%a %I:%M%p %e-%b',
+                tickformat: '%m/%e/%y %I:%M %p',
                 tickcolor: '#000',
                 autotick: true,
                 domain: domain
@@ -525,6 +539,8 @@ class GraphWidget extends Component {
             },
             this.getData
         );
+        localStorage.setItem(this.props.uniqueId + "timePeriod", JSON.stringify(optionSelected.value));
+
     }
 
 
@@ -565,7 +581,7 @@ class GraphWidget extends Component {
                     individualData.data.sensorData[0].marker = plotColors[index];
                     individualData.data.sensorData[0].name = self.getSensorNameBySensorId(individualData.data.sensorId);
                     console.log("Individual data.visible: " + JSON.stringify(individualData));
-                    const formattedDateTime = moment(individualData.data.sensorData[0].x[0]).format('MMM. D, YYYY [at] h:mm A z');
+                    const formattedDateTime = moment(individualData.data.sensorData[0].x[0]).format('M/D/YY h:mm A z');
                     _selectedGraphs.push({
                         sensorId: individualData.data.sensorId,
                         sensorName: self.getSensorNameBySensorId(individualData.data.sensorId),
@@ -740,7 +756,8 @@ class GraphWidget extends Component {
                             useResizeHandler={true}
                             onInitialized={(figure) => {
                                 console.log("Initialized: " + figure)
-                                this.setState(figure)}}
+                                this.setState(figure)
+                            }}
                             onUpdate={this.updateHandler}
                             style={{width: "90%", height: "90%", color: 'black'}}
                         /> : <div>
