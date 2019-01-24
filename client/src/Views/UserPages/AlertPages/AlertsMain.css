@@ -19,3 +19,11 @@
 .sensor-alert {
     background-color: LightCyan
 }
+
+.editButton {
+    color: black;
+    background: deepskyblue;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 20px;
+}

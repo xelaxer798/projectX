@@ -263,6 +263,7 @@ class GraphWidget extends Component {
         }, {
             dataField: 'toggleVisible',
             isDummyField: true,
+            hidden: false,
             text: '',
             formatter: this.togleVisibility
         }
@@ -278,14 +279,14 @@ class GraphWidget extends Component {
             buttonLabel = 'Show'
         }
         return (
-            <Button bsSize="xs" bsStyle="info" onClick={() => {
+            <button className="showHideButton" onClick={() => {
                 row.visible = !row.visible;
                 this.setState({
                     graphDataToPlot: this.concatSensorData(this.state.selectedGraphs)
                 })
             }}>
                 {buttonLabel}
-            </Button>);
+            </button>);
     };
 
     getSensors() {

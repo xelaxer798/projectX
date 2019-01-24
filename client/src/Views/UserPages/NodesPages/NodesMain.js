@@ -25,6 +25,8 @@ class NodesMain extends Component {
         // this.getNodes = this.getNodes.bind(this);
         // this.closeModal = this.closeModal.bind(this);
         // this.editNode = this.editNode.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
 
     }
 
@@ -79,6 +81,14 @@ class NodesMain extends Component {
         })
     };
 
+    handleEdit = (row) => {
+        console.log("Row to edit: " + JSON.stringify(row));
+    };
+
+    handleDelete = (row) => {
+        console.log("Row to delete: " + JSON.stringify(row));
+    };
+
 
     render() {
         const columns = [{
@@ -91,6 +101,15 @@ class NodesMain extends Component {
             accessor: 'lastUpdate',
             Header: 'Last Update',
             Cell: dateFormatter
+        }, {
+            Header: '',
+            Cell: row => (
+                <div>
+                    <button className="  btn-default btn-xs" onClick={() => this.handleEdit(row.original)}>Edit</button>
+                    <button className="   btn-primary btn-xs" onClick={() => this.handleDelete(row.original)}>Delete</button>
+                </div>
+            )
+
         }];
 
         function dateFormatter(row, Object) {

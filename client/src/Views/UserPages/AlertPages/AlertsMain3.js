@@ -473,7 +473,9 @@ class AlertsMain3 extends Component {
         } else
             return (
                 <div>
-                    <button className="btn btn-default" onClick={this.newRecord}>New</button>
+                    <div style={{padding: "5px"}}>
+                        <button className="editButton" type="button" onClick={this.newRecord}>New</button>
+                    </div>
 
 
                     <BootstrapTable

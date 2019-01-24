@@ -134,13 +134,25 @@ function createSensorWarningHTML(alert, color) {
     return returnHtml;
 }
 
+function createSensorWarningSubject(alert) {
+    let warning = "";
+    if(alert.alertType === "Sensor") {
+        warning += alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
+
+    } else if (alert.alertType === "Node") {
+        let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
+        warning +=  alert.Node.nodeName + " Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z');
+     }
+    return warning;
+}
+
 function createWarningMessage(alert, recipient) {
     console.log("createWarningMessage-Alert: " + JSON.stringify(alert));
     console.log("createWarningMessage-Recipient: " + recipient);
     return {
         to: recipient,
         from: 'LeafLiftSystems@donotreply.com',
-        subject: 'Your Farm Has A Warning',
+        subject: createSensorWarningSubject(alert),
         text: 'Click me ',
         html: createSensorWarningHTML(alert, "red")
     }
