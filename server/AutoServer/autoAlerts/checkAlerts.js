@@ -152,7 +152,7 @@ function createWarningMessage(alert, recipient) {
     return {
         to: recipient,
         from: 'LeafLiftSystems@donotreply.com',
-        subject: "test",
+        subject: createSensorWarningSubject(alert),
         text: 'Click me ',
         html: createSensorWarningHTML(alert, "red")
     }
