@@ -237,13 +237,13 @@ class Navbar extends Component {
                     </Drawer>
                     <Toolbar>
                         {/* Icon button top left of screen next to comany name:GrowAI */}
-                        <IconButton style={styles.menuButton} onClick={this.toggleDrawer('left', true)} color="purple"
+                        <IconButton style={styles.menuButton} onClick={this.toggleDrawer('left', true)} color="inherit"
                                     aria-label="Menu">
                             <MenuIcon/>
                         </IconButton>
                         {/* {CompanyName} top left hand side of screen */}
                         {homeLink}
-                        <Typography variant="title" color="green" style={styles.flex}>
+                        <Typography variant="title" color="secondary" style={styles.flex}>
 
 
                         </Typography>

@@ -83,6 +83,10 @@ class NodesMain extends Component {
 
     handleEdit = (row) => {
         console.log("Row to edit: " + JSON.stringify(row));
+        this.setState({
+            modalIsOpen:true,
+            nodeToEdit: row
+        })
     };
 
     handleDelete = (row) => {
@@ -148,6 +152,12 @@ class NodesMain extends Component {
                     columns={columns}
                     className="-striped -highlight"
                     defaultPageSize={10}
+                    defaultSorted={[
+                        {
+                            id: "lastUpdate"
+                        }
+
+                    ]}
                      getTdProps={(state, rowInfo, column, instance) => {
                         return {
                             onDoubleClick: (e) => {

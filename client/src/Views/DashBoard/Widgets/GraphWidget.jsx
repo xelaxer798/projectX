@@ -556,7 +556,10 @@ class GraphWidget extends Component {
             {color: 'chocolate'},
             {color: 'darkslategray'},
             {color: 'magenta'},
-            {color: 'RoyalBlue'}
+            {color: 'RoyalBlue'},
+            {color: 'hotpink'},
+            {color: 'sienna'},
+            {color: 'lime'}
         ];
         let yaxises = [];
         // let returnData = [];
