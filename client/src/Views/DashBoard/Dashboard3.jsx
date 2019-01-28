@@ -49,6 +49,12 @@ class Dashboard3 extends Component {
                     <Grid item xs={12} lg={6}>
                         <Graphs.Widgets.GraphWidget uniqueId="graphWidget1"/>
                     </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget3"/>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget4"/>
+                    </Grid>
 
                 </Grid>
 
