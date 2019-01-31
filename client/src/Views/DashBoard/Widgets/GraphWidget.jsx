@@ -83,6 +83,9 @@ class GraphWidget extends Component {
             ],
             yAxis: [],
             layout: {},
+            hideTableLabel: "Hide table",
+            tableHidden: false,
+
             removePlotLabel: {
                 label: "Remove Plot(s)",
                 disabled: true
@@ -105,7 +108,7 @@ class GraphWidget extends Component {
         let selectedGraphs = [];
         let timePeriod = 24;
         if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
-             selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
+            selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
         }
         if (localStorage.hasOwnProperty(this.props.uniqueId + "timePeriod")) {
             timePeriod = localStorage.getItem(this.props.uniqueId + "timePeriod");
@@ -229,7 +232,7 @@ class GraphWidget extends Component {
         return {
             color: row.graphColor.color,
             fontSize: 'xs',
-            padding:30
+            padding: 30
         };
     }
 
@@ -693,6 +696,20 @@ class GraphWidget extends Component {
 
     };
 
+    toggleTableVisibility = (event) => {
+        if(this.state.tableHidden) {
+            this.setState({
+                tableHidden: false,
+                hideTableLabel: "Hide table"
+            })
+        } else {
+            this.setState({
+                tableHidden: true,
+                hideTableLabel: "Show table"
+            })
+        }
+    }
+
     handleUpdate = (figure) => {
         console.log("Figure: " + figure);
         this.setState(figure)
@@ -716,34 +733,41 @@ class GraphWidget extends Component {
             <div>
                 {/*<SimpleStorage parent={this} prefix={this.props.uniqueId} blackList={['selected']}/>*/}
                 <Grid container spacing={40}>
-                    <Grid item xs={6} lg={8}>
+                    <Grid item xs={6} lg={6}>
                         <Select
                             options={this.state.sensors}
                             styles={this.customStyles}
                             onChange={this.handleSelectChange}/>
                     </Grid>
-                    <Grid item xs={2} lg={2}>
+                    <Grid item xs={6} lg={6}>
                         <Button
                             onClick={this.removePlots}
+                            className="btn btn-primary"
                             disabled={this.state.removePlotLabel.disabled}>{this.state.removePlotLabel.label}</Button>
+                        <Button
+                            onClick={this.toggleTableVisibility}
+                            className="btn btn-secondary">{this.state.hideTableLabel}</Button>
                     </Grid>
                 </Grid>
 
+                <div hidden={this.state.tableHidden}>
 
-                <BootstrapTable
-                    ref={n => this.node = n}
-                    data={this.state.selectedGraphs}
-                    striped={true}
-                    condensed={true}
-                    bootstrap4={true}
-                    classes="table-class"
-                    keyField='sensorId'
-                    rowStyle={this.getRowStyle}
-                    columns={this.renderColumns()}
-                    selectRow={selectRow}
-                >
+                    <BootstrapTable
+                        ref={n => this.node = n}
+                        data={this.state.selectedGraphs}
+                        striped={true}
+                        condensed={true}
+                        bootstrap4={true}
+                        classes="table-class"
+                        keyField='sensorId'
+                        rowStyle={this.getRowStyle}
+                        columns={this.renderColumns()}
+                        selectRow={selectRow}
 
-                </BootstrapTable>
+                    >
+
+                    </BootstrapTable>
+                </div>
                 <div>
                     <Select
                         options={this.state.timespans}
