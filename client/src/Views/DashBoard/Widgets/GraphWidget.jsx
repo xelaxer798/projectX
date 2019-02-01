@@ -93,6 +93,7 @@ class GraphWidget extends Component {
             selected: [],
             timePeriod: 24
         };
+        document.title = "Project X - Dashboard"
     }
 
     componentDidMount = () => {

@@ -28,6 +28,7 @@ class NodesMain extends Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
 
+        document.title = "Project X - Nodes"
     }
 
     closeModal = () => {

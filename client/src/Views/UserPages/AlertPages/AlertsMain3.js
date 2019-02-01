@@ -49,6 +49,9 @@ class AlertsMain3 extends Component {
         this.isInputGroupHidden = this.isInputGroupHidden.bind(this);
         this.handleAlertTypeDropdown = this.handleAlertTypeDropdown.bind(this);
         this.getAlerts = this.getAlerts.bind(this);
+
+        document.title = "Project X - Alerts"
+
     }
 
     blankAlert = {
