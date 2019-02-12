@@ -37,6 +37,7 @@ class GraphWidget extends Component {
         this.concatSensorData = this.concatSensorData.bind(this);
         this.getVisibleBySensorId = this.getVisibleBySensorId.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
+        this.getPlotColor = this.getPlotColor.bind(this);
         // this.hydrateStateWithLocalStorage = this.hydrateStateWithLocalStorage.bind(this);
         // this.saveStateToLocalStorage = this.saveStateToLocalStorage.bind(this);
 
@@ -563,21 +564,28 @@ class GraphWidget extends Component {
     }
 
 
+    plotColors = [
+        {color: 'purple'},
+        {color: 'deepskyblue'},
+        {color: 'green'},
+        {color: 'red'},
+        {color: 'chocolate'},
+        {color: 'darkslategray'},
+        {color: 'magenta'},
+        {color: 'RoyalBlue'},
+        {color: 'hotpink'},
+        {color: 'sienna'},
+        {color: 'lime'}
+    ];
+
+    getPlotColor = (index) => {
+        const numberOfColors = this.plotColors.length;
+        const indexToUse = index % numberOfColors;
+        return this.plotColors[indexToUse];
+    };
+
     getData() {
 
-        let plotColors = [
-            {color: 'purple'},
-            {color: 'deepskyblue'},
-            {color: 'green'},
-            {color: 'red'},
-            {color: 'chocolate'},
-            {color: 'darkslategray'},
-            {color: 'magenta'},
-            {color: 'RoyalBlue'},
-            {color: 'hotpink'},
-            {color: 'sienna'},
-            {color: 'lime'}
-        ];
         let yaxises = [];
         // let returnData = [];
         // let temp = [];
@@ -600,7 +608,7 @@ class GraphWidget extends Component {
                         console.log("we have a hit axisqq: " + JSON.stringify(yAxis));
                         individualData.data.sensorData[0].yaxis = yAxis;
                     }
-                    individualData.data.sensorData[0].marker = plotColors[index];
+                    individualData.data.sensorData[0].marker = self.getPlotColor(index);
                     individualData.data.sensorData[0].name = self.getSensorNameBySensorId(individualData.data.sensorId);
                     console.log("Individual data.visible: " + JSON.stringify(individualData));
                     const formattedDateTime = moment(individualData.data.sensorData[0].x[0]).format('M/D/YY h:mm A z');
@@ -610,7 +618,7 @@ class GraphWidget extends Component {
                         sensorData: individualData.data.sensorData[0],
                         currentValue: individualData.data.sensorData[0].y[0],
                         lastReported: formattedDateTime,
-                        graphColor: plotColors[index],
+                        graphColor: self.getPlotColor(index),
                         visible: self.getVisibleBySensorId(individualData.data.sensorId)
                     });
                 })
