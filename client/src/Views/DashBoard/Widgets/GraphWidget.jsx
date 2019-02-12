@@ -91,7 +91,10 @@ class GraphWidget extends Component {
                 disabled: true
             },
             selected: [],
-            timePeriod: 24
+            selectedTimePeriod: {
+                value: 24,
+                label: 'Past Day'
+            }
         };
         document.title = "Project X - Dashboard"
     }
@@ -106,32 +109,8 @@ class GraphWidget extends Component {
         //     "beforeunload",
         //     this.saveStateToLocalStorage.bind(this)
         // );
-        let selectedGraphs = [];
-        let timePeriod = 24;
-        if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
-            selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
-        }
-        if (localStorage.hasOwnProperty(this.props.uniqueId + "timePeriod")) {
-            timePeriod = localStorage.getItem(this.props.uniqueId + "timePeriod");
-        }
 
         // parse the localStorage string and setState
-        try {
-            selectedGraphs = JSON.parse(selectedGraphs);
-            timePeriod = JSON.parse(timePeriod);
-            this.setState({
-                selectedGraphs: selectedGraphs,
-                timePeriod: timePeriod
-            }, this.getData);
-        } catch (e) {
-            // handle empty string
-            this.setState({
-                selectedGraphs: selectedGraphs,
-                timePeriod: timePeriod
-            }, this.getData);
-        }
-
-
         SensorApi.getAll().then(results => {
             const sensors = [];
             results.data.forEach(sensor => {
@@ -143,11 +122,44 @@ class GraphWidget extends Component {
             });
             this.setState({
                 sensors: sensors
-            });
+            }, this.bringBackFromLocalStorage);
 
         });
+
+
         setInterval(this.getData, 1000 * 60);
     };
+
+    bringBackFromLocalStorage = () => {
+        let selectedGraphs = [];
+        let selectedTimePeriod = {
+            value: 24,
+            label: 'Past Day'
+        };
+        if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
+            selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
+        }
+        if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedTimePeriod")) {
+            selectedTimePeriod = localStorage.getItem(this.props.uniqueId + "selectedTimePeriod");
+            console.log("Getting time select from local storage: " + selectedTimePeriod)
+        }
+
+        try {
+            selectedGraphs = JSON.parse(selectedGraphs);
+            selectedTimePeriod = JSON.parse(selectedTimePeriod);
+            this.setState({
+                selectedGraphs: selectedGraphs,
+                selectedTimePeriod: selectedTimePeriod
+            }, this.getData);
+        } catch (e) {
+            // handle empty string
+            this.setState({
+                selectedGraphs: selectedGraphs,
+                selectedTimePeriod: selectedTimePeriod
+            }, this.getData);
+        }
+
+    }
 
     // componentWillUnmount() {
     //     window.removeEventListener(
@@ -437,6 +449,7 @@ class GraphWidget extends Component {
             }
         }
         //didn't find anything
+        console.log("couldn't find name for: " + sensorId);
         return "";
     }
 
@@ -541,11 +554,11 @@ class GraphWidget extends Component {
 
     handleTimeChange(optionSelected) {
         this.setState({
-                timePeriod: optionSelected.value
+                selectedTimePeriod: optionSelected
             },
             this.getData
         );
-        localStorage.setItem(this.props.uniqueId + "timePeriod", JSON.stringify(optionSelected.value));
+        localStorage.setItem(this.props.uniqueId + "selectedTimePeriod", JSON.stringify(optionSelected));
 
     }
 
@@ -571,7 +584,7 @@ class GraphWidget extends Component {
         let self = this;
         let promises = this.state.selectedGraphs.map(function (selectedGraphs) {
             console.log("Create promise: " + selectedGraphs.sensorId);
-            return SensorDataAPI.getAll(selectedGraphs.sensorId, self.state.timePeriod);
+            return SensorDataAPI.getAll(selectedGraphs.sensorId, self.state.selectedTimePeriod.value);
         });
         let _selectedGraphs = [];
         Promise.all(promises).then(function (data) {
@@ -771,6 +784,7 @@ class GraphWidget extends Component {
                 </div>
                 <div>
                     <Select
+                        value={this.state.selectedTimePeriod}
                         options={this.state.timespans}
                         onChange={this.handleTimeChange}
                         styles={this.customStyles}
