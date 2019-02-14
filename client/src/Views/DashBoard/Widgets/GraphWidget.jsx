@@ -469,10 +469,12 @@ class GraphWidget extends Component {
     generateLayout = () => {
         let domain = [];
         const numberOfyAxis = this.state.yAxis.length;
-        if (numberOfyAxis <= 2) {
+        if (numberOfyAxis == 1) {
             domain = [0, 1]
+        } else if (numberOfyAxis == 2){
+            domain = [0, 0.95]
         } else {
-            domain = [0.1, 0.9]
+            domain = [0.1, 0.7]
         }
         let layout = {
             autosize: true,
@@ -515,7 +517,7 @@ class GraphWidget extends Component {
             } else {
                 side = "right";
                 if (index > 1) {
-                    position = 1 - ((index - 1) * .05);
+                    position = .85;
                 }
                 anchor = 'x'
             }
