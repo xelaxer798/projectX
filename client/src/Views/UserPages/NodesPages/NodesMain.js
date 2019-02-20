@@ -8,6 +8,7 @@ import 'react-table/react-table.css'
 import './NodeMain.css'
 import EditNodeModal from "./EditNodeModal";
 import functions from "../../../Functions/index";
+import nodesAPI from "../../../Data/nodes-api"
 
 class NodesMain extends Component {
 
@@ -84,10 +85,11 @@ class NodesMain extends Component {
 
     handleEdit = (row) => {
         console.log("Row to edit: " + JSON.stringify(row));
-        this.setState({
-            modalIsOpen:true,
-            nodeToEdit: row
-        })
+        nodesAPI.updateWeatherNodes();
+    //     this.setState({
+    //         modalIsOpen:true,
+    //         nodeToEdit: row
+    //     })
     };
 
     handleDelete = (row) => {

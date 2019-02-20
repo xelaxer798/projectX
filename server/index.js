@@ -27,6 +27,9 @@ export default path => {
     autoServer.autoAlerts.processAlerts();
     setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
 
+    // autoServer.updateWeatherNodes();
+    // setInterval(autoServer.updateWeatherNodes, 1000 * 60);
+
     app.use(express.static(`${path}/client`));
 
     // Where the node data will be sent aka www....../api/nodeData

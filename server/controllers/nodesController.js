@@ -75,6 +75,9 @@ const controller = {
                 res.status(422).json(err)
             });
     },
+    test: function () {
+        console.log("Made it to the test");
+    }
 };
 
 export {controller as default};

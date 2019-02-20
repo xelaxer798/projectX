@@ -469,23 +469,29 @@ class GraphWidget extends Component {
     generateLayout = () => {
         let domain = [];
         const numberOfyAxis = this.state.yAxis.length;
-        if (numberOfyAxis == 1) {
+        if (numberOfyAxis === 1) {
             domain = [0, 1]
-        } else if (numberOfyAxis == 2){
+        } else if (numberOfyAxis === 2){
             domain = [0, 0.95]
+        } else if (numberOfyAxis === 3){
+            domain = [0.1, 0.95]
         } else {
-            domain = [0.1, 0.7]
+            domain = [0.1, 0.8]
         }
         let layout = {
             autosize: true,
             margin: {
                 l: 50,
-                r: 0,
+                r: 50,
                 b: 100,
-                t: 10,
+                t: 20,
                 pad: 1
             },
             showlegend: false,
+            modebar: {
+                orientation: 'v'
+            },
+
             xaxis: {
                 tickfont: {
                     family: 'Old Standard TT, serif',
@@ -516,14 +522,18 @@ class GraphWidget extends Component {
                 }
             } else {
                 side = "right";
-                if (index > 1) {
-                    position = .85;
+                if (index === 1) {
+                    position = 0;
+                    anchor = 'x'
+                } else if (index === 3) {
+                    position = .9;
+                    anchor = 'free'
                 }
-                anchor = 'x'
             }
             if (index === 0) {
                 layout[yAxis.yAxisNameLayout] = {
-                    title: yAxis.units
+                    title: yAxis.units,
+
                 }
 
             } else {
@@ -534,7 +544,8 @@ class GraphWidget extends Component {
                     rangemode: 'tozero',
                     overlaying: 'y',
                     anchor: anchor,
-                    position: position
+                    position: position,
+
                 }
 
             }
@@ -801,19 +812,25 @@ class GraphWidget extends Component {
                     />
                 </div>
                 <div>
-                    <div style={{paddingLeft: '10px', color: 'white'}}>
+                    <div >
                         {!this.state.loading ? <Plot
 
                             data={this.state.graphDataToPlot}
                             onSelected={this.onSliderChange}
                             layout={this.state.layout}
+                            config={{
+                                displayModeBar: true,
+                                // responsive: true,
+                                scrollZoom: true,
+                                displaylogo: false,
+                            }}
                             useResizeHandler={true}
                             onInitialized={(figure) => {
                                 console.log("Initialized: " + figure)
                                 this.setState(figure)
                             }}
                             onUpdate={this.updateHandler}
-                            style={{width: "90%", height: "90%", color: 'black'}}
+                            style={{width: "100%", height: "90%", color: 'black'}}
                         /> : <div>
                             <h1>Your Graphs are Loading</h1>
                             <img src={Images.loadingGif} alt='loading'/>
