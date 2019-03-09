@@ -727,7 +727,7 @@ class GraphWidget extends Component {
             removePlotLabel: this.configRemovePlotBotton(_selectedGraphs.length),
             graphDataToPlot: this.concatSensorData(_selectedGraphs)
         });
-        localStorage.setItem("selectedGraphs", JSON.stringify(_selectedGraphs));
+        localStorage.setItem(this.props.uniqueId + "selectedGraphs", JSON.stringify(_selectedGraphs));
 
     };
 
