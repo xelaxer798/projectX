@@ -95,7 +95,8 @@ class GraphWidget extends Component {
             selectedTimePeriod: {
                 value: 24,
                 label: 'Past Day'
-            }
+            },
+            currentSort: []
         };
         document.title = "Project X - Dashboard"
     }
@@ -137,6 +138,7 @@ class GraphWidget extends Component {
             value: 24,
             label: 'Past Day'
         };
+        let sortOrder = [];
         if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
             selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
         }
@@ -144,19 +146,26 @@ class GraphWidget extends Component {
             selectedTimePeriod = localStorage.getItem(this.props.uniqueId + "selectedTimePeriod");
             console.log("Getting time select from local storage: " + selectedTimePeriod)
         }
+        if (localStorage.hasOwnProperty(this.props.uniqueId + "sortOrder")) {
+            sortOrder = localStorage.getItem(this.props.uniqueId + "sortOrder");
+            console.log("Getting sort order from local storage: " + sortOrder)
+        }
 
         try {
             selectedGraphs = JSON.parse(selectedGraphs);
             selectedTimePeriod = JSON.parse(selectedTimePeriod);
+            sortOrder = JSON.parse(sortOrder);
             this.setState({
                 selectedGraphs: selectedGraphs,
-                selectedTimePeriod: selectedTimePeriod
+                selectedTimePeriod: selectedTimePeriod,
+                currentSort: sortOrder
             }, this.getData);
         } catch (e) {
             // handle empty string
             this.setState({
                 selectedGraphs: selectedGraphs,
-                selectedTimePeriod: selectedTimePeriod
+                selectedTimePeriod: selectedTimePeriod,
+                currentSort: sortOrder
             }, this.getData);
         }
 
@@ -250,6 +259,17 @@ class GraphWidget extends Component {
         };
     }
 
+    onSortHandler = (field, order) => {
+        console.log("Sort Field: " + field + " order: " + order);
+        const newOrder =  [{
+            dataField: "currentValue",
+            order: "desc"
+        }];
+        this.setState({currentSort: newOrder})
+        localStorage.setItem(this.props.uniqueId + "sortOrder", JSON.stringify(newOrder));
+
+    };
+
     renderColumns() {
         return [{
             dataField: 'sensorId',
@@ -259,14 +279,17 @@ class GraphWidget extends Component {
             dataField: 'sensorName',
             text: 'Sensor Name',
             sort: true,
+            onSort: this.onSortHandler
         }, {
             dataField: 'currentValue',
             text: 'Current Value',
-            sort: true
+            sort: true,
+            onSort: this.onSortHandler
         }, {
             dataField: 'lastReported',
             text: 'Last Reported',
-            sort: true
+            sort: true,
+            onSort: this.onSortHandler
         }, {
             dataField: 'visible',
             text: 'Visible'
@@ -471,9 +494,9 @@ class GraphWidget extends Component {
         const numberOfyAxis = this.state.yAxis.length;
         if (numberOfyAxis === 1) {
             domain = [0, 1]
-        } else if (numberOfyAxis === 2){
+        } else if (numberOfyAxis === 2) {
             domain = [0, 0.95]
-        } else if (numberOfyAxis === 3){
+        } else if (numberOfyAxis === 3) {
             domain = [0.1, 0.95]
         } else {
             domain = [0.1, 0.8]
@@ -732,7 +755,7 @@ class GraphWidget extends Component {
     };
 
     toggleTableVisibility = (event) => {
-        if(this.state.tableHidden) {
+        if (this.state.tableHidden) {
             this.setState({
                 tableHidden: false,
                 hideTableLabel: "Hide table"
@@ -798,6 +821,7 @@ class GraphWidget extends Component {
                         rowStyle={this.getRowStyle}
                         columns={this.renderColumns()}
                         selectRow={selectRow}
+                        defaultSorted={this.state.currentSort}
 
                     >
 
@@ -812,7 +836,7 @@ class GraphWidget extends Component {
                     />
                 </div>
                 <div>
-                    <div >
+                    <div>
                         {!this.state.loading ? <Plot
 
                             data={this.state.graphDataToPlot}

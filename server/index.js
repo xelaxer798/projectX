@@ -41,6 +41,7 @@ export default path => {
     app.use("/api/sensors", routers.sensors);
     app.use("/api/alerts", routers.alerts);
     app.use("/api/sensorErrors", routers.sensorErrors);
+    app.use("/api/webCamImages", routers.webCamImages);
     // Any non API GET routes will be directed to our React App and handled by React Router
     app.get("*", (req, res) => {
         res.sendFile(`${path}/client/index.html`);
