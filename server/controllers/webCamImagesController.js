@@ -1,6 +1,7 @@
 import db from "../models";
 import multiparty from "multiparty"
 import util from "util"
+import base64 from 'base-64'
 
 const controller = {
     findAll: (req, res) => {
@@ -19,6 +20,28 @@ const controller = {
             .then(dbModel => {
                 if (dbModel) {
                     res.json(dbModel);
+                } else {
+                    res.status(404).json({
+                        message: 'Id not found.'
+                    });
+                }
+            })
+            .catch(err => res.status(422).json(err));
+    },
+
+    getLatestImage: function (req, res) {
+        console.log("In getLastImage: " + req.params.webCamId);
+        db.WebCamImages.findAll({
+             where: {
+                webCamId: req.params.webCamId,
+            },
+            order: [['createdAt', 'DESC']],
+            limit: 1,
+        })
+            .then(dbModel => {
+                console.log("Returned image: " + JSON.stringify(dbModel[0]))
+                if (dbModel) {
+                    res.json(dbModel[0]);
                 } else {
                     res.status(404).json({
                         message: 'Id not found.'

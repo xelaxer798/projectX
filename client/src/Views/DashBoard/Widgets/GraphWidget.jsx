@@ -78,8 +78,12 @@ class GraphWidget extends Component {
                     label: 'Past Week'
                 },
                 {
-                    value: 24 * 7 * 28,
-                    label: 'Past Month'
+                    value: 24 * 7 * 2,
+                    label: 'Past 2 weeks'
+                },
+                {
+                    value: 24 * 7 * 4,
+                    label: 'Past 4 weeks'
                 }
             ],
             yAxis: [],

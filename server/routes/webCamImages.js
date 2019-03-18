@@ -5,6 +5,7 @@ const router = express.Router();
 
 // Route to get list of crypto currencies for drop down.
 router.get("/", webCamController.findAll);
+router.get("/getLatestImage/:webCamId", webCamController.getLatestImage);
 router.get("/:webCamId", webCamController.findByWebCamId);
 router.post("/uploadImage", webCamController.uploadImage);
 

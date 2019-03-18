@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory from "react-bootstrap-table2-editor";
 import NodeApi from '../../../Data/nodes-api'
 import moment from "moment";
 import ReactTable from "react-table";

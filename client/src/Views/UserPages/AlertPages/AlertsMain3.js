@@ -69,7 +69,7 @@ class AlertsMain3 extends Component {
         this.setState({
             selectedAlert: selectedAlert,
             newRecord: false,
-            modal2IsOpen: true,
+            modalIsOpen: true,
         });
         // this.openModal();
     }
@@ -496,7 +496,7 @@ class AlertsMain3 extends Component {
                         columns={AlertsMain3.renderColumns()}>
 
                     </BootstrapTable>
-                    <EditAlertModal isOpen={this.state.modal2IsOpen} selectedAlert={this.state.selectedAlert} closeModal={this.closeModal2}/>
+                    {/*<EditAlertModal isOpen={this.state.modal2IsOpen} selectedAlert={this.state.selectedAlert} closeModal={this.closeModal2}/>*/}
                     <Modal
                         isOpen={this.state.modalIsOpen}
                         ariaHideApp={false}

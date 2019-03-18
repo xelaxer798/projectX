@@ -13,8 +13,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        image: {
-            type: DataTypes.BLOB('long')
+        imageURL: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         imageSize: {
             type: DataTypes.INTEGER

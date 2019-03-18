@@ -13,6 +13,8 @@ export default path => {
     app.use(logger("dev"));
 
     app.use(bodyParser.json());
+    // var rawBodyParser = bodyParser.raw();
+
     // autoServer.checkNodes(10);
     //1800000
     //30000

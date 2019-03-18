@@ -192,6 +192,13 @@ class Navbar extends Component {
                     <ListItemText primary="Alerts"/>
                 </ListItem></a> : <div/>}
 
+                {this.props.logged ? <a href='/webCams'> <ListItem button>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Web Cams"/>
+                </ListItem></a> : <div/>}
+
                 {this.props.logged ? <a href='/nodes'> <ListItem button>
                     <ListItemIcon>
                         <SettingsIcon/>
