@@ -67,15 +67,19 @@ class GraphWidget extends Component {
                 },
                 {
                     value: 24,
-                    label: 'Past Day'
+                    label: 'Past 24 hours'
                 },
                 {
                     value: 48,
                     label: 'Past 48 hours'
                 },
                 {
+                    value: 72,
+                    label: 'Past 72 hours'
+                },
+                {
                     value: 24 * 7,
-                    label: 'Past Week'
+                    label: 'Past week'
                 },
                 {
                     value: 24 * 7 * 2,
