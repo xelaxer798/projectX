@@ -8,6 +8,7 @@ import convertTimeZonesNonGuess from './convertTimeZoneNonGuess';
 import getMonth from './getMonth';
 import getFormateTime from './getFormatedTime';
 import getDashboardFormateTime from './getDashboardFormateTime';
+import compareValues from './compareValues'
 
 
 const functions = {
@@ -21,6 +22,7 @@ const functions = {
     convertTimeZonesNonGuess,
     getMonth,
     getDashboardFormateTime,
-    getFormateTime
+    getFormateTime,
+    compareValues
 };
 export default functions;

@@ -10,10 +10,15 @@ import './Dashboard.css'
 
 // "2018-04-25T04:41:30.000Z"
 class Dashboard3 extends Component {
-    state = {
-        CurrentTime: moment().format(),
-        timeFormated: functions.getDashboardFormateTime('dont'),
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            CurrentTime: moment().format(),
+            timeFormated: functions.getDashboardFormateTime('dont'),
+            displayModeBar: true
+        };
+    }
     componentDidCatch = (error, info) => {
         console.log('hi i am catching Dashboard3');
         console.log(error, 'hi im errors at dash3')
@@ -36,6 +41,12 @@ class Dashboard3 extends Component {
         });
     };
 
+    setDisplayModeBar = (displayModeBar) => {
+        this.setState({
+            displayModeBar: displayModeBar
+        })
+    };
+
 
     render() {
 
@@ -44,22 +55,46 @@ class Dashboard3 extends Component {
             <div style={{ padding: 20 , backgroundColor: 'white'}}>
                 <Grid container spacing={32}>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget2"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget2"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget1"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget1"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget3"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget3"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget4"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget4"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget5"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget5"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <Graphs.Widgets.GraphWidget uniqueId="graphWidget6"/>
+                        <Graphs.Widgets.GraphWidget
+                            uniqueId="graphWidget6"
+                            displayModeBar={this.state.displayModeBar}
+                            setDisplayModeBar={this.setDisplayModeBar}
+                        />
                     </Grid>
 
                 </Grid>

@@ -3,53 +3,104 @@ import functions from "../Functions";
 import moment from 'moment';
 import {Op} from 'sequelize'
 
+const processResults = (results, res, req, sensorId) => {
+
+    try {
+        const pHx = [];
+        const pHy = [];
+
+        for (let i = 0; i < results.length; i++) {
+            pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
+            pHy.push(JSON.parse(results[i].dataValueFloat));
+        };
+        const x = pHx;
+        const y = pHy;
+        const data = [{
+            x,
+            y,
+            showlegend: false,
+            type: 'scatter',
+            mode: 'lines',
+            marker: { color: 'red' },
+
+        }];
+        res.json({
+            sensorId: sensorId,
+            sensorData: data, });
+    } catch (err) {
+        console.log("Error: " + err);
+    }
+}
+
 const controller = {
     findBySensorId: function (req, res) {
         console.log("In find by sensor id: " + req.params.sensorId);
-        let onDayAgo = moment().subtract(req.params.timePeriod, 'hours');
+        let oneDayAgo = moment().subtract(req.params.timePeriod, 'hours');
         db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
             // limit: 2,
             where: {
 
                 sensorId: req.params.sensorId,
-                createdAt: {[Op.gte]: onDayAgo}
+                createdAt: {[Op.gte]: oneDayAgo}
 
             }
         })
-            .then(results => {
-
-                try {
-                    const pHx = [];
-                    const pHy = [];
-
-                    for (let i = 0; i < results.length; i++) {
-                        pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
-                        pHy.push(JSON.parse(results[i].dataValueFloat));
-                    };
-                    const x = pHx;
-                    const y = pHy;
-                    const data = [{
-                        x,
-                        y,
-                        showlegend: false,
-                        type: 'scatter',
-                        mode: 'lines',
-                        marker: { color: 'red' },
-
-                    }];
-                    res.json({
-                        sensorId: req.params.sensorId,
-                        sensorData: data, });
-                } catch (err) {
-                    console.log("Error: " + err);
+            .then( results => {
+                    processResults(results,res,req, req.params.sensorId)
                 }
-            })
+
+            //     results => {
+            //
+            //     try {
+            //         const pHx = [];
+            //         const pHy = [];
+            //
+            //         for (let i = 0; i < results.length; i++) {
+            //             pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
+            //             pHy.push(JSON.parse(results[i].dataValueFloat));
+            //         };
+            //         const x = pHx;
+            //         const y = pHy;
+            //         const data = [{
+            //             x,
+            //             y,
+            //             showlegend: false,
+            //             type: 'scatter',
+            //             mode: 'lines',
+            //             marker: { color: 'red' },
+            //
+            //         }];
+            //         res.json({
+            //             sensorId: req.params.sensorId,
+            //             sensorData: data, });
+            //     } catch (err) {
+            //         console.log("Error: " + err);
+            //     }
+            // }
+            )
             .catch(err => {
                 console.log("In catch");
                 res.status(422).json(err);
             });
     },
+
+    findbyDateRange: function (req, res) {
+        console.log("In find by date range id: " + JSON.stringify(req.body));
+        db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            // limit: 2,
+            where: {
+                sensorId: req.body.id,
+                createdAt: {[Op.between]:[req.body.startDate, req.body.endDate]}
+            }
+        })
+            .then( results => {
+                processResults(results,res,req, req.body.id)
+            })
+
+    },
+
     create: function (req, res) {
         console.log("zzJSON input: " + JSON.stringify(req.body));
         db.SensorData.bulkCreate(req.body.sensorData)

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Graphs from "../index";
 import {Button} from 'react-bootstrap';
 import SensorApi from "../../../Data/sensor-api";
+import CropsApi from "../../../Data/crops-api"
 import SensorDataAPI from '../../../Data/sensorData-api';
 import BootstrapTable from 'react-bootstrap-table-next';
 import Select from 'react-select';
@@ -12,6 +13,9 @@ import Plot from "react-plotly.js";
 import Images from "../../../Images";
 import Grid from "@material-ui/core/Grid/Grid";
 import SimpleStorage, {clearStorage, resetParentState} from "react-simple-storage";
+import SelectCropModal from "../../UserPages/CropsPages/SelectCropModal"
+import PlantingsListTable from "../../UserPages/CropsPages/PlantingsListTable";
+import Modal from "react-modal";
 
 // import WrapWithLocalStorage from '../../../HOCs/WrapWithLocalStorage'
 
@@ -52,6 +56,15 @@ class GraphWidget extends Component {
             sensors: [],
             graphDataToPlot: [],
             selectedGraphs: [],
+            selectCropModalIsOpen: false,
+            displayModeBar: true,
+            selectedPlanting: [],
+            searchByDateRange: false,
+            searchDateRange: {
+                start:new Date(0),
+                end:new Date(0),
+                firstLight: Date(0)
+            },
             timespans: [
                 {
                     value: 1,
@@ -94,6 +107,7 @@ class GraphWidget extends Component {
             layout: {},
             hideTableLabel: "Hide table",
             tableHidden: false,
+            plantingTableHidden: true,
 
             removePlotLabel: {
                 label: "Remove Plot(s)",
@@ -269,7 +283,7 @@ class GraphWidget extends Component {
 
     onSortHandler = (field, order) => {
         console.log("Sort Field: " + field + " order: " + order);
-        const newOrder =  [{
+        const newOrder = [{
             dataField: "currentValue",
             order: "desc"
         }];
@@ -497,6 +511,29 @@ class GraphWidget extends Component {
         }
     }
 
+    generateShape = () => {
+        if (this.state.searchByDateRange) {
+            return [{
+                type: 'rect',
+                // x-reference is assigned to the x-values
+                xref: 'x',
+                // y-reference is assigned to the plot paper [0,1]
+                yref: 'paper',
+                x0: this.state.searchDateRange.start,
+                y0: 0,
+                x1: this.state.searchDateRange.firstLight,
+                y1: 1,
+                fillcolor: '#d3d3d3',
+                opacity: 0.4,
+                line: {
+                    width: 0
+                }
+            }]
+        } else {
+            return []
+        }
+    };
+
     generateLayout = () => {
         let domain = [];
         const numberOfyAxis = this.state.yAxis.length;
@@ -522,6 +559,8 @@ class GraphWidget extends Component {
             modebar: {
                 orientation: 'v'
             },
+
+            shapes: this.generateShape(),
 
             xaxis: {
                 tickfont: {
@@ -599,7 +638,9 @@ class GraphWidget extends Component {
 
     handleTimeChange(optionSelected) {
         this.setState({
-                selectedTimePeriod: optionSelected
+                selectedTimePeriod: optionSelected,
+                searchByDateRange: false,
+                plantingTableHidden: true
             },
             this.getData
         );
@@ -636,8 +677,12 @@ class GraphWidget extends Component {
         let self = this;
         let promises = this.state.selectedGraphs.map(function (selectedGraphs) {
             console.log("Create promise: " + selectedGraphs.sensorId);
-            return SensorDataAPI.getAll(selectedGraphs.sensorId, self.state.selectedTimePeriod.value);
-        });
+            if (self.state.searchByDateRange) {
+                return SensorDataAPI.findByDateRange(selectedGraphs.sensorId, self.state.searchDateRange.start, self.state.searchDateRange.end);
+            } else {
+                return SensorDataAPI.getAll(selectedGraphs.sensorId, self.state.selectedTimePeriod.value);
+            }
+         });
         let _selectedGraphs = [];
         Promise.all(promises).then(function (data) {
             console.log("in promise: " + JSON.stringify(data));
@@ -776,6 +821,16 @@ class GraphWidget extends Component {
         }
     }
 
+    handleLimitByPlanting = (event) => {
+
+        this.props.setDisplayModeBar(false);
+        this.selectCropModal.setPlantings([]);
+        this.setState({
+            selectCropModalIsOpen: true
+        });
+
+     }
+
     handleUpdate = (figure) => {
         console.log("Figure: " + figure);
         this.setState(figure)
@@ -785,6 +840,40 @@ class GraphWidget extends Component {
     updateHandler = () => {
         console.log("Updatedzzzz");
     };
+
+    handleSelectPlanting = (rowInfo, column, instance, e, selectedCrop) => {
+        const selectedRow = rowInfo.original;
+        console.log("Selected Row state: " + JSON.stringify(rowInfo))
+        selectedRow.cropName=selectedCrop;
+        const startDate = moment(selectedRow.dateSowed);
+        const endDate = moment(selectedRow.harvestDate);
+        const firstLightDate = moment(selectedRow.firstLightDate);
+        console.log("Start date: " + startDate)
+        console.log("Selected Row: " + JSON.stringify(selectedRow));
+        this.props.setDisplayModeBar(true);
+        this.setState({
+            selectCropModalIsOpen: false,
+            searchByDateRange: true,
+            searchDateRange: {
+                start: new Date(startDate),
+                end: new Date(endDate),
+                firstLight: new Date(firstLightDate)
+            },
+            selectedPlanting: [selectedRow],
+            loading: true,
+            plantingTableHidden: false
+
+        }, this.getData);
+
+        console.log("Edit node: " + e);
+        console.log("Cell - onDoubleClick", {
+            rowInfo,
+            column,
+            instance,
+            e: e
+        })
+     };
+
 
     render() {
         const selectRow = {
@@ -797,6 +886,16 @@ class GraphWidget extends Component {
 
         return (
             <div>
+                <SelectCropModal
+                    isOpen={this.state.selectCropModalIsOpen}
+                    handleSelectPlanting={this.handleSelectPlanting}
+                    onRef={ref => (this.selectCropModal = ref)}
+                    closeModal={()=> {
+                        console.log("zzModal")
+                        this.setState({selectCropModalIsOpen: false})
+                    }}
+
+                />
                 {/*<SimpleStorage parent={this} prefix={this.props.uniqueId} blackList={['selected']}/>*/}
                 <Grid container spacing={40}>
                     <Grid item xs={6} lg={6}>
@@ -835,13 +934,31 @@ class GraphWidget extends Component {
 
                     </BootstrapTable>
                 </div>
-                <div>
-                    <Select
-                        value={this.state.selectedTimePeriod}
-                        options={this.state.timespans}
-                        onChange={this.handleTimeChange}
-                        styles={this.customStyles}
+                <div hidden={this.state.plantingTableHidden}>
+                    <PlantingsListTable
+                        plantings={this.state.selectedPlanting}
+                        handleSelectPlanting={this.handleSelectPlanting}
+                        defaultPageSize={1}
+                        showPagination={false}
+                        showCropName={true}
                     />
+                </div>
+                <div>
+                    <Grid container spacing={40}>
+                        <Grid item xs={3} lg={3}>
+                            <Select
+                                value={this.state.selectedTimePeriod}
+                                options={this.state.timespans}
+                                onChange={this.handleTimeChange}
+                                styles={this.customStyles}
+                            />
+                        </Grid>
+                        <Grid item xs={6} lg={6}>
+                            <Button
+                                onClick={this.handleLimitByPlanting}
+                                className="btn btn-secondary">Limit by Planting</Button>
+                        </Grid>
+                    </Grid>
                 </div>
                 <div>
                     <div>
@@ -851,7 +968,7 @@ class GraphWidget extends Component {
                             onSelected={this.onSliderChange}
                             layout={this.state.layout}
                             config={{
-                                displayModeBar: true,
+                                displayModeBar: this.props.displayModeBar,
                                 // responsive: true,
                                 scrollZoom: true,
                                 displaylogo: false,
