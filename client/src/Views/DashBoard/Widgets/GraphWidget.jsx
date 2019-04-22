@@ -603,6 +603,8 @@ class GraphWidget extends Component {
             if (index === 0) {
                 layout[yAxis.yAxisNameLayout] = {
                     title: yAxis.units,
+                    // type: 'log',
+                    // autorange: true
 
                 }
 

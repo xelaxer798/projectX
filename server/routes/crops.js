@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get("/getCrops", crops.getCrops);
 router.post("/getPlantings", crops.getPlantings);
+router.post("/getCropPrices", crops.getCropPrices);
+router.get("/getPricingReport", crops.createPricingReport);
 
 // Export routes for server.js to use.
 export default router;

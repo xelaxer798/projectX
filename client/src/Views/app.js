@@ -20,6 +20,7 @@ import AlertsMain2 from "./UserPages/AlertPages/AlertsMain2";
 import AlertsMain3 from "./UserPages/AlertPages/AlertsMain3";
 import NodesMain from "./UserPages/NodesPages/NodesMain";
 import WebCamsMain from "./UserPages/WebCamPages/WebCamsMain"
+import CropsMain from "./UserPages/CropsPages/CropsMain"
 
 class App extends Component {
     state = {
@@ -109,6 +110,12 @@ class App extends Component {
         const RoutedNodesPage = (props) => {
             return (
                 <NodesMain/>
+            )
+        };
+
+        const RoutedCropsPage = (props) => {
+            return (
+                <CropsMain/>
             )
         };
 
@@ -204,6 +211,7 @@ class App extends Component {
                         <Route exact path='/user/account' render={RoutedAccountPage} />
                         <Route exact path='/alerts' render={RoutedAlertsPage} />
                         <Route exact path='/nodes' render={RoutedNodesPage} />
+                        <Route exact path='/crops' render={RoutedCropsPage} />
                         <Route exact path='/webCams' render={RoutedWebCamsPage} />
                         <Route exact path='/verification/:id' component={UserPages.Verification} />
                         <Route exact path='/reset/:token' component={UserPages.ResetPassword.resetPassword} />

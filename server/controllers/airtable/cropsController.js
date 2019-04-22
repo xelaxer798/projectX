@@ -1,5 +1,9 @@
 import Airtable from 'airtable'
 import dataController from "./dataController"
+import Functions from "../../Functions"
+import pdfMakePrinter from 'pdfmake/src/printer'
+import path from 'path'
+
 
 const base = new Airtable({
     apiKey: process.env.AIRTABLE_API_KEY,
@@ -7,7 +11,7 @@ const base = new Airtable({
 
 
 const dealWithNaN = (fieldToDealWith) => {
-    if(fieldToDealWith.specialValue) { //we have NaN
+    if (fieldToDealWith.specialValue) { //we have NaN
         return 0;
     } else {
         return fieldToDealWith;
@@ -16,13 +20,45 @@ const dealWithNaN = (fieldToDealWith) => {
 };
 
 const dealWithLocationBlanks = (fieldToDealWith) => {
-    console.log ("zPlanting field to deal with: " + JSON.stringify(fieldToDealWith))
+    console.log("zPlanting field to deal with: " + JSON.stringify(fieldToDealWith))
     if (!fieldToDealWith) {
         return "undefined"
     } else {
-        return(fieldToDealWith["text"])
+        return (fieldToDealWith["text"])
     }
-}
+};
+
+const generatePdf = (docDefinition, callback) => {
+    try {
+        const fontDirectory = 'server/Fonts/Roboto'
+        const fontDescriptors = {
+            Roboto: {
+                normal: path.join(fontDirectory,'Roboto-Regular.ttf'),
+                bold: path.join(fontDirectory,'Roboto-Medium.ttf'),
+                italics: path.join(fontDirectory,'Roboto-Italic.ttf'),
+                bolditalics: path.join(fontDirectory,'Roboto-MediumItalic.ttf')
+            }};
+        const printer = new pdfMakePrinter(fontDescriptors);
+        const doc = printer.createPdfKitDocument(docDefinition);
+
+        let chunks = [];
+
+        doc.on('data', (chunk) => {
+            chunks.push(chunk);
+        });
+
+        doc.on('end', () => {
+            callback(Buffer.concat(chunks));
+            // const result = Buffer.concat(chunks);
+            // callback('data:application/pdf;base64,' + result.toString('base64'));
+        });
+
+        doc.end();
+
+    } catch(err) {
+        throw(err);
+    }
+};
 
 const controller = {
 
@@ -53,6 +89,61 @@ const controller = {
         });
         console.log("Crops processed: " + JSON.stringify(returnValues[0]));
         res.json(returnValues);
+    },
+
+
+    getCropPrices: async (req, res) => {
+
+        let status = req.body.status;
+
+        const OPTIONS = {
+            // view: 'Grid view',
+            pageSize: 24
+        };
+
+        const TABLE = base('Crop Recipes');
+        const crops = await dataController.getAirtableRecords(TABLE, OPTIONS);
+
+        // const COUNT = crops.length,
+        //     PAGES = Math.ceil(COUNT / OPTIONS.pageSize),
+        //     OFFSET = (page * OPTIONS.pageSize) - OPTIONS.pageSize;
+
+        // console.log("Crops: " + JSON.stringify(crops));
+
+        let returnValues = crops.map(crop => {
+            return {
+                cropId: crop.getId(),
+                commonName: crop.get('Common Name'),
+                pricing: crop.get('💰price/4 oz'),
+                sortName: crop.get('Sort Name'),
+                status: crop.get("Status")
+                // pages: PAGES
+            };
+        });
+        let filteredReturnValues = [];
+        console.log("Status: " + status);
+        if (status) {
+            filteredReturnValues = returnValues.filter(crop => {
+                return status === crop.status;
+            });
+
+        } else {
+            filteredReturnValues = returnValues;
+        }
+        console.log("Crops processed: " + JSON.stringify(filteredReturnValues[0]));
+
+        res.json(filteredReturnValues.sort(Functions.compareValues("sortName")));
+    },
+
+    createPricingReport: async (req, res) => {
+        const docDefinition = {
+            content: ['This will show up in the file created']
+        };
+
+        generatePdf(docDefinition, (response) => {
+            res.setHeader('Content-Type', 'application/pdf');
+            res.send(response); // sends a base64 encoded string to client
+        });
     },
 
 
@@ -101,7 +192,7 @@ const controller = {
             };
         });
 
-        let filteredReturnValues = returnValues.filter( planting => {
+        let filteredReturnValues = returnValues.filter(planting => {
             return plantingIds.includes(planting.plantingId);
         })
         console.log("zPlanting return value: " + JSON.stringify(returnValues));

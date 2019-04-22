@@ -13,7 +13,11 @@ sgMail.setApiKey(sengrido);
 
 export function checkAlerts() {
 
-    db.Alerts.findAll()
+    db.Alerts.findAll({
+        where: {
+            active: true
+        }
+    })
         .then(allAlerts => {
             console.log("Check alerts: " + JSON.stringify(allAlerts));
             allAlerts.forEach((alert) => {

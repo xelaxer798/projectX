@@ -12,7 +12,8 @@ const processResults = (results, res, req, sensorId) => {
         for (let i = 0; i < results.length; i++) {
             pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
             pHy.push(JSON.parse(results[i].dataValueFloat));
-        };
+        }
+        ;
         const x = pHx;
         const y = pHy;
         const data = [{
@@ -21,12 +22,13 @@ const processResults = (results, res, req, sensorId) => {
             showlegend: false,
             type: 'scatter',
             mode: 'lines',
-            marker: { color: 'red' },
+            marker: {color: 'red'},
 
         }];
         res.json({
             sensorId: sensorId,
-            sensorData: data, });
+            sensorData: data,
+        });
     } catch (err) {
         console.log("Error: " + err);
     }
@@ -46,38 +48,38 @@ const controller = {
 
             }
         })
-            .then( results => {
-                    processResults(results,res,req, req.params.sensorId)
+            .then(results => {
+                    processResults(results, res, req, req.params.sensorId)
                 }
 
-            //     results => {
-            //
-            //     try {
-            //         const pHx = [];
-            //         const pHy = [];
-            //
-            //         for (let i = 0; i < results.length; i++) {
-            //             pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
-            //             pHy.push(JSON.parse(results[i].dataValueFloat));
-            //         };
-            //         const x = pHx;
-            //         const y = pHy;
-            //         const data = [{
-            //             x,
-            //             y,
-            //             showlegend: false,
-            //             type: 'scatter',
-            //             mode: 'lines',
-            //             marker: { color: 'red' },
-            //
-            //         }];
-            //         res.json({
-            //             sensorId: req.params.sensorId,
-            //             sensorData: data, });
-            //     } catch (err) {
-            //         console.log("Error: " + err);
-            //     }
-            // }
+                //     results => {
+                //
+                //     try {
+                //         const pHx = [];
+                //         const pHy = [];
+                //
+                //         for (let i = 0; i < results.length; i++) {
+                //             pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
+                //             pHy.push(JSON.parse(results[i].dataValueFloat));
+                //         };
+                //         const x = pHx;
+                //         const y = pHy;
+                //         const data = [{
+                //             x,
+                //             y,
+                //             showlegend: false,
+                //             type: 'scatter',
+                //             mode: 'lines',
+                //             marker: { color: 'red' },
+                //
+                //         }];
+                //         res.json({
+                //             sensorId: req.params.sensorId,
+                //             sensorData: data, });
+                //     } catch (err) {
+                //         console.log("Error: " + err);
+                //     }
+                // }
             )
             .catch(err => {
                 console.log("In catch");
@@ -92,11 +94,11 @@ const controller = {
             // limit: 2,
             where: {
                 sensorId: req.body.id,
-                createdAt: {[Op.between]:[req.body.startDate, req.body.endDate]}
+                createdAt: {[Op.between]: [req.body.startDate, req.body.endDate]}
             }
         })
-            .then( results => {
-                processResults(results,res,req, req.body.id)
+            .then(results => {
+                processResults(results, res, req, req.body.id)
             })
 
     },
@@ -114,10 +116,12 @@ const controller = {
             });
         db.Nodes.update(
             {lastUpdate: new Date()},
-            {where: {
-                nodeId: req.body.nodeId
-                }}
-         )
+            {
+                where: {
+                    nodeId: req.body.nodeId
+                }
+            }
+        )
             .then(dbModel => {
                 console.log("zzJSON input update node: " + JSON.stringify(dbModel))
                 return null;
@@ -130,13 +134,15 @@ const controller = {
             // return SensorDataAPI.getAll(selectedGraphs.sensorId);
             return db.Sensors.update(
                 {currentValue: individualSensorData.dataValueFloat},
-                {where: {
+                {
+                    where: {
                         sensorId: individualSensorData.sensorId
-                    }}
+                    }
+                }
             )
         });
 
-        Promise.all(promises).then(() =>{
+        Promise.all(promises).then(() => {
             console.log("Uddating sensor: " + req.body.sensorId + " to " + req.body.dataValueFloat)
             return null;
         })
@@ -155,23 +161,47 @@ const controller = {
 //                 console.log("Error: " + err);
 //             })
     },
+    getGreenhouseLUX: function (req, res) {
+        console.log("In getGreenhouseLUX");
+        db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            limit: 1,
+            where: {
+                sensorId: "7C0AF8A4AE30-LUX1",
+            }
+        })
+            .then(results => {
+                res.json({
+                    lux: results[0].dataValueFloat
+                });
+
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+            });
+
+    },
     create2: function (req, res) {
         const request = req;
         db.SensorData.bulkCreate(req.body.sensorData)
-            .then (() => {
+            .then(() => {
                 db.Nodes.update(
                     {lastUpdate: new Date()},
-                    {where: {
+                    {
+                        where: {
                             nodeId: req.body.nodeId
-                        }}
+                        }
+                    }
                 )
                     .then(() => {
                         console.log("Uddating sensor: " + request.body.sensorId + " to " + request.body.dataValueFloat)
                         db.Sensors.update(
                             {currentValue: request.body.dataValueFloat},
-                            {where: {
+                            {
+                                where: {
                                     sensorId: request.body.sensorId
-                                }}
+                                }
+                            }
                         )
 
                     })
@@ -180,7 +210,7 @@ const controller = {
                         res.status(422).json(err)
                     })
             })
-             .catch(err => {
+            .catch(err => {
                 console.log("Error: " + err);
                 res.status(422).json(err)
             });

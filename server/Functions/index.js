@@ -7,6 +7,8 @@ import momentTimeZones from './momentTimeZones';
 import convertTimeZonesNonGuess from './convertTimeZoneNonGuess';
 import getMonth from './getMonth';
 import getFormateTime from './getFormatedTime';
+import compareValues from './compareValues'
+
 const functions = {
     getDateIso,
     timeToDecimal,
@@ -17,6 +19,8 @@ const functions = {
     convertTimeZonesNonGuess,
     getLastUpdatedAndElapseTimeStrings,
     getMonth,
-    getFormateTime
-}
+    getFormateTime,
+    compareValues
+};
+
 export default functions;
