@@ -165,17 +165,24 @@ class AlertsMain3 extends Component {
     };
 
     static setStatusColor(cell, row, rowIndex, colIndex) {
+        let activeCss;
+        if(row.active) {
+            activeCss = "active-true "
+        } else {
+            activeCss = "active-false "
+        }
+
         if(row.alertType === "Node") {
             if (row.status === 'a-ok') {
-                return "status-ok node-alert"
+                return activeCss + "status-ok node-alert"
             } else {
-                return "status-danger node-alert"
+                return activeCss + "status-danger node-alert"
             }
         } else if (row.alertType === "Sensor") {
             if (row.status === 'a-ok') {
-                return "status-ok sensor-alert"
+                return activeCss + "status-ok sensor-alert"
             } else {
-                return "status-danger sensor-alert"
+                return activeCss + "status-danger sensor-alert"
             }
 
         }

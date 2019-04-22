@@ -217,26 +217,27 @@ export function processAlerts() {
             console.log("Alert Users Data: " + JSON.stringify(allUsers));
             allUsers.forEach((user) => {
                 user.Alerts.forEach((alert) => {
-                    console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
-                    if (alert.status === 'danger Will Robinson') {
-                        console.log("We have a problem: " + JSON.stringify(alert));
-                        if (alert.AlertUsers.lastNotification === null) {
-                            console.log("First time notification");
-                            sgMail.send(createWarningMessage(alert, user.email));
-                            alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
-                        } else if (hasReportingIntervalPassed(moment(alert.AlertUsers.lastNotification),alert.AlertUsers.notificationInterval)) {
-                            console.log("recurring notification");
-                            sgMail.send(createWarningMessage(alert, user.email));
-                            alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                    if (alert.active) {
+                        console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
+                        if (alert.status === 'danger Will Robinson') {
+                            console.log("We have a problem: " + JSON.stringify(alert));
+                            if (alert.AlertUsers.lastNotification === null) {
+                                console.log("First time notification");
+                                sgMail.send(createWarningMessage(alert, user.email));
+                                alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                            } else if (hasReportingIntervalPassed(moment(alert.AlertUsers.lastNotification),alert.AlertUsers.notificationInterval)) {
+                                console.log("recurring notification");
+                                sgMail.send(createWarningMessage(alert, user.email));
+                                alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                            }
+
+                        } else if (alert.status === 'a-ok' && alert.AlertUsers.lastNotification != null) {
+                            console.log("Things back to normal");
+                            sgMail.send(createBackToNormalMessage(alert, user.email));
+                            alertsUsersController.resetLastNotification(alert.AlertUsers.alertUserId);
                         }
-
-                    } else if (alert.status === 'a-ok' && alert.AlertUsers.lastNotification != null) {
-                        console.log("Things back to normal");
-                        sgMail.send(createBackToNormalMessage(alert, user.email));
-                        alertsUsersController.resetLastNotification(alert.AlertUsers.alertUserId);
-
                     }
-                })
+                 })
             })
 
         })
