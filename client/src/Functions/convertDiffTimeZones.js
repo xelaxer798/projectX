@@ -1,6 +1,6 @@
 import pluralize from "pluralize";
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 // const theDate= "2018-08-25T04:41:30.000Z";
 export const convertDiffTimeZones = (date) => {
     const zone = moment.tz.guess();

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 import Navbar from './Navbar2/Navbar';
 import './app.scss';
 import Dashboard from './DashBoard/DashBoard';

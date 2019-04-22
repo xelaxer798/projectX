@@ -15,7 +15,7 @@ import {isEmail} from 'validator';
 import './foundation-flex.css';
 import EditAlertModal from './EditAlertModal'
 import Constants from "../../DashBoard/Constants";
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 class AlertsMain3 extends Component {
 

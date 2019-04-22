@@ -1,6 +1,5 @@
 import functions from './index';
-const moment = require('moment');
-require('moment-timezone');
+const moment = require('moment-timezone');
 const getFormateTime = (date, format) => {
         if (format === 'cards') {
                 const month = functions.getMonth(date);

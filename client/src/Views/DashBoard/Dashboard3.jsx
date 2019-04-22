@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
 import Graphs from './index';
-import moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
+
 import functions from '../../Functions/index';
 import Grid from '@material-ui/core/Grid';
 import './Dashboard.css'

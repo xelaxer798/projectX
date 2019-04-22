@@ -1,6 +1,6 @@
 import functions from './index';
 
-const moment = require('moment');
+const moment = require('moment-timezone');
 require('moment-timezone');
 
 const getFormateTime = (date, format) => {
