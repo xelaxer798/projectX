@@ -141,11 +141,11 @@ function createSensorWarningHTML(alert, color) {
 function createSensorWarningSubject(alert) {
     let warning = "";
     if(alert.alertType === "Sensor") {
-        warning += alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
+        warning += "⚠️" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
 
     } else if (alert.alertType === "Node") {
         let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
-        warning +=  alert.Node.nodeName + " Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z');
+        warning +=  "❌️" + alert.Node.nodeName + " Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z');
      }
     return warning;
 }
@@ -162,13 +162,25 @@ function createWarningMessage(alert, recipient) {
     }
 }
 
+function createBackToNormalSubject(alert) {
+    let warning = "";
+    if(alert.alertType === "Sensor") {
+        warning += "✅️" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
+
+    } else if (alert.alertType === "Node") {
+        let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
+        warning +=  "✅️" + alert.Node.nodeName + " is back online ";
+    }
+    return warning;
+}
+
 function createBackToNormalMessage(alert, recipient) {
     console.log("createWarningMessage-Alert: " + JSON.stringify(alert));
     console.log("createWarningMessage-Recipient: " + recipient);
     return {
         to: recipient,
         from: 'LeafLiftSystems@donotreply.com',
-        subject: 'Things are back to normal',
+        subject: createBackToNormalSubject(alert),
         text: 'Click me ',
         html: createSensorWarningHTML(alert, "green")
     }
