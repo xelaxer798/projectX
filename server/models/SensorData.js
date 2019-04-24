@@ -18,6 +18,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        endTime: {
+            type: DataTypes.DATETIME,
+            allowNull: true
+        }
 
     }, {
         indexes: [
