@@ -161,6 +161,54 @@ const controller = {
 //                 console.log("Error: " + err);
 //             })
     },
+
+    getWaterings: function (req, res) {
+        console.log("In getWaterings");
+        db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            where: {
+                sensorId: {
+                    [Op.like] : "%FlowEvent%"
+                },
+            },
+            include: [
+                {
+                    model: db.Sensors,
+                    attribute: ['sensorName'],
+                },
+            ],
+
+        })
+            .then(results => {
+                const resObj = results.map(watering => {
+                    let startTime = moment(watering.createdAt);
+                    let endTime = moment(watering.endTime);
+                    let duration = moment(endTime - startTime);
+                    let durationSeconds = moment.duration(endTime.diff(startTime)).asSeconds();
+                    console.log("Duration in seconds: " + durationSeconds)
+                    return Object.assign(
+                        {},
+                        {
+                            sensorId: watering.sensorId,
+                            sensorName: watering.Sensor.sensorName,
+                            amount: watering.dataValueFloat,
+                            startTime: startTime,
+                            endTime: endTime,
+                            duration: duration,
+                            rate: watering.dataValueFloat/durationSeconds
+                        }
+                    )
+                });
+
+                console.log("ResObj: " + JSON.stringify(resObj));
+                res.json(resObj)
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+            });
+
+    },
+
     getGreenhouseLUX: function (req, res) {
         console.log("In getGreenhouseLUX");
         db.SensorData.findAll({

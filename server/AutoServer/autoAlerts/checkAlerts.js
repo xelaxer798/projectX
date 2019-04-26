@@ -229,7 +229,7 @@ export function processAlerts() {
             console.log("Alert Users Data: " + JSON.stringify(allUsers));
             allUsers.forEach((user) => {
                 user.Alerts.forEach((alert) => {
-                    if (alert.active) {
+                    if (alert.active && alert.AlertUsers.active) {
                         console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
                         if (alert.status === 'danger Will Robinson') {
                             console.log("We have a problem: " + JSON.stringify(alert));

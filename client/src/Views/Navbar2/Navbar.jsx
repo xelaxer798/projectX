@@ -213,6 +213,13 @@ class Navbar extends Component {
                     <ListItemText primary="Crops"/>
                 </ListItem></a> : <div/>}
 
+                {this.props.logged ? <a href='/waterings'> <ListItem button>
+                    <ListItemIcon>
+                        <SettingsIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Waterings"/>
+                </ListItem></a> : <div/>}
+
                 {this.props.logged ? <a href='/user/account'> <ListItem button>
                     <ListItemIcon>
                         <SettingsIcon/>

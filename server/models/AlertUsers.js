@@ -20,6 +20,9 @@ module.exports = function (sequelize, DataTypes) {
         lastNotification: {
             type: DataTypes.DATE,
             allowNull:true
+        },
+        active: {
+            type: DataTypes.BOOLEAN
         }
         
 
