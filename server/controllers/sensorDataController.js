@@ -195,6 +195,7 @@ const controller = {
                             startTime: startTime,
                             endTime: endTime,
                             duration: duration,
+                            updatedAt: watering.updatedAt,
                             rate: watering.dataValueFloat/durationSeconds
                         }
                     )

@@ -99,6 +99,10 @@ class WateringsMain extends Component {
             Header: 'End Time',
             Cell: dateFormatter
         }, {
+            accessor: 'updatedAt',
+            Header: 'Updated At',
+            Cell: dateFormatter
+        }, {
             accessor: 'duration',
             Header: 'Duration',
             Cell: durationFormatter
@@ -145,7 +149,8 @@ class WateringsMain extends Component {
                     defaultPageSize={10}
                     defaultSorted={[
                         {
-                            id: "startTime"
+                            id: "startTime",
+                            desc: true
                         }
 
                     ]}

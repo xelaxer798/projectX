@@ -12,6 +12,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        hasFlowSensor:{
+           type: DataTypes.BOOLEAN,
+           defaultValue: 0
+        },
         lastUpdate: {
             type: DataTypes.DATE,
             allowNull: true
