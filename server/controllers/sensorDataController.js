@@ -186,6 +186,7 @@ const controller = {
                     let duration = moment(endTime - startTime);
                     let durationSeconds = moment.duration(endTime.diff(startTime)).asSeconds();
                     console.log("Duration in seconds: " + durationSeconds)
+                    console.log(JSON.stringify(watering));
                     return Object.assign(
                         {},
                         {

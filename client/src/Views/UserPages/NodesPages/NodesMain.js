@@ -107,6 +107,9 @@ class NodesMain extends Component {
             Header: 'Last Update',
             Cell: dateFormatter
         }, {
+            accessor: 'numberOfFlowSensors',
+            Header: '# of Flow Sensors'
+        }, {
             Header: '',
             Cell: row => (
                 <div>
@@ -124,6 +127,17 @@ class NodesMain extends Component {
                 return moment(row.value).format('M/D/YY h:mm A z') + "(" + elapseTimeString + ")";
             } else {
                 return "";
+            }
+            // ?const formattedDateTime = moment(cell.getDate()).format('MMM. D, YYYY [at] h:mm A z');
+
+            // return `${('0' + cell.getDate()).slice(-2)}/${('0' + (cell.getMonth() + 1)).slice(-2)}/${cell.getFullYear()}`;
+        }
+
+        function booleanFormatter(row, Object) {
+              if (row.value) {
+                return "☑";
+            } else {
+                return "︎𐄂";
             }
             // ?const formattedDateTime = moment(cell.getDate()).format('MMM. D, YYYY [at] h:mm A z');
 
