@@ -13,8 +13,12 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
         numberOfFlowSensors:{
-           type: DataTypes.INTEGER,
-           defaultValue: 0
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+        numberOfOutlets:{
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         },
         lastUpdate: {
             type: DataTypes.DATE,

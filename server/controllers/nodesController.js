@@ -58,7 +58,8 @@ const controller = {
                     })
                     .then((dbModel) => { // Notice: There are no arguments here, as of right now you'll have to...
                         db.Nodes.findAll({
-                            where: {nodeId: req.body.nodeId
+                            where: {
+                                nodeId: req.body.nodeId
                             },
                             include: [{
                                 model: db.Sensors

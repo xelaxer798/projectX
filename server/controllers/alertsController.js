@@ -38,7 +38,7 @@ const controller = {
                 const resObj = dbModel.map(alert => {
                     console.log("Alert: " + JSON.stringify(alert));
                     let displaySensorName = "";
-                    if(alert.Sensor) {
+                    if (alert.Sensor) {
                         displaySensorName = alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                     }
 
@@ -46,18 +46,21 @@ const controller = {
                     let criteria = "test";
                     let relevantInfo = "";
                     let current = "";
-                    if(alert.alertType === "Sensor") {
+                    if (alert.alertType === "Sensor") {
                         target = "Sensor: " + alert.Sensor.Node.nodeName + "-" + alert.Sensor.sensorName;
                         criteria = "Above: " + alert.highValue + " or Below: " + alert.lowValue + " " + alert.Sensor.units;
                         current = "Current Value: " + alert.Sensor.currentValue + " " + alert.Sensor.units;
-                    } else {
+                    } else if (alert.alertType === "Node") {
                         target = "Node: " + alert.Node.nodeName;
                         criteria = "Not reporting in " + alert.nodeNonReportingTimeLimit + " minutes";
                         console.log("zzzNode: " + JSON.stringify(alert.Node));
                         let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings(timezone, alert.Node.lastUpdate);
                         console.log("Another last update: " + _lastUpdate + " " + elapseTimeString);
                         current = "Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
-                            + " (" + elapseTimeString +   ")"
+                            + " (" + elapseTimeString + ")"
+                    } else if (alert.alertType === "Watering") {
+                        target = "Watering: " + alert.Sensor.sensorName;
+                        criteria = "Missed";
                     }
 
                     return Object.assign(
@@ -97,10 +100,11 @@ const controller = {
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },
-    updateAlert: function (req, res){
+    updateAlert: function (req, res) {
         let updatedRecord = req.body.alert;
         db.Alerts.update(updatedRecord,
-            {where:
+            {
+                where:
                     {alertId: updatedRecord.alertId}
             })
             .then(dbModel => {
@@ -113,7 +117,7 @@ const controller = {
             })
     },
 
-    updateCurrentValueAndStatus: function(currentSensorValue, status, alertId) {
+    updateCurrentValueAndStatus: function (currentSensorValue, status, alertId) {
         db.Alerts.update(
             {
                 currentValue: currentSensorValue,

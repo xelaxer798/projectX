@@ -99,7 +99,7 @@ class AlertsMain3 extends Component {
         this.getAlerts();
         this.getSensors();
         this.getNodes();
-        setInterval(this.getAlerts, 1000*60);
+        setInterval(this.getAlerts, 1000 * 60);
 
     };
 
@@ -131,6 +131,7 @@ class AlertsMain3 extends Component {
         NodeApi.getNodes().then(results => {
             const nodes = [];
             results.data.forEach(node => {
+                console.log("Node ID: " + node.nodeId + "   Node name: " + node.nodeName)
                 nodes.push({value: node.nodeId, label: node.nodeName})
             });
             this.setState({
@@ -166,13 +167,13 @@ class AlertsMain3 extends Component {
 
     static setStatusColor(cell, row, rowIndex, colIndex) {
         let activeCss;
-        if(row.active) {
+        if (row.active) {
             activeCss = "active-true "
         } else {
             activeCss = "active-false "
         }
 
-        if(row.alertType === "Node") {
+        if (row.alertType === "Node") {
             if (row.status === 'a-ok') {
                 return activeCss + "status-ok node-alert"
             } else {
@@ -183,6 +184,13 @@ class AlertsMain3 extends Component {
                 return activeCss + "status-ok sensor-alert"
             } else {
                 return activeCss + "status-danger sensor-alert"
+            }
+
+        } else if (row.alertType === "Watering") {
+            if (row.status === 'a-ok') {
+                return activeCss + "status-ok watering-alert"
+            } else {
+                return activeCss + "status-danger watering-alert"
             }
 
         }
@@ -283,8 +291,8 @@ class AlertsMain3 extends Component {
             text: 'Current',
             sort: true,
             classes: AlertsMain3.setStatusColor
-    },
-    //     dataField: 'lowValue',
+        },
+            //     dataField: 'lowValue',
             //     text: 'Low Value',
             //     style: {
             //         width: '20px'
@@ -364,7 +372,16 @@ class AlertsMain3 extends Component {
                 return <span className="form-error is-visible">Required</span>;
             }
         }
-     };
+    };
+
+    requiredWateringAlert = (value, props) => {
+        // console.log("In required sensor alert - value: " +  value + " Props: " + props);
+        if (this.state.selectedAlert.alertType === "Watering") {
+            if (!value || (props.isCheckable && !props.checked)) {
+                return <span className="form-error is-visible">Required</span>;
+            }
+        }
+    };
 
     email = (value) => {
         if (!isEmail(value)) {
@@ -413,13 +430,20 @@ class AlertsMain3 extends Component {
     };
 
     static removeUnusedProperties(alert) {
-        if(alert.alertType === "Sensor") {
+        if (alert.alertType === "Sensor") {
             delete alert.nodeNonReportingTimeLimit;
             delete alert.nodeId
         } else if (alert.alertType === "Node") {
             delete alert.highValue;
             delete alert.lowValue;
             delete alert.sensorId;
+        } else if (alert.alertType === "Watering") {
+            delete alert.nodeNonReportingTimeLimit;
+            delete alert.highValue;
+            delete alert.lowValue;
+            delete alert.nodeId
+            alert.sensorId = alert.sensorIdWatering;
+            delete alert.sensorIdWatering;
         }
 
     }
@@ -434,7 +458,8 @@ class AlertsMain3 extends Component {
             let newAlert = Object.assign(this.form.getValues());
             newAlert.active = this.state.selectedAlert.active;
             newAlert.status = "a-ok";
-             AlertsMain3.removeUnusedProperties(newAlert);
+            AlertsMain3.removeUnusedProperties(newAlert);
+            console.log("New alert: " + JSON.stringify(newAlert));
             AlertsApi.createAlert(newAlert).then(data => {
                 this.getAlerts();
             });
@@ -503,7 +528,11 @@ class AlertsMain3 extends Component {
                         columns={AlertsMain3.renderColumns()}>
 
                     </BootstrapTable>
-                    {/*<EditAlertModal isOpen={this.state.modal2IsOpen} selectedAlert={this.state.selectedAlert} closeModal={this.closeModal2}/>*/}
+                    {/*<EditAlertModal */}
+                    {/*isOpen={this.state.modal2IsOpen} */}
+                    {/*selectedAlert={this.state.selectedAlert} */}
+                    {/*closeModal={this.closeModal2}*/}
+                    {/*/>*/}
                     <Modal
                         isOpen={this.state.modalIsOpen}
                         ariaHideApp={false}
@@ -522,6 +551,7 @@ class AlertsMain3 extends Component {
                                         <option value=''>Alert Type</option>
                                         <option key="Sensor" value="Sensor">Sensor</option>
                                         <option key="Node" value="Node">Node</option>
+                                        <option key="Watering" value="Watering">Watering</option>
                                     </Select>
                                 </div>
                                 <div className="small-12 medium-4 columns">
@@ -635,15 +665,39 @@ class AlertsMain3 extends Component {
                                     </label>
                                 </div>
                             </div>
+                            <div className="row" hidden={this.isInputGroupHidden("Watering")}>
+                                <div className="small-12 medium-4 columns">
+                                    <label>
+                                        Sensor
+                                        <Select name='sensorIdWatering' value={this.state.selectedAlert.sensorId}
+                                                validations={[this.requiredWateringAlert]}>
+                                            <option value=''>Choose a sensor</option>
+                                            {this.state.sensors.map(sensor => {
+                                                if (sensor.value.includes("FlowEvent")) {
+                                                    return (
+                                                        <option
+                                                            key={sensor.value}
+                                                            value={sensor.value}>{sensor.label}</option>
+
+                                                    )
+                                                }
+
+                                            })}
+                                        </Select>
+                                    </label>
+                                </div>
+                            </div>
                             <div className="row">
                                 <div className="small-3 medium-2 columns">
                                     <Button className="btn btn-primary">Submit</Button>
                                 </div>
                                 <div className="small-3 medium-2 columns">
-                                    <button className="btn btn-danger" type="button" onClick={this.closeModal}>Cancel</button>
+                                    <button className="btn btn-danger" type="button" onClick={this.closeModal}>Cancel
+                                    </button>
                                 </div>
                                 <div className="small-3 medium-2 columns">
-                                    <button className="btn btn-primary" type="button" onClick={this.handleClick}>Validate all
+                                    <button className="btn btn-primary" type="button"
+                                            onClick={this.handleClick}>Validate all
                                     </button>
                                 </div>
                             </div>

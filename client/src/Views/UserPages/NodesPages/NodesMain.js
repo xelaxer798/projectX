@@ -110,6 +110,9 @@ class NodesMain extends Component {
             accessor: 'numberOfFlowSensors',
             Header: '# of Flow Sensors'
         }, {
+            accessor: 'numberOfOutlets',
+            Header: '# of Outlets'
+        }, {
             Header: '',
             Cell: row => (
                 <div>

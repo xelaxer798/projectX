@@ -24,6 +24,10 @@
     background-color: LightCyan
 }
 
+.watering-alert{
+    background-color: Lavender;
+}
+
 .editButton {
     color: black;
     background: deepskyblue;
