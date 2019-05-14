@@ -4,7 +4,9 @@ import alertsUsersController from '../../controllers/alertsUsersController'
 import alertsController from '../../controllers/alertsController';
 import sensorsController from '../../controllers/sensorsController';
 import moment from 'moment'
+import sensorDataController from '../../controllers/sensorDataController'
 import functions from "../../Functions";
+import {Op} from "sequelize";
 
 const sengrido = process.env.sendgrid;
 console.log("Mail api key: " + sengrido);
@@ -23,8 +25,8 @@ export function checkAlerts() {
             allAlerts.forEach((alert) => {
                 let sensorId = "";
                 let whereClause = {};
-                let includeClause =[];
-                if(alert.alertType === "Sensor") {
+                let includeClause = [];
+                if (alert.alertType === "Sensor") {
                     // sensorId = alert.sensorId;
                     whereClause = {
                         sensorId: alert.sensorId
@@ -120,7 +122,7 @@ export function checkAlerts() {
 
 function createSensorWarningHTML(alert, color) {
     let returnHtml = "";
-    if(alert.alertType === "Sensor") {
+    if (alert.alertType === "Sensor") {
         returnHtml += "<strong>Node Name: </strong>" + alert.Sensor.Node.nodeName + "<br/>";
         returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
         returnHtml += "<strong>High limit: </strong>" + alert.highValue + "<br/>";
@@ -132,7 +134,7 @@ function createSensorWarningHTML(alert, color) {
         returnHtml += "<strong>Has not reported in at least: </strong>" + alert.nodeNonReportingTimeLimit + " minutes<br/>";
         let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
         returnHtml += "<strong>Last Reported: </strong>" + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z')
-            + " (" + elapseTimeString +   ")"
+            + " (" + elapseTimeString + ")"
 
     }
     return returnHtml;
@@ -140,13 +142,13 @@ function createSensorWarningHTML(alert, color) {
 
 function createSensorWarningSubject(alert) {
     let warning = "";
-    if(alert.alertType === "Sensor") {
+    if (alert.alertType === "Sensor") {
         warning += "⚠️" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
 
     } else if (alert.alertType === "Node") {
         let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
-        warning +=  "❌️" + alert.Node.nodeName + " Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z');
-     }
+        warning += "❌️" + alert.Node.nodeName + " Last Reported: " + _lastUpdate.format('MMM. D, YYYY [at] h:mm A z');
+    }
     return warning;
 }
 
@@ -162,14 +164,42 @@ function createWarningMessage(alert, recipient) {
     }
 }
 
+function createWateringMessage(alert, watering, recipient) {
+    return {
+        to: recipient,
+        from: 'LeafLiftSystems@donotreply.com',
+        subject: createWateringSubject(alert, watering),
+        text: 'Click me ',
+        html: createWateringHTML(alert, watering)
+    }
+}
+
+function createWateringSubject(alert, watering) {
+    const dateTime = moment(watering.startTime).format('M/D/YY h:mm:ss A z');
+    const duration = moment(watering.duration).format('mm:ss');
+    return "💦" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + " @ " + dateTime + " for " + duration;
+}
+
+function createWateringHTML(alert, watering) {
+    let returnHtml;
+    returnHtml = "<strong>Node Name: </strong>" + alert.Sensor.Node.nodeName + "<br/>";
+    returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
+    returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
+    returnHtml += "<strong>Amount: </strong>" + watering.amount + " ml<br/>";
+    return returnHtml;
+
+}
+
 function createBackToNormalSubject(alert) {
     let warning = "";
-    if(alert.alertType === "Sensor") {
+    if (alert.alertType === "Sensor") {
         warning += "✅️" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + ": " + alert.Sensor.currentValue;
 
     } else if (alert.alertType === "Node") {
         let {_lastUpdate, elapseTimeString} = functions.getLastUpdatedAndElapseTimeStrings("America/Los_Angeles", alert.Node.lastUpdate);
-        warning +=  "✅️" + alert.Node.nodeName + " is back online ";
+        warning += "✅️" + alert.Node.nodeName + " is back online ";
     }
     return warning;
 }
@@ -185,6 +215,7 @@ function createBackToNormalMessage(alert, recipient) {
         html: createSensorWarningHTML(alert, "green")
     }
 }
+
 function hasReportingIntervalPassed(lastNotification, interval) {
     console.log("Last notification:  " + lastNotification.format('MMM. D, YYYY [at] h:mm A z'));
     const currentTime = moment(new Date());
@@ -199,6 +230,49 @@ function hasReportingIntervalPassed(lastNotification, interval) {
     } else {
         return false
     }
+
+}
+
+export function processWateringAlerts() {
+    console.log("Processing watering alerts");
+    db.Alerts.findAll({
+        where: {
+            active: true,
+            AlertType: "Watering"
+        },
+        include: [
+            {
+                model: db.Users
+            },
+            {
+                model: db.Sensors,
+                include: [
+                    {
+                        model: db.Nodes
+                    }
+                ]
+            }
+        ]
+    })
+        .then (alerts => {
+            console.log("Watering alerts: " + JSON.stringify(alerts))
+            alerts.forEach(alert => {
+                alert.Users.forEach(user => {
+                    let cutOffDate = alert.Users[0].AlertUsers.lastNotification;
+                    if (cutOffDate === null) {
+                        cutOffDate = new Date("2019-05-10");
+                    }
+                    console.log("Cutoff date: " + cutOffDate)
+                    sensorDataController.getWateringsByDate(cutOffDate)
+                        .then(results => {
+                            results.forEach(result => {
+                                console.log("Watering message: " + JSON.stringify(createWateringMessage(alert, result,user.email)))
+                             })
+                            // alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.Users[0].AlertUsers.alertUserId);
+                        })
+                 })
+            })
+        })
 
 }
 
@@ -228,28 +302,71 @@ export function processAlerts() {
         .then(allUsers => {
             console.log("Alert Users Data: " + JSON.stringify(allUsers));
             allUsers.forEach((user) => {
-                user.Alerts.forEach((alert) => {
+                user.Alerts.forEach(async (alert) => {
                     if (alert.active && alert.AlertUsers.active) {
                         console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
-                        if (alert.status === 'danger Will Robinson') {
-                            console.log("We have a problem: " + JSON.stringify(alert));
-                            if (alert.AlertUsers.lastNotification === null) {
-                                console.log("First time notification");
-                                sgMail.send(createWarningMessage(alert, user.email));
-                                alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
-                            } else if (hasReportingIntervalPassed(moment(alert.AlertUsers.lastNotification),alert.AlertUsers.notificationInterval)) {
-                                console.log("recurring notification");
-                                sgMail.send(createWarningMessage(alert, user.email));
-                                alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
-                            }
+                        if (alert.alertType === "Watering") {
+                            // let cutOffDate = alert.AlertUsers.lastNotification;
+                            // console.log("Watering alertz: " + JSON.stringify(alert))
+                            // if (cutOffDate === null) {
+                            //     cutOffDate = new Date("2019-05-10");
+                            // }
+                            // console.log("Cutoff date: " + cutOffDate)
+                            // let results = await db.SensorData.findAll({
+                                // order: [['createdAt', 'DESC']],
+                                // where: {
+                                //     sensorId: {
+                                //         [Op.like]: "%FlowEvent%"
+                                //     },
+                                //     createdAt: {
+                                //         [Op.gte]: cutOffDate
+                                //     }
+                                // },
+                                // include: [
+                                //     {
+                                //         model: db.Sensors,
+                                //         attribute: ['sensorName'],
+                                //     },
+                                // ],
 
-                        } else if (alert.status === 'a-ok' && alert.AlertUsers.lastNotification != null) {
-                            console.log("Things back to normal");
-                            sgMail.send(createBackToNormalMessage(alert, user.email));
-                            alertsUsersController.resetLastNotification(alert.AlertUsers.alertUserId);
+                            // })
+                                // .then(results => {
+                                //     console.log("Watering notification: " + JSON.stringify(results));
+                                // })
+                            // sensorDataController.getWateringsByDate(cutOffDate)
+                                // .then(results => {
+                                //     // results.forEach(result => {
+                                //     //     console.log("Watering notification: " + JSON.stringify(result));
+                                //     //     // sgMail.send(createWateringMessage(alert, result,user.email))
+                                //     //     alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                                //     // })
+                                //     return null;
+                                // })
+                                // .catch(err => {
+                                //     console.log("Error getWateringsByDate: " + err);
+                                // })
+
+                        } else {
+                            if (alert.status === 'danger Will Robinson') {
+                                console.log("We have a problem: " + JSON.stringify(alert));
+                                if (alert.AlertUsers.lastNotification === null) {
+                                    console.log("First time notification");
+                                    sgMail.send(createWarningMessage(alert, user.email));
+                                    alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                                } else if (hasReportingIntervalPassed(moment(alert.AlertUsers.lastNotification), alert.AlertUsers.notificationInterval)) {
+                                    console.log("recurring notification");
+                                    sgMail.send(createWarningMessage(alert, user.email));
+                                    alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
+                                }
+
+                            } else if (alert.status === 'a-ok' && alert.AlertUsers.lastNotification != null) {
+                                console.log("Things back to normal " + alert.AlertUsers.alertUserId);
+                                sgMail.send(createBackToNormalMessage(alert, user.email));
+                                alertsUsersController.resetLastNotification(alert.AlertUsers.alertUserId);
+                            }
                         }
                     }
-                 })
+                })
             })
 
         })

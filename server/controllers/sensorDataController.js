@@ -168,7 +168,7 @@ const controller = {
             order: [['createdAt', 'DESC']],
             where: {
                 sensorId: {
-                    [Op.like] : "%FlowEvent%"
+                    [Op.like]: "%FlowEvent%"
                 },
             },
             include: [
@@ -197,7 +197,7 @@ const controller = {
                             endTime: endTime,
                             duration: duration,
                             updatedAt: watering.updatedAt,
-                            rate: watering.dataValueFloat/durationSeconds
+                            rate: watering.dataValueFloat / durationSeconds
                         }
                     )
                 });
@@ -209,6 +209,59 @@ const controller = {
                 console.log("Error: " + err);
             });
 
+    },
+
+    getWateringsByDate: function (cutOffDate) {
+        console.log("Get Waterings by date: " + cutOffDate)
+        let returnData = db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            where: {
+                sensorId: {
+                    [Op.like]: "%FlowEvent%"
+                },
+                createdAt: {
+                    [Op.gte]: cutOffDate
+                }
+            },
+            include: [
+                {
+                    model: db.Sensors,
+                    attribute: ['sensorName'],
+                },
+            ],
+
+        })
+            .then(results => {
+                const resObj = results.map(watering => {
+                    let startTime = moment(watering.createdAt);
+                    let endTime = moment(watering.endTime);
+                    let duration = moment(endTime - startTime);
+                    let durationSeconds = moment.duration(endTime.diff(startTime)).asSeconds();
+                    console.log("Duration in seconds: " + durationSeconds)
+                    console.log(JSON.stringify(watering));
+                    return Object.assign(
+                        {},
+                        {
+                            sensorId: watering.sensorId,
+                            sensorName: watering.Sensor.sensorName,
+                            amount: watering.dataValueFloat,
+                            startTime: startTime,
+                            endTime: endTime,
+                            duration: duration,
+                            updatedAt: watering.updatedAt,
+                            rate: watering.dataValueFloat / durationSeconds
+                        }
+                    )
+                });
+
+                console.log("Watering ResObj: " + JSON.stringify(resObj));
+                return resObj
+
+            })
+            .catch(err => {
+                console.log("Error getWateringsByDate: " + err);
+            })
+        return returnData;
     },
 
     getGreenhouseLUX: function (req, res) {

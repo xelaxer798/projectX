@@ -46,9 +46,11 @@ const controller = {
             })
     },
     updateAlertUsersLastNotification: function (lastNotification, alertUsersId) {
+        console.log("In update alert user last notification: " + lastNotification);
         db.AlertUsers.update(
             {
-                lastNotification: lastNotification
+                lastNotification: lastNotification,
+                notificationInterval: 55
             },
             {
                 where: {alertUserId: alertUsersId}
@@ -72,7 +74,7 @@ const controller = {
             }
         )
             .then(updatedUserAlert => {
-                console.log("Updated user alert: " + JSON.stringify(updatedUserAlert))
+                console.log("Reset lat notification alert: " + JSON.stringify(updatedUserAlert))
             })
             .catch(err => {
                 console.log("Error: " + err);

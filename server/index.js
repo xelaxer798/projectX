@@ -29,6 +29,9 @@ export default path => {
     autoServer.autoAlerts.processAlerts();
     setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
 
+    // autoServer.autoAlerts.processWateringAlerts();
+    // setInterval(autoServer.autoAlerts.processWateringAlerts, 1000 * 60);
+
     // autoServer.updateWeatherNodes();
     // setInterval(autoServer.updateWeatherNodes, 1000 * 60);
 

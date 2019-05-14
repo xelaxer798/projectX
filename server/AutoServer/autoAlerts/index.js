@@ -1,6 +1,7 @@
-import {checkAlerts, processAlerts} from './checkAlerts';
+import {checkAlerts, processAlerts, processWateringAlerts} from './checkAlerts';
 const autoAlerts={
     checkAlerts,
-    processAlerts
+    processAlerts,
+    processWateringAlerts
 };
 export default autoAlerts;

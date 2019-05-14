@@ -327,9 +327,9 @@ function createHarvestRecords(ordersToProcess, crops, addPlantingRequestToOrders
             // let harvestDate = nextDeliveryDay - getTotalDays(order.Crop[0]);
             // let harvestDate = moment(nextDeliveryDay).subtract(totalDays, 'days');
             harvestDate = moment(nextDeliveryDay);
-            while (harvestDate.isBefore(cutoffDate, 'days')) {
+            while (harvestDate.isSameOrBefore(cutoffDate, 'days')) {
                 plantingDate = calculatePreviousMondayOrThursday(moment(harvestDate).subtract(totalDays, 'days'));
-                if (plantingDate.isAfter(today, 'days')) {
+                if (plantingDate.isSameOrAfter(today, 'days')) {
                     promises.push(createHarvestRequest(
                         order.Company,
                         order.Crop,
