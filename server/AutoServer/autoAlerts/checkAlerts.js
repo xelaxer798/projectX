@@ -187,7 +187,7 @@ function createWateringHTML(alert, watering) {
     returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
-    returnHtml += "<strong>Amount: </strong>" + watering.amount + " ml<br/>";
+    returnHtml += "<strong>Amount: </strong>" + watering.amount.toLocaleString() + " ml<br/>";
     return returnHtml;
 
 }
@@ -258,18 +258,21 @@ export function processWateringAlerts() {
             console.log("Watering alerts: " + JSON.stringify(alerts))
             alerts.forEach(alert => {
                 alert.Users.forEach(user => {
-                    let cutOffDate = alert.Users[0].AlertUsers.lastNotification;
+                    let cutOffDate = user.AlertUsers.lastNotification;
                     if (cutOffDate === null) {
-                        cutOffDate = new Date("2019-05-10");
+                        cutOffDate = new Date(Date.now() - 86400000);
                     }
                     console.log("Cutoff date: " + cutOffDate)
-                    sensorDataController.getWateringsByDate(cutOffDate)
+                    sensorDataController.getWateringsByDate(cutOffDate, alert.sensorId)
                         .then(results => {
-                            results.forEach(result => {
-                                console.log("Watering message: " + JSON.stringify(createWateringMessage(alert, result,user.email)))
-                             })
-                            // alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.Users[0].AlertUsers.alertUserId);
-                        })
+                            console.log("Watering results: " + JSON.stringify(results));
+                            if (results.length > 0) {
+                                results.forEach(result => {
+                                    sgMail.send(createWateringMessage(alert, result,user.email))
+                                })
+                                alertsUsersController.updateAlertUsersLastNotification(new Date(), user.AlertUsers.alertUserId);
+                            }
+                         })
                  })
             })
         })
@@ -305,48 +308,7 @@ export function processAlerts() {
                 user.Alerts.forEach(async (alert) => {
                     if (alert.active && alert.AlertUsers.active) {
                         console.log("Processing Alert for user: " + user.email + " Alerts: " + JSON.stringify(alert));
-                        if (alert.alertType === "Watering") {
-                            // let cutOffDate = alert.AlertUsers.lastNotification;
-                            // console.log("Watering alertz: " + JSON.stringify(alert))
-                            // if (cutOffDate === null) {
-                            //     cutOffDate = new Date("2019-05-10");
-                            // }
-                            // console.log("Cutoff date: " + cutOffDate)
-                            // let results = await db.SensorData.findAll({
-                                // order: [['createdAt', 'DESC']],
-                                // where: {
-                                //     sensorId: {
-                                //         [Op.like]: "%FlowEvent%"
-                                //     },
-                                //     createdAt: {
-                                //         [Op.gte]: cutOffDate
-                                //     }
-                                // },
-                                // include: [
-                                //     {
-                                //         model: db.Sensors,
-                                //         attribute: ['sensorName'],
-                                //     },
-                                // ],
-
-                            // })
-                                // .then(results => {
-                                //     console.log("Watering notification: " + JSON.stringify(results));
-                                // })
-                            // sensorDataController.getWateringsByDate(cutOffDate)
-                                // .then(results => {
-                                //     // results.forEach(result => {
-                                //     //     console.log("Watering notification: " + JSON.stringify(result));
-                                //     //     // sgMail.send(createWateringMessage(alert, result,user.email))
-                                //     //     alertsUsersController.updateAlertUsersLastNotification(new Date(), alert.AlertUsers.alertUserId);
-                                //     // })
-                                //     return null;
-                                // })
-                                // .catch(err => {
-                                //     console.log("Error getWateringsByDate: " + err);
-                                // })
-
-                        } else {
+                        if (alert.alertType !== "Watering") {
                             if (alert.status === 'danger Will Robinson') {
                                 console.log("We have a problem: " + JSON.stringify(alert));
                                 if (alert.AlertUsers.lastNotification === null) {

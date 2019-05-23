@@ -20,6 +20,21 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DOUBLE,
             allowNull: true
         },
+        sensorTrigger: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        highValue: {
+            type: DataTypes.DOUBLE,
+            allowNull: true
+        },
+        lowValue: {
+            type: DataTypes.DOUBLE,
+            allowNull: true
+        },
+        reverse: {
+            type: DataTypes.BOOLEAN
+        }
 
 
 

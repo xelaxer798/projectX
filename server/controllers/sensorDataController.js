@@ -211,15 +211,13 @@ const controller = {
 
     },
 
-    getWateringsByDate: function (cutOffDate) {
+    getWateringsByDate: function (cutOffDate, sensorId) {
         console.log("Get Waterings by date: " + cutOffDate)
         let returnData = db.SensorData.findAll({
             order: [['createdAt', 'DESC']],
             where: {
-                sensorId: {
-                    [Op.like]: "%FlowEvent%"
-                },
-                createdAt: {
+                sensorId: sensorId,
+                updatedAt: {
                     [Op.gte]: cutOffDate
                 }
             },

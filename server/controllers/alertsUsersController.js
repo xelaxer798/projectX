@@ -49,8 +49,7 @@ const controller = {
         console.log("In update alert user last notification: " + lastNotification);
         db.AlertUsers.update(
             {
-                lastNotification: lastNotification,
-                notificationInterval: 55
+                lastNotification: lastNotification
             },
             {
                 where: {alertUserId: alertUsersId}
