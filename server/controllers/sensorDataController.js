@@ -8,6 +8,14 @@ const processResults = (results, res, req, sensorId) => {
     try {
         const pHx = [];
         const pHy = [];
+        let plotType, plotMode;
+        if (sensorId.includes("FlowEvent")) {
+            plotType = "bar";
+            plotMode = "";
+        } else {
+            plotType = "scatter";
+            plotMode = "lines";
+        }
 
         for (let i = 0; i < results.length; i++) {
             pHx.push(functions.convertTimeZonesNonGuess(results[i].createdAt));
@@ -20,8 +28,8 @@ const processResults = (results, res, req, sensorId) => {
             x,
             y,
             showlegend: false,
-            type: 'scatter',
-            mode: 'lines',
+            type: plotType,
+            mode: plotMode,
             marker: {color: 'red'},
 
         }];
@@ -82,7 +90,7 @@ const controller = {
                 // }
             )
             .catch(err => {
-                console.log("In catch");
+                console.log("Error in find by sensor id: " + JSON.stringify(err));
                 res.status(422).json(err);
             });
     },
@@ -164,13 +172,23 @@ const controller = {
 
     getWaterings: function (req, res) {
         console.log("In getWaterings");
-        db.SensorData.findAll({
-            order: [['createdAt', 'DESC']],
-            where: {
+        let whereClause;
+        if (req.body.id) {
+            console.log("Get Waterings by id: " + req.body.id + "\tStart date: " + req.body.startDate+ "\tEnd date: " + req.body.endDate);
+            whereClause = {
+                sensorId:req.body.id,
+                createdAt: {[Op.between]: [req.body.startDate, req.body.endDate]}
+            }
+        } else {
+            whereClause = {
                 sensorId: {
                     [Op.like]: "%FlowEvent%"
                 },
-            },
+            }
+        }
+        db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            where: whereClause,
             include: [
                 {
                     model: db.Sensors,
@@ -186,7 +204,7 @@ const controller = {
                     let duration = moment(endTime - startTime);
                     let durationSeconds = moment.duration(endTime.diff(startTime)).asSeconds();
                     console.log("Duration in seconds: " + durationSeconds)
-                    console.log(JSON.stringify(watering));
+                    console.log("Watering: " + JSON.stringify(watering));
                     return Object.assign(
                         {},
                         {

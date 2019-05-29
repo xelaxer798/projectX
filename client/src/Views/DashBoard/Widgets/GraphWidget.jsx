@@ -16,6 +16,7 @@ import SimpleStorage, {clearStorage, resetParentState} from "react-simple-storag
 import SelectCropModal from "../../UserPages/CropsPages/SelectCropModal"
 import PlantingsListTable from "../../UserPages/CropsPages/PlantingsListTable";
 import Modal from "react-modal";
+import functions from "../../../Functions";
 
 // import WrapWithLocalStorage from '../../../HOCs/WrapWithLocalStorage'
 
@@ -60,9 +61,12 @@ class GraphWidget extends Component {
             displayModeBar: true,
             selectedPlanting: [],
             searchByDateRange: false,
+            selectedFlowSensor: {},
+            waterings: [],
+            flowSensors: [],
             searchDateRange: {
-                start:new Date(0),
-                end:new Date(0),
+                start: new Date(0),
+                end: new Date(0),
                 firstLight: Date(0)
             },
             timespans: [
@@ -149,7 +153,11 @@ class GraphWidget extends Component {
                 })
             });
             this.setState({
-                sensors: sensors
+                sensors: sensors,
+                flowSensors: sensors.filter(sensor => {
+                    console.log("Filtering for events: " + JSON.stringify(sensor))
+                    return sensor.value.includes("Event")
+                })
             }, this.bringBackFromLocalStorage);
 
         });
@@ -165,6 +173,7 @@ class GraphWidget extends Component {
             label: 'Past Day'
         };
         let sortOrder = [];
+        let selectedFlowSensor = {};
         if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedGraphs")) {
             selectedGraphs = localStorage.getItem(this.props.uniqueId + "selectedGraphs");
         }
@@ -176,22 +185,29 @@ class GraphWidget extends Component {
             sortOrder = localStorage.getItem(this.props.uniqueId + "sortOrder");
             console.log("Getting sort order from local storage: " + sortOrder)
         }
+        if (localStorage.hasOwnProperty(this.props.uniqueId + "selectedFlowSensor")) {
+            selectedFlowSensor = localStorage.getItem(this.props.uniqueId + "selectedFlowSensor");
+            console.log("Getting sort order from local storage: " + sortOrder)
+        }
 
         try {
             selectedGraphs = JSON.parse(selectedGraphs);
             selectedTimePeriod = JSON.parse(selectedTimePeriod);
             sortOrder = JSON.parse(sortOrder);
+            selectedFlowSensor = JSON.parse(selectedFlowSensor);
             this.setState({
                 selectedGraphs: selectedGraphs,
                 selectedTimePeriod: selectedTimePeriod,
-                currentSort: sortOrder
+                currentSort: sortOrder,
+                selectedFlowSensor: selectedFlowSensor
             }, this.getData);
         } catch (e) {
             // handle empty string
             this.setState({
                 selectedGraphs: selectedGraphs,
                 selectedTimePeriod: selectedTimePeriod,
-                currentSort: sortOrder
+                currentSort: sortOrder,
+                selectedFlowSensor: selectedFlowSensor
             }, this.getData);
         }
 
@@ -515,9 +531,10 @@ class GraphWidget extends Component {
         }
     }
 
-    generateShape = () => {
+    generateShapes = () => {
+        let shapes = []
         if (this.state.searchByDateRange) {
-            return [{
+            shapes.push({
                 type: 'rect',
                 // x-reference is assigned to the x-values
                 xref: 'x',
@@ -532,10 +549,32 @@ class GraphWidget extends Component {
                 line: {
                     width: 0
                 }
-            }]
-        } else {
-            return []
+            })
         }
+        console.log("Waterings in generate shapes: " + JSON.stringify(this.state.waterings))
+        if (this.state.waterings.length > 0) {
+            this.state.waterings.forEach(watering => {
+                shapes.push ({
+                    type: 'rect',
+                    // x-reference is assigned to the x-values
+                    xref: 'x',
+                    // y-reference is assigned to the plot paper [0,1]
+                    yref: 'paper',
+                    x0: functions.convertTimeZonesNonGuess(watering.startTime),
+                    y0: 0,
+                    x1: functions.convertTimeZonesNonGuess(watering.endTime),
+                    y1: 1,
+                    fillcolor: '#d3d3d3',
+                    opacity: 0.4,
+                    line: {
+                        width: 1
+                    }
+                })
+
+            })
+        }
+
+        return shapes
     };
 
     generateLayout = () => {
@@ -564,7 +603,7 @@ class GraphWidget extends Component {
                 orientation: 'v'
             },
 
-            shapes: this.generateShape(),
+            shapes: this.generateShapes(),
 
             xaxis: {
                 tickfont: {
@@ -654,6 +693,14 @@ class GraphWidget extends Component {
 
     }
 
+    handleFlowSensorChange = (optionSelected) => {
+        this.setState({
+                selectedFlowSensor: optionSelected
+            },
+            this.getData)
+        localStorage.setItem(this.props.uniqueId + "selectedFlowSensor", JSON.stringify(optionSelected));
+    };
+
 
     plotColors = [
         {color: 'purple'},
@@ -675,6 +722,31 @@ class GraphWidget extends Component {
         return this.plotColors[indexToUse];
     };
 
+    getWateringEvents = () => {
+        let startDate, endDate;
+        if (this.state.searchByDateRange) {
+            startDate = this.state.searchByDateRange.start;
+            endDate = this.state.searchByDateRange.end
+        } else {
+            startDate = moment().subtract(this.state.selectedTimePeriod.value, 'hours');
+            endDate = new Date();
+        }
+        if (Object.keys(this.state.selectedFlowSensor).length != 0) {
+            console.log("Selected Flow Sensor: " + JSON.stringify(this.state.selectedFlowSensor));
+            return SensorDataAPI.getWaterings(this.state.selectedFlowSensor.value, startDate, endDate)
+            // SensorDataAPI.getWaterings(this.state.selectedFlowSensor.value, startDate, endDate)
+            //     .then((waterings) =>{
+            //         console.log("Returned waterings: " + JSON.stringify(waterings));
+            //         return waterings
+            //     })
+        }
+        else {
+            let emptyArray = {data: []};
+            console.log("get waterings empty array")
+            return Promise.resolve(emptyArray);
+        }
+    };
+
     getData() {
 
         let yaxises = [];
@@ -688,7 +760,7 @@ class GraphWidget extends Component {
             } else {
                 return SensorDataAPI.getAll(selectedGraphs.sensorId, self.state.selectedTimePeriod.value);
             }
-         });
+        });
         let _selectedGraphs = [];
         Promise.all(promises).then(function (data) {
             console.log("in promise: " + JSON.stringify(data));
@@ -721,16 +793,21 @@ class GraphWidget extends Component {
             }
 
         }).then(() => {
-            this.generateLayout();
-            console.log("Y axis: " + JSON.stringify(yaxises));
-            console.log("Graphs2.1: " + JSON.stringify(this.state.graphs));
-            this.setState({
-                graphDataToPlot: this.concatSensorData(_selectedGraphs),
-                selectedGraphs: _selectedGraphs,
-                loading: false
-            });
-            console.log("Graphs2.2: " + JSON.stringify(this.state.graphs));
-            console.log("Data 2.2: " + JSON.stringify(this.state.graphDataToPlot));
+            this.getWateringEvents()
+                .then(waterings => {
+                    console.log("Waterings from promise: " + JSON.stringify(waterings.data))
+
+                    console.log("Y axis: " + JSON.stringify(yaxises));
+                    console.log("Graphs2.1: " + JSON.stringify(this.state.graphs));
+                    this.setState({
+                        graphDataToPlot: this.concatSensorData(_selectedGraphs),
+                        selectedGraphs: _selectedGraphs,
+                        loading: false,
+                        waterings: waterings.data
+                    }, this.generateLayout);
+                    console.log("Graphs2.2: " + JSON.stringify(this.state.graphs));
+                    console.log("Data 2.2: " + JSON.stringify(this.state.graphDataToPlot));
+                });
 
         })
     }
@@ -835,7 +912,7 @@ class GraphWidget extends Component {
             selectCropModalIsOpen: true
         });
 
-     }
+    }
 
     handleUpdate = (figure) => {
         console.log("Figure: " + figure);
@@ -850,7 +927,7 @@ class GraphWidget extends Component {
     handleSelectPlanting = (rowInfo, column, instance, e, selectedCrop) => {
         const selectedRow = rowInfo.original;
         console.log("Selected Row state: " + JSON.stringify(rowInfo))
-        selectedRow.cropName=selectedCrop;
+        selectedRow.cropName = selectedCrop;
         const startDate = moment(selectedRow.dateSowed);
         const endDate = moment(selectedRow.harvestDate);
         const firstLightDate = moment(selectedRow.firstLightDate);
@@ -878,7 +955,7 @@ class GraphWidget extends Component {
             instance,
             e: e
         })
-     };
+    };
 
 
     render() {
@@ -896,7 +973,7 @@ class GraphWidget extends Component {
                     isOpen={this.state.selectCropModalIsOpen}
                     handleSelectPlanting={this.handleSelectPlanting}
                     onRef={ref => (this.selectCropModal = ref)}
-                    closeModal={()=> {
+                    closeModal={() => {
                         console.log("zzModal")
                         this.setState({selectCropModalIsOpen: false})
                     }}
@@ -963,6 +1040,15 @@ class GraphWidget extends Component {
                             <Button
                                 onClick={this.handleLimitByPlanting}
                                 className="btn btn-secondary">Limit by Planting</Button>
+                        </Grid>
+                        <Grid item xs={3} lg={3}>
+                            <Select
+                                value={this.state.selectedFlowSensor}
+                                placeholder="Select Flow Sensor"
+                                options={this.state.flowSensors}
+                                onChange={this.handleFlowSensorChange}
+                                styles={this.customStyles}
+                            />
                         </Grid>
                     </Grid>
                 </div>

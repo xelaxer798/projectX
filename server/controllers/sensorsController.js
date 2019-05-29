@@ -27,6 +27,7 @@ const controller = {
                  res.json(resObj);
             })
             .catch(err => {
+                console.log("Get sensors error: " + err);
                 res.status(422).json(err);
             });
     },

@@ -199,7 +199,7 @@ class WateringsMain extends Component {
                     getTdProps={(state, rowInfo, column, instance) => {
                         return {
                             onDoubleClick: (e) => {
-                                this.editNode(state, rowInfo, column, instance, e)
+                                // this.editNode(state, rowInfo, column, instance, e)
                             }
                         };
                     }}
