@@ -327,7 +327,7 @@ class AlertsMain3 extends Component {
     }
 
     defaultSorted = [{
-        dataField: 'alertId',
+        dataField: 'target',
         order: 'asc'
     }];
 

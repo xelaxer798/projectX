@@ -34,6 +34,9 @@ module.exports = function (sequelize, DataTypes) {
         },
         reverse: {
             type: DataTypes.BOOLEAN
+        },
+        active: {
+            type: DataTypes.BOOLEAN
         }
 
 

@@ -177,7 +177,7 @@ function createWateringMessage(alert, watering, recipient) {
 function createWateringSubject(alert, watering) {
     const dateTime = moment(watering.startTime).format('M/D/YY h:mm:ss A z');
     const duration = moment(watering.duration).format('mm:ss');
-    return "💦" + alert.Sensor.Node.nodeName + " " + alert.Sensor.sensorName + " @ " + dateTime + " for " + duration;
+    return "💦 " + alert.Sensor.sensorName + " for " + duration  + " @ " + dateTime;
 }
 
 function createWateringHTML(alert, watering) {

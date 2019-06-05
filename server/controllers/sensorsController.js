@@ -1,17 +1,23 @@
 import db from "../models";
 
 const controller = {
-    getSensors: function(req, res) {
+    getSensors: function (req, res) {
 
         db.Sensors.findAll({
-             include: [
+            where: {active: true},
+            include: [
                 {
                     model: db.Nodes,
                     attributes: ['nodeName']
                 }
+            ],
+            order: [
+                [db.Nodes, 'nodeName', 'ASC'],
+                ['sensorName', 'ASC']
             ]
         })
             .then(dbModel => {
+                console.log("Get all sensors: " + JSON.stringify(dbModel));
                 const resObj = dbModel.map(sensor => {
                     return Object.assign(
                         {},
@@ -20,11 +26,11 @@ const controller = {
                             sensorName: sensor.sensorName,
                             units: sensor.units,
                             nodeName: sensor.Node.nodeName,
-                            dropdownLabel: sensor.Node.nodeName + "-" + sensor.sensorName
+                            dropdownLabel: sensor.Node.nodeName + " - " + sensor.sensorName
                         }
                     )
                 });
-                 res.json(resObj);
+                res.json(resObj);
             })
             .catch(err => {
                 console.log("Get sensors error: " + err);
@@ -32,13 +38,13 @@ const controller = {
             });
     },
 
-    getSensorIdByNodeId: function(nodeId) {
+    getSensorIdByNodeId: function (nodeId) {
         console.log("Node ID: " + nodeId);
         db.Sensors.findAll({
             where: {
                 nodeId: nodeId
             },
-            limit:1
+            limit: 1
         })
             .then(sensors => {
                 console.log("Return sensor: " + sensors[0].sensorId);
@@ -47,4 +53,4 @@ const controller = {
     }
 };
 
-export { controller as default };
+export {controller as default};

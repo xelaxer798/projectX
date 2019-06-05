@@ -10,7 +10,8 @@ const nodesApi = {
     delete: userid => axios.delete(`/api/nodes/${userid}`),
     deleteById: id => axios.delete(`/api/nodes/die/${id}`),
     verification: id => axios.put(`/api/users/verification/${id}`),
-    updateWeatherNodes: () => axios.get(`/api/nodes/config/updateWeatherNodes`)
+    updateWeatherNodes: () => axios.get(`/api/nodes/config/updateWeatherNodes`),
+    getNodesAndSensors: () => axios.get('/api/nodes/config/getNodesAndSensors')
 };
 export {
     nodesApi as default

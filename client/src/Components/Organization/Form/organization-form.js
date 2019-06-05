@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import organizationApi from '../../../Data/organization-api';
 import './organization-form.++scss';
 class OrganizationList extends Component {
+
   state = {
     loading: true,
     organization: {}

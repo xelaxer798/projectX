@@ -8,13 +8,15 @@ const processResults = (results, res, req, sensorId) => {
     try {
         const pHx = [];
         const pHy = [];
-        let plotType, plotMode;
-        if (sensorId.includes("FlowEvent")) {
+        let plotType, plotMode, barMode;
+        if (sensorId.includes("Flow")) {
             plotType = "bar";
             plotMode = "";
+            barMode = "group"
         } else {
             plotType = "scatter";
             plotMode = "lines";
+            barMode = "";
         }
 
         for (let i = 0; i < results.length; i++) {
@@ -30,6 +32,7 @@ const processResults = (results, res, req, sensorId) => {
             showlegend: false,
             type: plotType,
             mode: plotMode,
+            barMode: barMode,
             marker: {color: 'red'},
 
         }];

@@ -44,6 +44,30 @@ const controller = {
             });
     },
 
+    getNodesAndSensors: function (req, res) {
+        console.log("Sorted nodes: ");
+        db.Nodes.findAll ({
+             include: [{
+                model: db.Sensors,
+                where: {active: true}
+            }],
+            order: [
+                ['nodeName', 'ASC'],
+                [db.Sensors, 'sensorName', 'ASC']
+            ],
+
+
+        })
+            .then(nodes => {
+                // console.log("Sorted nodes: " + JSON.stringify(nodes));
+                res.json(nodes)
+            })
+            .catch(err => {
+                console.log("Sorted nodes error: " + JSON.stringify(err));
+                res.status(422).json(err)
+            })
+    },
+
     create: function (req, res) {
         console.log("JSON input: " + req.body);
         db.Nodes.upsert({

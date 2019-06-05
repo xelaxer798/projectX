@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Graphs from "../index";
 import {Button} from 'react-bootstrap';
 import SensorApi from "../../../Data/sensor-api";
+import NodesApi from "../../../Data/nodes-api"
 import CropsApi from "../../../Data/crops-api"
 import SensorDataAPI from '../../../Data/sensorData-api';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -149,8 +150,11 @@ class GraphWidget extends Component {
                 sensors.push({
                     value: sensor.sensorId,
                     label: sensor.dropdownLabel,
-                    units: sensor.units
+                    units: sensor.units,
+                    text: sensor.dropdownLabel,
+                    name: sensor.sensorId
                 })
+
             });
             this.setState({
                 sensors: sensors,
@@ -161,6 +165,34 @@ class GraphWidget extends Component {
             }, this.bringBackFromLocalStorage);
 
         });
+
+        // NodesApi.getNodesAndSensors()
+        //     .then(results => {
+        //         let sensors = [];
+        //         let options;
+        //         console.log("Sorted nodes: " + JSON.stringify(results));
+        //         results.data.forEach(node => {
+        //             options = [];
+        //             node.Sensors.forEach(sensor => {
+        //                 options.push({
+        //                     label: sensor.sensorName,
+        //                     value: sensor.sensorId
+        //                 })
+        //             });
+        //             sensors.push({
+        //                 label: node.nodeName,
+        //                 options: options
+        //             })
+        //
+        //         })
+        //         this.setState({
+        //             sensors: sensors,
+        //             // flowSensors: sensors.filter(sensor => {
+        //             //     console.log("Filtering for events: " + JSON.stringify(sensor))
+        //             //     return sensor.value.includes("Event")
+        //             // })
+        //         }, this.bringBackFromLocalStorage);
+        //     });
 
 
         setInterval(this.getData, 1000 * 60);
@@ -383,7 +415,18 @@ class GraphWidget extends Component {
                 })
             });
             this.setState({
-                sensors: sensors
+                // sensors: sensors
+                sensors: [
+                    {
+                        label: "Group 1",
+                        options: [
+                            {label: "Group 1, option 1", value: "value_1"},
+                            {label: "Group 1, option 2", value: "value_2"}
+                        ]
+                    },
+                    {label: "A root option", value: "value_3"},
+                    {label: "Another root option", value: "value_4"}
+                ]
             });
 
         })
@@ -554,7 +597,7 @@ class GraphWidget extends Component {
         console.log("Waterings in generate shapes: " + JSON.stringify(this.state.waterings))
         if (this.state.waterings.length > 0) {
             this.state.waterings.forEach(watering => {
-                shapes.push ({
+                shapes.push({
                     type: 'rect',
                     // x-reference is assigned to the x-values
                     xref: 'x',
@@ -966,6 +1009,16 @@ class GraphWidget extends Component {
             onSelect: this.handleOnSelect,
             onSelectAll: this.handleOnSelectAll
         };
+
+        const testOptions = [{
+            label: "1",
+            options: [
+                {
+                    label: "1-1",
+                    options: [{label: "1-1-1", value: "1-1-1"}]
+                }
+            ],
+        }];
 
         return (
             <div>
