@@ -184,11 +184,13 @@ function createWateringHTML(alert, watering) {
     let returnHtml;
     returnHtml = "<strong>Node Name: </strong>" + alert.Sensor.Node.nodeName + "<br/>";
     returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
-    returnHtml += "<strong>Start Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
-    returnHtml += "<strong>End Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.endTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
+    // returnHtml += "<strong>Start Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
+    // returnHtml += "<strong>End Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.endTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
     returnHtml += "<strong>Amount: </strong>" + watering.amount.toLocaleString() + " ml<br/>";
-    return returnHtml;
+     return returnHtml;
 
 }
 
