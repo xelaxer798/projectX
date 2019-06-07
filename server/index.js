@@ -26,18 +26,21 @@ export default path => {
     autoServer.autoAlerts.checkAlerts();
     setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);
 
-    autoServer.autoAlerts.processAlerts();
-    setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
+    //only process alerts if there is a sendgrid key
+    if (process.env.sendgrid) {
+        autoServer.autoAlerts.processAlerts();
+        setInterval(autoServer.autoAlerts.processAlerts, 1000 * 60);
 
-    autoServer.autoAlerts.processWateringAlerts();
-    setInterval(autoServer.autoAlerts.processWateringAlerts, 1000 * 60);
+        autoServer.autoAlerts.processWateringAlerts();
+        setInterval(autoServer.autoAlerts.processWateringAlerts, 1000 * 60);
+    }
 
-    // autoServer.updateWeatherNodes();
-    // setInterval(autoServer.updateWeatherNodes, 1000 * 60);
+// autoServer.updateWeatherNodes();
+// setInterval(autoServer.updateWeatherNodes, 1000 * 60);
 
     app.use(express.static(`${path}/client`));
 
-    // Where the node data will be sent aka www....../api/nodeData
+// Where the node data will be sent aka www....../api/nodeData
     app.use("/api/nodes", routers.nodes);
     app.use("/api/warnings", routers.warnings);
     app.use("/api/users", routers.users);
@@ -49,11 +52,12 @@ export default path => {
     app.use("/api/webCamImages", routers.webCamImages);
     app.use("/api/crops", routers.crops);
     app.use("/api/orders", routers.orders);
-    // Any non API GET routes will be directed to our React App and handled by React Router
+// Any non API GET routes will be directed to our React App and handled by React Router
     app.get("*", (req, res) => {
         res.sendFile(`${path}/client/index.html`);
     });
 
     return app; //Returns app.js
-    // -------------------------------------------------
-};
+// -------------------------------------------------
+}
+;
