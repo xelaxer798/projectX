@@ -186,19 +186,19 @@ function createWateringHTML(alert, watering) {
     returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
     returnHtml += "<strong>Start Time: </strong>" + functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles') + "<br/>";
 
-    returnValues = functions.convertDiffTimeZones(watering.startTime);
-    returnHtml += "<strong>Start Time: </strong>" + returnValues.changedDate + "<br/>";
-    returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+    // returnValues = functions.convertDiffTimeZones(watering.startTime);
+    // returnHtml += "<strong>Start Time: </strong>" + returnValues.changedDate + "<br/>";
+    // returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
 
-    returnValues = functions.convertDiffTimeZones(watering.endTime);
-    returnHtml += "<strong>End Time: </strong>" + returnValues.changedDate + "<br/>";
-    returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+    // returnValues = functions.convertDiffTimeZones(watering.endTime);
+    // returnHtml += "<strong>End Time: </strong>" + returnValues.changedDate + "<br/>";
+    // returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
 
-    returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>End Time: </strong>" + functions.convertTimeZonesAndFormat(watering.endTime, 'America/Los_Angeles') + "<br/>";
     // returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     // returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
-    returnHtml += "<strong>Amount: </strong>" + watering.amount.toLocaleString() + " ml<br/>";
+    returnHtml += "<strong>Amount: </strong>" + (watering.amount/1000).toLocaleString() + " L<br/>";
     return returnHtml;
 
 }
