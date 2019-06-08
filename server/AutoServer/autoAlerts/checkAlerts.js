@@ -187,11 +187,11 @@ function createWateringHTML(alert, watering) {
     returnHtml += "<strong>Start Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
 
     returnValues = functions.convertDiffTimeZones(watering.startTime);
-    returnHtml += "<strong>Start Time: </strong>" + moment(returnValues.changedDate).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Start Time: </strong>" + returnValues.changedDate + "<br/>";
     returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
 
     returnValues = functions.convertDiffTimeZones(watering.endTime);
-    returnHtml += "<strong>End Time: </strong>" + moment(returnValues.changedDate).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>End Time: </strong>" + returnValues.changedDate + "<br/>";
     returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
 
     returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
