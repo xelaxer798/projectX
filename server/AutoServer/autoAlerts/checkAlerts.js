@@ -177,21 +177,29 @@ function createWateringMessage(alert, watering, recipient) {
 function createWateringSubject(alert, watering) {
     const dateTime = moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z');
     const duration = moment(watering.duration).format('mm:ss');
-    return "💦 " + alert.Sensor.sensorName + " for " + duration  + " @ " + dateTime;
+    return "💦 " + alert.Sensor.sensorName + " for " + duration + " @ " + dateTime;
 }
 
 function createWateringHTML(alert, watering) {
-    let returnHtml;
+    let returnHtml, returnValues;
     returnHtml = "<strong>Node Name: </strong>" + alert.Sensor.Node.nodeName + "<br/>";
     returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
     returnHtml += "<strong>Start Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
-    returnHtml += "<strong>End Time: </strong>" + moment(functions.convertDiffTimeZones(watering.endTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
+
+    returnValues = functions.convertDiffTimeZones(watering.startTime);
+    returnHtml += "<strong>Start Time: </strong>" + moment(returnValues.changedDate).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+
+    returnValues = functions.convertDiffTimeZones(watering.endTime);
+    returnHtml += "<strong>End Time: </strong>" + moment(returnValues.changedDate).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+
     returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     // returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     // returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
     returnHtml += "<strong>Amount: </strong>" + watering.amount.toLocaleString() + " ml<br/>";
-     return returnHtml;
+    return returnHtml;
 
 }
 
@@ -257,7 +265,7 @@ export function processWateringAlerts() {
             }
         ]
     })
-        .then (alerts => {
+        .then(alerts => {
             console.log("Watering alerts: " + JSON.stringify(alerts))
             alerts.forEach(alert => {
                 alert.Users.forEach(user => {
@@ -271,12 +279,12 @@ export function processWateringAlerts() {
                             console.log("Watering results: " + JSON.stringify(results));
                             if (results.length > 0) {
                                 results.forEach(result => {
-                                    sgMail.send(createWateringMessage(alert, result,user.email))
+                                    sgMail.send(createWateringMessage(alert, result, user.email))
                                 })
                                 alertsUsersController.updateAlertUsersLastNotification(new Date(), user.AlertUsers.alertUserId);
                             }
-                         })
-                 })
+                        })
+                })
             })
         })
 

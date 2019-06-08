@@ -2,13 +2,16 @@ import pluralize from 'pluralize';
 
 
 const moment = require('moment');
-require('moment-timezone')
+require('moment-timezone');
 // const theDate= "2018-08-25T04:41:30.000Z";
 export const convertDiffTimeZones = (date) => {
     const zone = moment.tz.guess()
     const dateToChange = moment(date)
     const changedDate = dateToChange.tz(zone).format('hh:mm:ss YY-MM-DD z');
-    return changedDate
+    return {
+        changedDate: changedDate,
+        zone: zone
+    }
 }
 
 export function getLastUpdatedAndElapseTimeStrings(timezone, lastUpdate) {
