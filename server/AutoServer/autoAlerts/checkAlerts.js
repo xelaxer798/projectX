@@ -175,7 +175,7 @@ function createWateringMessage(alert, watering, recipient) {
 }
 
 function createWateringSubject(alert, watering) {
-    const dateTime = moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z');
+    const dateTime = functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles');
     const duration = moment(watering.duration).format('mm:ss');
     return "💦 " + alert.Sensor.sensorName + " for " + duration + " @ " + dateTime;
 }
@@ -184,7 +184,7 @@ function createWateringHTML(alert, watering) {
     let returnHtml, returnValues;
     returnHtml = "<strong>Node Name: </strong>" + alert.Sensor.Node.nodeName + "<br/>";
     returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
-    returnHtml += "<strong>Start Time: </strong>" + moment(functions.convertTimeZonesNonGuess(watering.startTime)).format('M/D/YY h:mm:ss A z') + "<br/>";
+    returnHtml += "<strong>Start Time: </strong>" + functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles') + "<br/>";
 
     returnValues = functions.convertDiffTimeZones(watering.startTime);
     returnHtml += "<strong>Start Time: </strong>" + returnValues.changedDate + "<br/>";

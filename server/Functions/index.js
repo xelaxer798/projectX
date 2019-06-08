@@ -4,7 +4,7 @@ import timeToNumber from './timeToNumber';
 import {convertDiffTimeZones, getLastUpdatedAndElapseTimeStrings} from './convertDiffTimeZones';
 import determineISODST from './determineISODST';
 import momentTimeZones from './momentTimeZones';
-import convertTimeZonesNonGuess from './convertTimeZoneNonGuess';
+import {convertTimeZonesNonGuess, convertTimeZonesAndFormat} from './convertTimeZoneNonGuess';
 import getMonth from './getMonth';
 import getFormateTime from './getFormatedTime';
 import compareValues from './compareValues'
@@ -17,6 +17,7 @@ const functions = {
     determineISODST,
     momentTimeZones,
     convertTimeZonesNonGuess,
+    convertTimeZonesAndFormat,
     getLastUpdatedAndElapseTimeStrings,
     getMonth,
     getFormateTime,

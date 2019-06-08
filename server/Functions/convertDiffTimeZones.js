@@ -7,7 +7,7 @@ require('moment-timezone');
 export const convertDiffTimeZones = (date) => {
     const zone = moment.tz.guess()
     const dateToChange = moment(date)
-    const changedDate = dateToChange.tz(zone).format('hh:mm:ss YY-MM-DD z');
+    const changedDate = dateToChange.tz(zone).format('M/D/YY h:mm:ss A z');
     return {
         changedDate: changedDate,
         zone: zone
