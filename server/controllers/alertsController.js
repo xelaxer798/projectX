@@ -62,29 +62,51 @@ const controller = {
                         target = "Watering: " + alert.Sensor.sensorName;
                         criteria = "Missed";
                     }
-
-                    return Object.assign(
-                        {},
-                        {
-                            alertId: alert.alertId,
-                            alertName: alert.alertName,
-                            highValue: alert.highValue,
-                            lowValue: alert.lowValue,
-                            currentValue: alert.currentValue,
-                            status: alert.status,
-                            active: alert.active,
-                            createdAt: alert.createdAt,
-                            updatedAt: alert.updatedAt,
-                            sensorId: alert.sensorId,
-                            nodeId: alert.nodeId,
-                            alertType: alert.alertType,
-                            nodeNonReportingTimeLimit: alert.nodeNonReportingTimeLimit,
-                            sensorName: displaySensorName,
-                            target: target,
-                            criteria: criteria,
-                            current: current
+                    let users = ""
+                    alert.Users.forEach(user => {
+                        let activeSymbol = ""
+                        if(user.AlertUsers.active) {
+                            activeSymbol = "✅"
+                        } else {
+                            activeSymbol = "❌"
                         }
-                    )
+                        if(users == "") {
+                            users = activeSymbol + user.firstName + " " + user.lastName + " (" + user.email +")"
+                        } else {
+                            users += ", " + activeSymbol + user.firstName + " " + user.lastName + " (" + user.email +")"
+                        }
+                    })
+
+                    alert.setDataValue("sensorName", displaySensorName);
+                    alert.setDataValue("target", target);
+                    alert.setDataValue("criteria", criteria);
+                    alert.setDataValue("current", current);
+                    alert.setDataValue("users", users);
+
+                    return alert
+
+                    // return Object.assign(
+                    //     {},
+                    //     {
+                    //         alertId: alert.alertId,
+                    //         alertName: alert.alertName,
+                    //         highValue: alert.highValue,
+                    //         lowValue: alert.lowValue,
+                    //         currentValue: alert.currentValue,
+                    //         status: alert.status,
+                    //         active: alert.active,
+                    //         createdAt: alert.createdAt,
+                    //         updatedAt: alert.updatedAt,
+                    //         sensorId: alert.sensorId,
+                    //         nodeId: alert.nodeId,
+                    //         alertType: alert.alertType,
+                    //         nodeNonReportingTimeLimit: alert.nodeNonReportingTimeLimit,
+                    //         sensorName: displaySensorName,
+                    //         target: target,
+                    //         criteria: criteria,
+                    //         current: current
+                    //     }
+                    // )
                 });
                 console.log("ResObj: " + JSON.stringify(resObj));
                 res.json(resObj)
@@ -100,6 +122,7 @@ const controller = {
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },
+
     updateAlert: function (req, res) {
         let updatedRecord = req.body.alert;
         db.Alerts.update(updatedRecord,
@@ -108,8 +131,51 @@ const controller = {
                     {alertId: updatedRecord.alertId}
             })
             .then(dbModel => {
-                console.log("Return updated alert: " + dbModel);
+                console.log("Return updated alert: " + JSON.stringify(dbModel));
                 res.json(dbModel);
+            })
+            .catch(err => {
+                console.log("Error: " + err);
+                res.status(422).json(err)
+            })
+    },
+
+    updateAlertDeep: function (req, res) {
+        let updatedRecord = req.body.alert;
+        db.Alerts.update(updatedRecord,
+            {
+                where:
+                    {alertId: updatedRecord.alertId}
+            })
+            .then(dbModel => {
+                console.log("Return updated alert: " + JSON.stringify(dbModel));
+                db.AlertUsers.destroy({
+                    where: {
+                        AlertAlertId: updatedRecord.alertId
+                    }
+                })
+                    .then(() => {
+                        let users = updatedRecord.Users;
+                        let alertUsers = [];
+                        if (users && users.length > 0) {
+                            users.forEach(user => {
+                                alertUsers.push(user.AlertUsers)
+                            })
+                            db.AlertUsers.bulkCreate(alertUsers)
+                                .then(() => {
+                                    res.json(updatedRecord)
+                                })
+                                .catch(err => {
+                                    console.log("Error: " + err);
+                                    res.status(422).json(err)
+                                })
+                        }
+                    })
+                    .catch (err => {
+                        console.log("Error: " + err);
+                        res.status(422).json(err)
+                    })
+
             })
             .catch(err => {
                 console.log("Error: " + err);

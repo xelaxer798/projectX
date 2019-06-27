@@ -177,7 +177,8 @@ function createWateringMessage(alert, watering, recipient) {
 function createWateringSubject(alert, watering) {
     const dateTime = functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles');
     const duration = moment(watering.duration).format('mm:ss');
-    return "💦 " + alert.Sensor.sensorName + " for " + duration + " @ " + dateTime;
+    const amount = (watering.amount/1000).toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
+    return "💦 " + alert.Sensor.sensorName + " " + amount + " for " + duration + " @ " + dateTime;
 }
 
 function createWateringHTML(alert, watering) {
@@ -198,7 +199,7 @@ function createWateringHTML(alert, watering) {
     // returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     // returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
     returnHtml += "<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
-    returnHtml += "<strong>Amount: </strong>" + (watering.amount/1000).toLocaleString() + " L<br/>";
+    returnHtml += "<strong>Amount: </strong>" + (watering.amount/1000).toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1}) + " L<br/>";
     return returnHtml;
 
 }

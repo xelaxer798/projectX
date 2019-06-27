@@ -73,7 +73,7 @@ const createHarvestRequest = (customer, crop, amount, date, orderId) => {
             "Crop": crop,
             "Amount (g)": amount,
             "Date": date,
-            "Order ID" : [orderId]
+            "Order ID": [orderId]
         };
 
         const processRecord = (err, record) => {
@@ -94,7 +94,7 @@ const createHarvestRequest = (customer, crop, amount, date, orderId) => {
 }
 
 
-const createPlantingOrder = (crop, amount, date, excess, requests) => {
+const createPlantingOrder = (crop, amount, date, excess, requests, customers) => {
 
     return new Promise((resolve, reject) => {
 
@@ -103,7 +103,8 @@ const createPlantingOrder = (crop, amount, date, excess, requests) => {
             "# of Flats": amount,
             "Date": date,
             "Excess": excess,
-            "Planting Requests": requests
+            "Planting Requests": requests,
+            "Customers": customers
         };
 
         const processRecord = (err, record) => {
@@ -122,6 +123,55 @@ const createPlantingOrder = (crop, amount, date, excess, requests) => {
         console.log("In create planting order requests: " + requests)
         console.log("New planting order record: " + JSON.stringify(newRecord));
         base('Planting Orders').create(newRecord, processRecord);
+    });
+
+}
+
+const createHarvestOrder = (crop, amount, date, excess, requests, customers) => {
+
+    return new Promise((resolve, reject) => {
+
+        const newRecord = {
+            "Crop": crop,
+            "# of Flats": amount,
+            "Date": date,
+            "Excess": excess,
+            "Harvest Requests": requests,
+            "Customers": customers
+        };
+
+        const processRecord = (err, record) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            const id = {id: record.id};
+            const fields = record.fields;
+            record = {...id, ...fields};
+            console.log("New Harvest order returned: " + JSON.stringify(record))
+            resolve(record);
+        };
+        base('Harvest Orders').create(newRecord, processRecord);
+    });
+
+}
+
+const createProjectedSlotUsage = (recordsToCreate) => {
+
+    return new Promise((resolve, reject) => {
+
+
+        const processRecord = (err, records) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+
+            console.log("New projected slot usage returned: " + JSON.stringify(records))
+            resolve(records);
+        };
+        base('Projected Slot Usage').create(recordsToCreate, processRecord);
     });
 
 }
@@ -195,11 +245,11 @@ const getCropInformation = async () => {
 
 const deleteRecords = async () => {
 
-    await dataController.deleteAllRecords(base('Planting Requests'));
-    await dataController.deleteAllRecords(base('Harvest Requests'));
-    await dataController.deleteAllRecords(base('Planting Orders'));
-
-
+    await dataController.deleteAllRecords(base('Planting Requests'), "ID");
+    await dataController.deleteAllRecords(base('Harvest Requests'), "HarvestRequestID");
+    await dataController.deleteAllRecords(base('Planting Orders'), "ID");
+    await dataController.deleteAllRecords(base('Harvest Orders'), "ID");
+    await dataController.deleteAllRecords(base('Projected Slot Usage'), "ID");
 };
 
 const calculateNumberOfFlats = (harvestWeight, cropId, crops) => {
@@ -348,6 +398,9 @@ function createHarvestRecords(ordersToProcess, crops, addPlantingRequestToOrders
     return promises;
 }
 
+const globalCutOffDate = moment(new Date()).add(8, 'weeks');
+
+
 const controller = {
 
     // processOrder: (order) => {
@@ -400,6 +453,17 @@ const controller = {
     },
 
 
+    deleteRecordsTestBatch: async (req, res) => {
+        await dataController.deleteTwoRecordsBatch(base('Planting Orders'));
+        res.json("Records deleted");
+    },
+
+    deleteRecordsTestIndividualy: async (req, res) => {
+        await dataController.deleteTwoRecordsIndividualy(base('Planting Requests'));
+        res.json("Records deleted");
+    },
+
+
     addHarvestRequests: async (req, res) => {
 
         await deleteRecords();
@@ -407,15 +471,15 @@ const controller = {
         const crops = await getCropInformation();
         console.log("Crops: " + crops)
 
-        let cutOffDate = new Date(req.body.cutOffDate);
-        console.log("Cutoff date: " + cutOffDate);
+        let cutOffDateFromPost = new Date(req.body.cutOffDate);
+        console.log("Cutoff date: " + cutOffDateFromPost);
 
         const OPTIONS = {
             // view: 'Grid view',
             pageSize: 24
         };
 
-        const TABLE = base('Orders');
+        let TABLE = base('Orders');
         const Orders = await dataController.getAirtableRecords(TABLE, OPTIONS);
 
         let ordersToProcess = Orders.map(order => {
@@ -427,6 +491,37 @@ const controller = {
                 ...fields
             };
         });
+
+        TABLE = base('Companies');
+        const Companies = await dataController.getAirtableRecords(TABLE, OPTIONS);
+
+        let companies = Companies.map(company => {
+            return {
+                id: company.id,
+                name: company.fields.Name
+            };
+        });
+
+        console.log("Companies: " + JSON.stringify(companies));
+
+        const lookupCompanyNameById = (id) => {
+            console.log("Name lookup id : " + id);
+            // let company = companies.find(x => x.id === 'rec0NTUYoKazmQ4n1')
+            let name = ""
+
+            for (var i = 0; i < companies.length; i++) {
+                console.log("Equality:***" + id + "*****" + companies[i].id + "********")
+                if (companies[i].id == id) {
+                    name = companies[i].name
+                    break;
+                }
+            }
+
+            // console.log("Company: " + JSON.stringify(company))
+            // let name = company.name
+            console.log("Name lookup: " + name);
+            return name.substring(0, 3)
+        }
 
         const cutoffDate = moment(new Date()).add(8, 'weeks');
 
@@ -445,25 +540,61 @@ const controller = {
                 cropRequest = {
                     CropID: plantingRequest.Crop,
                     amount: plantingRequest["Amount (g)"],
-                    requests: [plantingRequest.id]
+                    requests: [plantingRequest.id],
+                    customers: lookupCompanyNameById(plantingRequest.Customer)
                 }
                 dateRequest.plantings.push(cropRequest)
             } else {
                 cropRequest.amount += plantingRequest["Amount (g)"]
                 cropRequest.requests.push(plantingRequest.id)
+                cropRequest.customers += ", " + lookupCompanyNameById(plantingRequest.Customer)
             }
             console.log("Planting Orders: " + JSON.stringify(plantingOrders));
         }
 
+        let harvestOrders = []
 
+        const addHarvestRequestToOrders = (harvestRequest) => {
+            console.log("incoming harvest reqeust: " + JSON.stringify(harvestRequest))
+            let dateRequest = harvestOrders.find(harvestOrder => harvestRequest.Date === harvestOrder.harvestDate)
+            if (!dateRequest) {
+                dateRequest = {harvestDate: harvestRequest.Date, harvests: []}
+                harvestOrders.push(dateRequest)
+            }
+            console.log("Harvest Crop id: " + harvestRequest.Crop[0]);
+            console.log("Harvests: " + harvestRequest.Crop[0]);
+            let cropRequest = dateRequest.harvests.find(harvest => harvestRequest.Crop[0] === harvest.CropID[0]);
+            if (!cropRequest) {
+                cropRequest = {
+                    CropID: harvestRequest.Crop,
+                    amount: harvestRequest["Amount (g)"],
+                    requests: [harvestRequest.id],
+                    customers: lookupCompanyNameById(harvestRequest.Customer)
+                }
+                dateRequest.harvests.push(cropRequest)
+            } else {
+                console.log("Found a matching harvest")
+                cropRequest.amount += harvestRequest["Amount (g)"]
+                cropRequest.requests.push(harvestRequest.id)
+                cropRequest.customers += ", " + lookupCompanyNameById(harvestRequest.Customer)
+            }
+            console.log("Harvest Orders: " + JSON.stringify(harvestOrders));
+        }
+
+        let harvestOrdersForCalendar = [];
+        let plantingOrdersForCalendar = [];
+
+        const self = this
         Promise.all(createHarvestRecords(ordersToProcess, crops, addPlantingRequestToOrders, cutoffDate))
             .then((harvestRequests) => {
                 console.log("Harvest Requests: " + JSON.stringify(harvestRequests));
                 let promises = harvestRequests.map((harvestRequest) => {
                     let totalDays = getTotalDays(crops, harvestRequest.Crop[0]);
                     let plantingDate = calculatePreviousMondayOrThursday(moment(harvestRequest.Date).subtract(totalDays, 'days'));
+                    addHarvestRequestToOrders(harvestRequest)
                     return createPlantingRequest(harvestRequest.id, harvestRequest.Crop, harvestRequest['Amount (g)'], plantingDate.format('MM/DD/YYYY'))
                 });
+                console.log("Harvest Orders: " + JSON.stringify(harvestOrders))
                 Promise.all(promises)
                     .then((plantingRequests) => {
                         console.log("Planting Requests: " + JSON.stringify(plantingRequests));
@@ -484,15 +615,83 @@ const controller = {
                                     flatsCalculations.numberOfFlats,
                                     plantingOrder.plantingDate,
                                     flatsCalculations.excess,
-                                    planting.requests))
+                                    planting.requests,
+                                    planting.customers))
+                                plantingOrdersForCalendar.push({
+                                    CropID: planting.CropID,
+                                    numberOfFlats: flatsCalculations.numberOfFlats,
+                                    plantingDate: plantingOrder.plantingDate
+                                })
                             })
                         })
+                        harvestOrders.forEach(harvestOrder => {
+                            harvestOrder.harvests.forEach(harvest => {
+                                let flatsCalculations = calculateNumberOfFlats(harvest.amount, harvest.CropID[0], crops)
+                                let excess = flatsCalculations.excess;
+                                console.log("Flats calcuations: " + JSON.stringify(flatsCalculations))
+                                console.log("Extracted excess: " + excess)
+                                promises.push(createHarvestOrder(
+                                    harvest.CropID,
+                                    flatsCalculations.numberOfFlats,
+                                    harvestOrder.harvestDate,
+                                    flatsCalculations.excess,
+                                    harvest.requests,
+                                    harvest.customers))
+                                harvestOrdersForCalendar.push({
+                                    CropID: harvest.CropID,
+                                    numberOfFlats: flatsCalculations.numberOfFlats,
+                                    harvestDate: harvestOrder.harvestDate
+                                })
+                            })
+                        })
+
                         Promise.all(promises)
                             .then(plantingOrderReturn => {
+                                let currentSlotUsage = []
+                                let morePromises = []
+                                let todaysPlantings = []
+                                let todaysHarvests = []
+                                let currentDateFormatted, plantingDateFormatted
+                                const today = moment(new Date())
+                                let currentDate = moment(today)
+                                console.log("current date", currentDate, "Cut off date", globalCutOffDate)
+                                while (currentDate.isSameOrBefore(globalCutOffDate, 'days')) {
+                                    currentDateFormatted = moment(currentDate).format("YYYY-MM-DD")
+                                     todaysPlantings = plantingOrdersForCalendar.filter(plantingOrder => {
+                                         plantingDateFormatted = moment(plantingOrder.plantingDate).format("YYYY-MM-DD")
+                                         // console.log("plantingDateFormatted", plantingDateFormatted, "currentDateFormatted", currentDateFormatted)
+                                         // return moment(currentDate,"YYYY-MM-DD").isSame(moment(plantingOrder.plantingDate, "YYYY-MM-DD"), "day")
+                                         return currentDateFormatted === plantingDateFormatted
+                                    })
+                                    console.log("current date: " + currentDate)
+                                    console.log("todaysPlantings: ", todaysPlantings)
+                                    todaysPlantings.forEach(planting => {
+                                        let foundCrop = currentSlotUsage.find(crop => crop.CropID[0] === planting.CropID[0])
+                                        if (foundCrop) {
+                                            foundCrop.numberOfFlats += planting.numberOfFlats
+                                            console.log("Found a crop in currentSlotUsage")
+                                        } else {
+                                            currentSlotUsage.push({
+                                                CropID: planting.CropID,
+                                                numberOfFlats: planting.numberOfFlats
+                                            })
+                                        }
+                                        morePromises.push([createProjectedSlotUsage(currentSlotUsage)])
+
+                                    })
+                                    currentDate.add(1, 'days');
+                                }
+                                console.log("Current slot usage: " + JSON.stringify(currentSlotUsage))
+                                console.log("Planting orders for calendar: " + JSON.stringify(plantingOrdersForCalendar))
+                                console.log("Harvest orders for calendar: " + JSON.stringify(harvestOrdersForCalendar))
                                 console.log("Planting Orders return: " + JSON.stringify(plantingOrderReturn));
                                 res.json(ordersToProcess);
                             })
                     })
+            })
+            .catch(err => {
+                console.log("Create harvest record promise error: " + JSON.stringify(err));
+                res.status(422).json(err)
             })
     },
 
