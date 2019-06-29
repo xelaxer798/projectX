@@ -27,6 +27,7 @@ import StarIcon from '@material-ui/icons/Star'
 import {otherMailFolderListItems} from './DataFile';
 import LeafLiftLogo from "../../Images/Leaf.png";
 import TheProfessorLogo from "../../Images/TheProfessorLogo.png"
+import PlateLinguisticsLogo from"../../Images/PlateLinguisticsLogo.png"
 import {Col, Container, Row} from 'react-grid-system';
 import moment from "moment";
 import functions from "../../Functions";
@@ -139,18 +140,23 @@ class Navbar extends Component {
             <div>
                 {this.props.logged ?
                     <div>
-                        <Row>
-                            <Col>
-                                <a href='/dashboard' style={styles.homeButton}>
-                                    <img src={LeafLiftLogo} width="150" alt='Leaf Lift Logo'/>
+                        <Row align="center">
+                            <Col lg={3}>
+                                <a href='http://leafliftsystems.com/' target="_blank" style={styles.homeButton}>
+                                    <img src={LeafLiftLogo} width="175" alt='Leaf Lift Logo'/>
                                 </a>
                             </Col>
-                            <Col>
-                                <a href='/dashboard' style={styles.homeButton}>
-                                    <img src={TheProfessorLogo} width="150" alt='The Professor Logo'/>
+                            <Col lg={3}>
+                                <a href='http://leafliftsystems.com/the-professor-about/' target="_blank" style={styles.homeButton}>
+                                    <img src={TheProfessorLogo} width="200" alt='The Professor Logo'/>
                                 </a>
                             </Col>
-                            <Col>
+                            <Col lg={3}>
+                                <a href='http://www.platelinguistics.com/' target="_blank" style={styles.homeButton}>
+                                    <img src={PlateLinguisticsLogo} width="200" alt='Plate Linguistics Logo'/>
+                                </a>
+                            </Col>
+                            <Col lg={3}>
                                 {this.state.timeFormated}
                             </Col>
 

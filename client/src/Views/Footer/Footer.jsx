@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import './Footer.css'
 import { Col, Container, Row } from 'react-grid-system';
 import { Link } from 'react-router-dom';
+import moment from "moment"
 
 import Button from '@material-ui/core/Button';
 
@@ -30,6 +31,7 @@ const ExtLink = styled.a`
 `;
 
 const footer = () => {
+  const year = moment(new Date()).format("YYYY")
   return (
     <div style={{backgroundColor: '#3F51B5',position:'relative',
     left:'0',
@@ -59,8 +61,8 @@ const footer = () => {
         {/*</Row>*/}
         <Row style={{padding: '15px 0px',color:'white'}}>
           <Col sm={12} >
-            <Copyright css="padding-right: 0.5em"><b>&copy; 2017</b></Copyright>
-            <ExtLink style={{color:'white'}} href="/">Leaf Lyft Systems</ExtLink>
+            <Copyright css="padding-right: 0.5em"><b>&copy; {year}</b></Copyright>
+            <ExtLink style={{color:'white'}} href="http://leafliftsystems.com/" target="_blank">Leaf Lift Systems</ExtLink>
             <Separator>|</Separator>
             <ExtLink style={{color:'white'}} href="/privacy">Privacy Policy</ExtLink>
           </Col>

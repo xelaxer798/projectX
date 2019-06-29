@@ -14,3 +14,10 @@ export const convertTimeZonesAndFormat=(date, timeZone)=>{
     // console.log(changedDate);
     return changedDate;
 }
+
+export const convertTimeZonesAndFormatReversed=(date, timeZone)=>{
+    const dateToChange = moment(date)
+    const changedDate = dateToChange.tz(timeZone).format('h:mm:ss A z M/D/YY');
+    // console.log(changedDate);
+    return changedDate;
+}

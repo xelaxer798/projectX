@@ -7,6 +7,7 @@ import moment from 'moment'
 import sensorDataController from '../../controllers/sensorDataController'
 import functions from "../../Functions";
 import {Op} from "sequelize";
+import {convertTimeZonesAndFormatReversed} from "../../Functions/convertTimeZoneNonGuess";
 
 const sengrido = process.env.sendgrid;
 console.log("Mail api key: " + sengrido);
@@ -175,10 +176,10 @@ function createWateringMessage(alert, watering, recipient) {
 }
 
 function createWateringSubject(alert, watering) {
-    const dateTime = functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles');
+    const dateTime = functions.convertTimeZonesAndFormatReversed(watering.startTime, 'America/Los_Angeles');
     const duration = moment(watering.duration).format('mm:ss');
     const amount = (watering.amount/1000).toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
-    return "💦 " + alert.Sensor.sensorName + " " + amount + " for " + duration + " @ " + dateTime;
+    return "💦 " + alert.Sensor.sensorName + " " + amount + "L for " + duration + " @ " + dateTime;
 }
 
 function createWateringHTML(alert, watering) {
