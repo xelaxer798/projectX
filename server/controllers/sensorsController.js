@@ -2,7 +2,7 @@ import db from "../models";
 
 const controller = {
     getSensors: function (req, res) {
-
+console.log("In getSensors on the back end")
         db.Sensors.findAll({
             where: {active: true},
             include: [
@@ -17,7 +17,7 @@ const controller = {
             ]
         })
             .then(dbModel => {
-                console.log("Get all sensors: " + JSON.stringify(dbModel));
+                console.log("Get all sensors: " + dbModel);
                 const resObj = dbModel.map(sensor => {
                     return Object.assign(
                         {},
@@ -30,6 +30,7 @@ const controller = {
                         }
                     )
                 });
+                console.log("getAllSensors: " + JSON.stringify(resObj))
                 res.json(resObj);
             })
             .catch(err => {

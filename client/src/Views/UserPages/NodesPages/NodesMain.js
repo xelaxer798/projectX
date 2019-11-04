@@ -169,7 +169,7 @@ class NodesMain extends Component {
                     data={this.state.nodes}
                     columns={columns}
                     className="-striped -highlight"
-                    defaultPageSize={10}
+                    defaultPageSize={20}
                     defaultSorted={[
                         {
                             id: "lastUpdate"

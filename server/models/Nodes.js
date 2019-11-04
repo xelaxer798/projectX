@@ -23,6 +23,26 @@ module.exports = function (sequelize, DataTypes) {
         lastUpdate: {
             type: DataTypes.DATE,
             allowNull: true
+        },
+        flowSensorsQ: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            get() {
+                return JSON.parse(this.getDataValue('flowSensorsQ'));
+            },
+            set(val) {
+                return this.setDataValue('flowSensorsQ', JSON.stringify(val));
+            },
+        },
+        flowSensorsPins: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            get() {
+                return JSON.parse(this.getDataValue('flowSensorsPins'));
+            },
+            set(val) {
+                return this.setDataValue('flowSensorsPins', JSON.stringify(val));
+            },
         }
         
 

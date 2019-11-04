@@ -1,15 +1,50 @@
 function deleteRecords(table, recordIds) {
-    console.log("in deleteRecords: table " + JSON.stringify(table));
-    console.log("in deleteRecords: recordIds ", recordIds);
+    // console.log("in deleteRecords: table " + JSON.stringify(table));
+    // console.log("in deleteRecords: recordIds ", recordIds);
+    if (recordIds.length !== 0) {
+
+    }
     return new Promise((resolve, reject) => {
-        table.destroy(recordIds, function (err, deletedRecords) {
+        if(recordIds.length !== 0) {
+            table.destroy(recordIds, function (err, deletedRecords) {
+                if (err) {
+                    console.log("deleteRecords table: " + JSON.stringify(table));
+                    console.log("deleteRecords recordIds: " + JSON.stringify(recordIds));
+                    console.log("deleteRecords error: " + JSON.stringify(err));
+                    reject("Delete Records error: " + JSON.stringify(err));
+                    return;
+                }
+                // console.log('deleteRecords', JSON.stringify(deletedRecords));
+                resolve(deletedRecords);
+            });
+        } else {
+            reject("Empty record id set")
+        }
+    })
+
+}
+
+function createRecords(table, records) {
+    return new Promise((resolve, reject) => {
+        table.create(records, function (err, createdRecords) {
             if (err) {
-                console.log("deleteRecords error: " + JSON.stringify(err));
-                reject("Delete Records error: " + JSON.stringify(err));
+                console.log("createRecords error: " + JSON.stringify(err));
+                console.log("Table: " + JSON.stringify(table));
+                reject("Create Records error: " + JSON.stringify(err));
                 return;
             }
-            console.log('deleteRecords', JSON.stringify(deletedRecords));
-            resolve(deletedRecords);
+            // console.log('Create Records', JSON.stringify(createdRecords));
+            let newRecords = createdRecords.map((record) => {
+                const id = {id: record.id};
+                const fields = record.fields;
+
+                return {
+                    ...id,
+                    ...fields
+                };
+            })
+            // console.log("createRecords " + table.name + " " + newRecords.length + " " + JSON.stringify(newRecords))
+            resolve(newRecords);
         });
     })
 
@@ -40,6 +75,7 @@ const controller = {
 
             const processRecords = (err) => {
                 if (err) {
+                    console.log("getAirtableRecords error: " + JSON.stringify(err))
                     reject(err);
                     return;
                 }
@@ -57,7 +93,7 @@ const controller = {
         return new Promise((resolve, reject) => {
             table.destroy(recordId, function (err, deletedRecord) {
                 if (err) {
-                    console.error(err);
+                    console.error("deleteRecord error: " + JSON.stringify(err));
                     reject(err);
                     return;
                 }
@@ -65,6 +101,30 @@ const controller = {
                 resolve(deletedRecord.id);
             });
         })
+
+    },
+
+    createRecordsBatch: (table, records) => {
+        let promises = []
+        let setsOfRecordsToCreate = [[]]
+
+        let currentRecordSet = 0;
+        for (let i = 0; i < records.length; i++) {
+            setsOfRecordsToCreate[currentRecordSet].push(records[i])
+            if (setsOfRecordsToCreate[currentRecordSet].length >= 10) {
+                setsOfRecordsToCreate.push([])
+                currentRecordSet++
+            }
+        }
+
+        setsOfRecordsToCreate.forEach(setOfRecords => {
+            if(setOfRecords.length > 0) {
+                promises.push(createRecords(table, setOfRecords))
+            }
+        });
+        console.log("Create records batch promises: " + JSON.stringify(promises))
+
+        return promises;
 
     },
 
@@ -113,12 +173,20 @@ const controller = {
         console.log("Sets of records to delete: " + JSON.stringify(setsOfRecordsToDelete))
 
         setsOfRecordsToDelete.forEach(setOfRecordIds => {
-            promises.push(() => deleteRecords(table, setOfRecordIds))
+            promises.push(deleteRecords(table, setOfRecordIds))
         })
 
         console.log("Promises: " + JSON.stringify(promises))
 
-        const arrayOfPromises = promises.map(task => task())
+        // const arrayOfPromises = promises.map(task => task())
+
+        Promise.all(promises)
+            .then(returnValue => {
+                console.log("Return value: " + JSON.stringify(returnValue))
+            })
+            .catch(err => {
+                console.log("Batch Delete Error: " + err)
+            })
 
         // Promise.all(arrayOfPromises)
         //     .then(data => {

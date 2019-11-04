@@ -51,7 +51,8 @@ class AlertsMain3 extends Component {
         alertName: "",
         highValue: 0,
         lowValue: 0,
-        status: ""
+        status: "",
+        Users: []
     };
 
     editRecord(alertId) {
@@ -104,16 +105,23 @@ class AlertsMain3 extends Component {
     }
 
     getSensors() {
-        SensorApi.getAll().then(results => {
-            const sensors = [];
-            results.data.forEach(sensor => {
-                sensors.push({value: sensor.sensorId, label: sensor.dropdownLabel})
-            });
-            this.setState({
-                sensors: sensors
-            });
+        console.log("getSensors")
+        SensorApi.getAll()
+            .then(results => {
+                const sensors = [];
+                results.data.forEach(sensor => {
+                    sensors.push({value: sensor.sensorId, label: sensor.dropdownLabel})
+                });
+                console.log("Sensors: " + JSON.stringify(sensors))
+                this.setState({
+                    sensors: sensors
+                });
 
-        })
+            })
+            .catch(err => {
+                console.log("getSensors error: " + err);
+            })
+
     }
 
     getNodes() {
