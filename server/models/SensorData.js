@@ -30,6 +30,10 @@ module.exports = function (sequelize, DataTypes) {
             },
             {
                 fields: ['sensorId']
+            },
+            {
+                // name: 'createdAt_sensorId',
+                fields: ['createdAt','sensorId']
             }
 
         ]

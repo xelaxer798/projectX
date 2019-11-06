@@ -86,7 +86,7 @@ const controller = {
                 res.json(userInfo)
             })
             .catch(err => {
-                console.log("Error in autentication");
+                console.log("Error in autentication: " + JSON.stringify(err));
                 res.status(422).json(err);
             });
     },
