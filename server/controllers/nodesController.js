@@ -69,7 +69,7 @@ const controller = {
     },
 
     create: function (req, res) {
-        console.log("JSON input node config: " + req.body);
+        console.log("JSON input node config: " + JSON.stringify(req.body));
         db.Nodes.upsert({
             nodeId: req.body.nodeId,
             nodeName: req.body.nodeName
@@ -94,6 +94,7 @@ const controller = {
                             })
 
                     })
+                res.status(200);
             })
             .catch(err => {
                 console.log("Error: " + err);

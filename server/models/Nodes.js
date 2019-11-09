@@ -28,7 +28,12 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
             get() {
-                return JSON.parse(this.getDataValue('flowSensorsQ'));
+                let dataValue = this.getDataValue('flowSensorsQ');
+                if (dataValue == null) {
+                    return null
+                } else {
+                    return JSON.parse(dataValue);
+                }
             },
             set(val) {
                 return this.setDataValue('flowSensorsQ', JSON.stringify(val));
@@ -38,7 +43,12 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
             get() {
-                return JSON.parse(this.getDataValue('flowSensorsPins'));
+                let dataValue = this.getDataValue('flowSensorsPins');
+                if (dataValue == null) {
+                    return null
+                } else {
+                    return JSON.parse(dataValue);
+                }
             },
             set(val) {
                 return this.setDataValue('flowSensorsPins', JSON.stringify(val));

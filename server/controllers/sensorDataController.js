@@ -126,6 +126,7 @@ const controller = {
                 res.status(422).json(err)
             });
         db.Nodes.update(
+            // {flowSensorsPins: 'test'},
             {lastUpdate: new Date()},
             {
                 where: {
@@ -138,7 +139,8 @@ const controller = {
                 return null;
             })
             .catch(err => {
-                console.log("Error: " + err);
+                console.log("Errorzz: " + err);
+                console.log("nodeId: " + req.body.nodeId);
             });
         let promises = req.body.sensorData.map(function (individualSensorData) {
             console.log("Create promise: " + individualSensorData.sensorId);
@@ -177,9 +179,9 @@ const controller = {
         console.log("In getWaterings");
         let whereClause;
         if (req.body.id) {
-            console.log("Get Waterings by id: " + req.body.id + "\tStart date: " + req.body.startDate+ "\tEnd date: " + req.body.endDate);
+            console.log("Get Waterings by id: " + req.body.id + "\tStart date: " + req.body.startDate + "\tEnd date: " + req.body.endDate);
             whereClause = {
-                sensorId:req.body.id,
+                sensorId: req.body.id,
                 createdAt: {[Op.between]: [req.body.startDate, req.body.endDate]}
             }
         } else {

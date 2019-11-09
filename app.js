@@ -9,8 +9,13 @@ var PORT = process.env.PORT || 3001; // Sets an initial port. We'll use this lat
 const app = App(__dirname);
 
 //use sync({force:true}) to drop all tables before trying to create
-db.sequelize.sync({force:false}).then(function() {
-  app.listen(PORT, function() {
-    console.log('App listening on PORT: ' + PORT);
-  });
-});
+db.sequelize.sync({force: false})
+    .then(function () {
+        app.listen(PORT, function () {
+            console.log('App listening on PORT: ' + PORT);
+        });
+    })
+    .catch(err => {
+        console.log("Error sync sequelize: " + JSON.stringify(err));
+        return err;
+    });
