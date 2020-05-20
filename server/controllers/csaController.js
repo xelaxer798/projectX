@@ -140,7 +140,7 @@ const controller = {
 
         const msg = {
             to: customer.email,
-            bcc: "lm@platelinguistics.com",
+            bcc: "info@platelinguistics.com",
 
             from: 'info@platelinguistics.com',
             subject: 'Plate Linguistics Monthly Microgreen Subscription',

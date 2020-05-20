@@ -186,7 +186,7 @@ const controller = {
                                 const name = newUser.dataValues.firstName + ' ' + newUser.dataValues.lastName
                                 const msg = {
                                     to: req.body.email,
-                                    from: 'LeafLiftSystems@donotreply.com',
+                                    from: 'TheProfessor@donotreply.com',
                                     subject: 'Reqister Your Email With Leaf Lift Systems ',
                                     text: 'Click me ',
                                     html: name + ` <br><h2>This is your User Id ${newUser.dataValues.userId}. You will need this to set up the Arduinos for your farm. <br>   <a href='https://theprofessor.herokuapp.com/verification/${newUser.dataValues.userId}' +'><strong> <button>Please Click This Link to Register Your Email</button></a></strong>`,
@@ -253,7 +253,7 @@ const controller = {
                 const msg = {
                     to: req.body.email,
                     cc: 'growai798@gmail.com',
-                    from: 'LeafLiftSystems@donotreply.com',
+                    from: 'TheProfessor@donotreply.com',
                     subject: 'Leaf Lift Systems Account Recovery',
                     text: 'click me ',
                     html: name + ` <br> <a href='https://theprofessor.herokuapp.com/reset/${token}'><strong><button style="color:blue">Reset Password</button></a></strong><br>Note:This link will expire in one hour`,
@@ -321,7 +321,7 @@ const controller = {
 
             const msg = {
                 to: req.body.email,
-                from: 'LeafLiftSystems@donotreply.com',
+                from: 'TheProfessor@donotreply.com',
                 subject: 'Leaf Lift Systems Account Recovery',
                 text: 'click me ',
                 html: req.body.name + ' Your password has been changed sucsessfully, if you did not change your password, please contact support! '

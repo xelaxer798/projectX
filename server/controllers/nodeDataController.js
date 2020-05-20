@@ -369,7 +369,7 @@ const controller = {
             to: emailToSend,
             cc: BccEmail,
 
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
@@ -383,7 +383,7 @@ const controller = {
           const msg = {
             to: emailToSend,
             cc: BccEmail,
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
@@ -398,7 +398,7 @@ const controller = {
             to: emailToSend,
 
             cc: BccEmail,
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °.
@@ -413,7 +413,7 @@ const controller = {
             to: emailToSend,
 
             cc: BccEmail,
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %.
@@ -427,7 +427,7 @@ const controller = {
             to: emailToSend,
             cc: BccEmail,
 
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a couple warnings  on ${functions.getFormateTime(timeToFormat)}. Your farms humidity ${HumidityHighLow}. The Humidity was ${req.body.humidity} %. The RGB sensors are reporting the same value. This value is ${req.body.r}.
@@ -441,7 +441,7 @@ const controller = {
             to: emailToSend,
 
             cc: BccEmail,
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had couple warnings on ${functions.getFormateTime(timeToFormat)}. The Temperature ${TempHighLow}. The Temperature was ${req.body.temperature} °. %. The RGB sensors are reporting the same value. This value is ${req.body.r}.`,
@@ -455,7 +455,7 @@ const controller = {
 
             cc: BccEmail,
 
-            from: 'LeafLiftSystems@donotreply.com',
+            from: 'TheProfessor@donotreply.com',
             subject: 'Your Farm Has A Warning',
             text: 'Click me ',
             html: `${user.dataValues.firstName} Your Farm had a warning on ${functions.getFormateTime(timeToFormat)}. The RGB sensors are reporting the same value. This value is ${dbModel.dataValues.r}.

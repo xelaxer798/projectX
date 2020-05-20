@@ -82,7 +82,7 @@ const checkNodes = async (id) => {
                                 to: emailToSend,
                                 cc: ccEmail,
 
-                                from: 'LeafLiftSystems@donotreply.com',
+                                from: 'TheProfessor@donotreply.com',
                                 subject: 'Your Farm Has A Warning',
                                 text: 'Click me ',
                                 html: `${users[i].dataValues.firstName}. The Node has not updated since ${functions.getFormateTime(value.date, 'checkNodes')}. Please check the node it may be offline `,

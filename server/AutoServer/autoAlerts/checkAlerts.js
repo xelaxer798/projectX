@@ -158,7 +158,7 @@ function createWarningMessage(alert, recipient) {
     console.log("createWarningMessage-Recipient: " + recipient);
     return {
         to: recipient,
-        from: 'LeafLiftSystems@donotreply.com',
+        from: 'TheProfessor@donotreply.com',
         subject: createSensorWarningSubject(alert),
         text: 'Click me ',
         html: createSensorWarningHTML(alert, "red")
@@ -168,7 +168,7 @@ function createWarningMessage(alert, recipient) {
 function createWateringMessage(alert, watering, recipient) {
     return {
         to: recipient,
-        from: 'LeafLiftSystems@donotreply.com',
+        from: 'TheProfessor@donotreply.com',
         subject: createWateringSubject(alert, watering),
         text: 'Click me ',
         html: createWateringHTML(alert, watering)
@@ -208,7 +208,7 @@ function createWateringHTML(alert, watering) {
 function createLastDaysWateringsMessage(lastDaysWaterings, recipient) {
     return {
         to: recipient,
-        from: 'LeafLiftSystems@donotreply.com',
+        from: 'TheProfessor@donotreply.com',
         subject: "Last Days Waterings",
         text: 'Click me ',
         html: createLastDaysWateringsHTML(alert, lastDaysWaterings)
@@ -260,7 +260,7 @@ function createBackToNormalMessage(alert, recipient) {
     console.log("createWarningMessage-Recipient: " + recipient);
     return {
         to: recipient,
-        from: 'LeafLiftSystems@donotreply.com',
+        from: 'TheProfessor@donotreply.com',
         subject: createBackToNormalSubject(alert),
         text: 'Click me ',
         html: createSensorWarningHTML(alert, "green")
