@@ -10,6 +10,7 @@ import sensorErrors from './sensorErrors';
 import webCamImages from './webCamImages';
 import crops from './crops';
 import orders from './orders'
+import csa from './csa'
 
 const routers = {
     nodeData,
@@ -23,7 +24,8 @@ const routers = {
     sensorErrors,
     webCamImages,
     crops,
-    orders
+    orders,
+    csa
 };
 export {
     routers as default,

@@ -205,6 +205,44 @@ function createWateringHTML(alert, watering) {
 
 }
 
+function createLastDaysWateringsMessage(lastDaysWaterings, recipient) {
+    return {
+        to: recipient,
+        from: 'LeafLiftSystems@donotreply.com',
+        subject: "Last Days Waterings",
+        text: 'Click me ',
+        html: createLastDaysWateringsHTML(alert, lastDaysWaterings)
+    }
+}
+
+function createLastDaysWateringsHTML(lastDaysWaterings) {
+    let returnHtml, returnValues;
+    lastDaysWaterings.forEach(Sensor => {
+        returnHtml += "<strong>Sensor Name: </strong>" + alert.Sensor.sensorName + "<br/>";
+        Sensor.waterings.forEach(watering => {
+            returnHtml += "&nbsp;&nbsp;&nbsp;<strong>Start Time: </strong>" + functions.convertTimeZonesAndFormat(watering.startTime, 'America/Los_Angeles') + "<br/>";
+            returnHtml += "&nbsp;&nbsp;&nbsp;<strong>End Time: </strong>" + functions.convertTimeZonesAndFormat(watering.endTime, 'America/Los_Angeles') + "<br/>";
+            returnHtml += "&nbsp;&nbsp;&nbsp;<strong>Duration: </strong>" + moment(watering.duration).format('mm:ss') + "<br/>";
+            returnHtml += "&nbsp;&nbsp;&nbsp;<strong>Amount: </strong>" + (watering.amount/1000).toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1}) + " L<br/>";
+        })
+    })
+
+    // returnValues = functions.convertDiffTimeZones(watering.startTime);
+    // returnHtml += "<strong>Start Time: </strong>" + returnValues.changedDate + "<br/>";
+    // returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+
+    // returnValues = functions.convertDiffTimeZones(watering.endTime);
+    // returnHtml += "<strong>End Time: </strong>" + returnValues.changedDate + "<br/>";
+    // returnHtml += "<strong>Timezone: </strong>" + returnValues.zone + "<br/>";
+
+    // returnHtml += "<strong>Start Time: </strong>" + moment(watering.startTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    // returnHtml += "<strong>End Time: </strong>" + moment(watering.endTime).format('M/D/YY h:mm:ss A z') + "<br/>";
+    return returnHtml;
+
+}
+
+
+
 function createBackToNormalSubject(alert) {
     let warning = "";
     if (alert.alertType === "Sensor") {
@@ -290,6 +328,19 @@ export function processWateringAlerts() {
             })
         })
 
+}
+
+export function processLastDaysWaterings(){
+    sensorDataController.getWateringsLastDay()
+        .then(results => {
+            console.log("processLastDaysWaterings results:" + JSON.stringify(results))
+            let email = createLastDaysWateringsMessage(results, "lm@leafliftsystems.com")
+            console.log("Last Days Waterings email:" + JSON.stringify(email))
+        })
+        .catch(err => {
+            console.log("Error processLastDaysWaterings: " + err);
+
+        })
 }
 
 export function processAlerts() {

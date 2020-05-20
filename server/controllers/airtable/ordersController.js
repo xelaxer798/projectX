@@ -373,6 +373,8 @@ function createHarvestRequests2(ordersToProcess, crops, cutoffDate) {
                     "Order ID": [order.id],
                 }
             })
+        } else if ((order["Order Type"] === "On Hold") || (order["Order Type"] === "On Hold Soon")) {
+            // do nothing
         } else {
             const nextDeliveryDay = calculateNextDeliveryDay(order["Day Delivered"]);
             const today = moment(new Date());

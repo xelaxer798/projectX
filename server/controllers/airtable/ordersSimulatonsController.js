@@ -56,6 +56,29 @@ const getCropInformation = async () => {
         }
     });
 };
+const getCropInformation2 = async () => {
+    const TABLE = base('Projection Seeds');
+    const OPTIONS = {}
+    const crops = await dataController.getAirtableRecords(TABLE, OPTIONS);
+    console.log("Crops from get: " + JSON.stringify(crops));
+
+    return crops.map(crop => {
+        console.log("Order: " + JSON.stringify(crop));
+        console.log("Total Days: " + crop.get('Total Days'));
+        console.log("Tuesday amount: " + crop.get('Tuesday Amount'))
+
+
+        return {
+            id: crop.get('Crop'),
+            commonName: crop.get('Crop Name'),
+            darkDays: crop.get('Dark Days'),
+            totalDays: crop.get('Total Days'),
+            averageHarvestWeight: crop.get('Yield') * (1 - crop.get('Waste')),
+            tuesdayAmount: crop.get('Tuesday Amount'),
+            fridayAmount: crop.get('Friday Amount'),
+        }
+    });
+};
 
 const loadOrders = async (options) => {
     const Orders = await dataController.getAirtableRecords(base('Orders'), options);
@@ -120,6 +143,21 @@ const addPlantingDayToOrders = (orders, crops) => {
 
     })
 };
+const addPlantingDayToOrders2 = (orders, crops) => {
+    let projectedPlantingDay, deliveryDate;
+    orders.forEach(order => {
+        if (order['Day Delivered'] === "Friday") {
+            deliveryDate = moment().day(FRIDAY)
+            order['harvestDay'] = FRIDAY
+        } else {
+            deliveryDate = moment().day(TUESDAY)
+            order['harvestDay'] = TUESDAY
+        }
+        projectedPlantingDay = deliveryDate.subtract(getTotalDays(crops, order.Crop[0]))
+        order['plantingDay'] = calculatePreviousMondayOrThursday(projectedPlantingDay).day()
+
+    })
+};
 
 const reduceOrders = (orders, day) => {
     if (day === MONDAY || day === THURSDAY) {
@@ -157,6 +195,7 @@ const calculateNumberOfFlats = (harvestWeight, cropId, crops) => {
 };
 
 const processDailySlotUsage = (dailySlotUsage, formattedCurrentDay, slotUsage, location, currentDay) => {
+    console.log("In process dayly slot usage");
     const reducedPlantings = reducePlantings(slotUsage.plantings, "location", location);
     console.log("slotUsagezz: " + JSON.stringify(slotUsage));
     console.log("reducedSlots: " + JSON.stringify(reducedPlantings));
@@ -179,6 +218,7 @@ const processDailySlotUsage = (dailySlotUsage, formattedCurrentDay, slotUsage, l
         //     });
         //
         // })
+        // increment days in system
         dailySlotUsage.push({
             fields: {
                 Date: formattedCurrentDay,
@@ -187,6 +227,9 @@ const processDailySlotUsage = (dailySlotUsage, formattedCurrentDay, slotUsage, l
                 temp : slotUsage["Crop Name"][0],
                 "Current Day" : currentDay,
                 "# of Flats": sumPropertyValue(reducedPlantings, "numberOfFlats"),
+                "Harvest Day": reducedPlantings.harvestDay,
+                "Total Days": reducedPlantings.totalDays,
+                "Days in system": reducedPlantings.daysInSystem,
                 Excess: Math.round(sumPropertyValue(reducedPlantings, "Excess"))
             }
         });
@@ -194,6 +237,28 @@ const processDailySlotUsage = (dailySlotUsage, formattedCurrentDay, slotUsage, l
     console.log("End of processDailySlotUsage")
 };
 
+const processDailySlotUsage2 = (dailySlotUsage, formattedCurrentDay, slotUsage, location, currentDay) => {
+    // console.log("In process dayly slot usage " + location);
+    // console.log("slotUsagezzz: " + JSON.stringify(slotUsage));
+    if(slotUsage.location === location) {
+        dailySlotUsage.push({
+            fields: {
+                Date: formattedCurrentDay,
+                Crop: slotUsage.Crop,
+                Location: location,
+                temp : slotUsage["Crop Name"][0],
+                "Current Day" : currentDay,
+                "# of Flats": slotUsage.numberOfFlats,
+                "Harvest Day": slotUsage.harvestDay,
+                "Total Days": slotUsage.totalDays,
+                "Days in system": slotUsage.daysInSystem++,
+                "Day Planted": slotUsage.dayPlanted,
+                Excess: slotUsage.Excess
+            }
+        });
+    }
+    console.log("End of processDailySlotUsage " + location)
+};
 
 const aggregateDailyPlantings = (orders, crops) => {
     let dailyPlantings = [];
@@ -231,6 +296,8 @@ const aggregateDailyPlantings = (orders, crops) => {
     return dailyPlantings;
 
 };
+
+
 
 const getHarvestDay = (currentDay, totalDays) => {
     const harvestDay = currentDay + totalDays;
@@ -289,7 +356,7 @@ const controller = {
 
     runSlotAnalysis: async (req, res) => {
 
-        const numberOfDaysToSimulate = 80;
+        const numberOfDaysToSimulate = 40;
 
         let dailySlotUsage = [];
 
@@ -382,6 +449,122 @@ const controller = {
                 processDailySlotUsage(dailySlotUsage, formattedCurrentDay, slotUsage, GERMINATOR, day);
                 processDailySlotUsage(dailySlotUsage, formattedCurrentDay, slotUsage, GREENHOUSE, day);
                 processDailySlotUsage(dailySlotUsage, formattedCurrentDay, slotUsage, HARVEST, day);
+
+            });
+            currentDay.add(1, 'days');
+        }
+
+        console.log("Daily slot usage: " + JSON.stringify(dailySlotUsage));
+
+        Promise.all(dataController.createRecordsBatch(base("Projected Slot Usage "), dailySlotUsage))
+            .then(results => {
+                res.json(results);
+            })
+            .catch(err => {
+                console.log("Promise error: ", err);
+                res.status(422).json(err)
+            })
+
+    },
+
+    runSlotAnalysis2: async (req, res) => {
+
+        const numberOfDaysToSimulate = 40;
+
+        let dailySlotUsage = [];
+
+        await deleteRecords();
+
+        const crops = await getCropInformation2();
+        console.log("Crops: " + JSON.stringify(crops));
+
+
+        let plantingOrders, dailyPlantings, formattedCurrentDay;
+        let currentDay = findNextDayOfWeek(MONDAY);
+        let currentSlotUsage = [];
+        let dayOfWeek;
+        for (let day = 1; day < numberOfDaysToSimulate; day++) {
+            formattedCurrentDay = moment(currentDay).format('MM/DD/YYYY');
+            dayOfWeek = currentDay.day();
+            console.log("Datezz: " + formattedCurrentDay + " Day of week: " + dayOfWeek);
+            console.log("Current slot usage from main: " + JSON.stringify(currentSlotUsage))
+
+            //process daily bring to light and harvest
+            currentSlotUsage.forEach(usage => {
+                console.log(usage["Crop Name"] + " Locationzz: " + usage.location + " Current Day: " + day + " Day Planted: " + usage.dayPlanted + " Dark days: " + usage.darkDays )
+
+                if (usage.location === GERMINATOR && ((day - usage.dayPlanted) >= usage.darkDays)) {
+                     usage.location = GREENHOUSE
+                } else if (day  === usage.harvestDay) {
+                    usage.location = HARVEST
+                } else if (day  > usage.harvestDay) {
+                    usage.location = PAST_HARVEST
+                    console.log("we have a past harvest")
+                }
+
+                // usage.plantings.forEach(planting => {
+                //      console.log(usage["Crop Name"] + "zz Current Day: " + day + " Day Planted: " + planting.dayPlanted + " Dark days" + planting.darkDays )
+                //     if (planting.location === GERMINATOR && ((day - planting.dayPlanted) >= planting.darkDays)) {
+                //         console.log("Usagezz: " + JSON.stringify(usage))
+                //         console.log(usage["Crop Name"] + " Current Day: " + day + " Day Planted: " + planting.dayPlanted + " Dark days" + planting.darkDays )
+                //         planting.location = GREENHOUSE
+                //     } else if (day  === planting.harvestDay) {
+                //         planting.location = HARVEST
+                //     } else if (day  > planting.harvestDay) {
+                //         planting.location = PAST_HARVEST
+                //     }
+                // })
+            });
+            //remove past harvests
+            currentSlotUsage = currentSlotUsage.filter(usage => {
+                return usage.location !== PAST_HARVEST
+            })
+
+
+            if (dayOfWeek === MONDAY || dayOfWeek === THURSDAY) {
+                //we have a planting day
+
+                crops.forEach(crop => {
+                    console.log("In Daily planting loop: " + JSON.stringify(crop));
+
+                    let numberOfFlats = 0;
+                    let excess = 0;
+                    if(dayOfWeek === MONDAY && crop.tuesdayAmount > 0){
+                        numberOfFlats =      Math.ceil(crop.tuesdayAmount / crop.averageHarvestWeight);
+                         excess = (numberOfFlats * crop.averageHarvestWeight) - crop.tuesdayAmount;
+                    }
+
+                    if(dayOfWeek === THURSDAY && crop.fridayAmount > 0){
+                        numberOfFlats =      Math.ceil(crop.fridayAmount / crop.averageHarvestWeight);
+                        excess = (numberOfFlats * crop.averageHarvestWeight) - crop.fridayAmount;
+
+                    }
+                    if( numberOfFlats > 0) {
+                        currentSlotUsage.push({
+                            Crop: crop.id,
+                            "Crop Name": crop.commonName,
+                            numberOfFlats: numberOfFlats,
+                            Excess: excess,
+                            dayPlanted: day,
+                            daysToHarvest: crop.totalDays,
+                            daysInSystem: 1,
+                            harvestDay: getHarvestDay(day, crop.totalDays),
+                            darkDays: crop.darkDays,
+                            location: GERMINATOR
+                        })
+                    }
+
+                 })
+            }
+            console.log("Current Slot Usage: " + JSON.stringify(currentSlotUsage));
+            currentSlotUsage.forEach(slotUsage => {
+                console.log("slotUsage: " + slotUsage["Crop Name"] + " Current Day: " + day +  " Day Planted: " + slotUsage.dayPlanted + " Location: " + slotUsage.location);
+                processDailySlotUsage2(dailySlotUsage, formattedCurrentDay, slotUsage, GERMINATOR, day);
+                console.log("Daily slot usageyy: " + JSON.stringify(dailySlotUsage))
+                processDailySlotUsage2(dailySlotUsage, formattedCurrentDay, slotUsage, GREENHOUSE, day);
+                console.log("Daily slot usageyy: " + JSON.stringify(dailySlotUsage))
+                processDailySlotUsage2(dailySlotUsage, formattedCurrentDay, slotUsage, HARVEST, day);
+                console.log("Daily slot usageyy: " + JSON.stringify(dailySlotUsage))
 
             });
             currentDay.add(1, 'days');

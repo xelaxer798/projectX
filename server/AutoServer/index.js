@@ -5,7 +5,8 @@ import updateWeatherNodes from './updateWeatherNodes'
 const AutoServer = {
     checkNodes,
     autoAlerts,
-    updateWeatherNodes
+    updateWeatherNodes,
+
 };
 
 export {

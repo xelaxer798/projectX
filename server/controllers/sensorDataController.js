@@ -234,6 +234,90 @@ const controller = {
 
     },
 
+    getWateringsLastDay: function () {
+        console.log("Get Waterings for the last day")
+        let endTime = new Date();
+        let startTime = new Date(moment(endTime).add(-24,"hours").valueOf());
+        console.log("startTime: " + startTime, "  endTime: " + endTime);
+            let returnData = db.SensorData.findAll({
+            order: [['createdAt', 'DESC']],
+            where: {
+                sensorId: {
+                    [Op.like]: "%FlowEvent%"
+                },
+                updatedAt: {
+                    [Op.between]: [startTime,endTime]
+                }
+            },
+            include: [
+                {
+                    model: db.Sensors,
+                    attribute: ['sensorName'],
+                },
+            ],
+
+        })
+            .then(results => {
+                console.log("Past days watering: " + JSON.stringify(results))
+                const waterings = results.map(watering => {
+                    let startTime = moment(watering.createdAt);
+                    let endTime = moment(watering.endTime);
+                    let duration = moment(endTime - startTime);
+                    let durationSeconds = moment.duration(endTime.diff(startTime)).asSeconds();
+                    console.log("Duration in seconds: " + durationSeconds)
+                    console.log(JSON.stringify(watering));
+                    return Object.assign(
+                        {},
+                        {
+                            sensorId: watering.sensorId,
+                            sensorName: watering.Sensor.sensorName,
+                            amount: watering.dataValueFloat,
+                            startTime: startTime,
+                            endTime: endTime,
+                            duration: duration,
+                            updatedAt: watering.updatedAt,
+                            rate: watering.dataValueFloat / durationSeconds
+                        }
+                    )
+                });
+                const aggregatedWaterings = []
+                waterings.forEach(watering => {
+                    let sensorRecord = aggregatedWaterings.find(sensorRecord => sensorRecord.sensorName === watering.sensorName)
+                    let wateringEvent =
+                        {
+                            amount: watering.amount,
+                            startTime: startTime,
+                            endTime: endTime,
+                            duration: watering.duration,
+                            updatedAt: watering.updatedAt,
+                            rate: watering.rate
+                        }
+                    if (sensorRecord) {
+                        sensorRecord.waterings.push(wateringEvent)
+                    } else {
+                        aggregatedWaterings.push (
+                            {
+                                sensorId: watering.sensorId,
+                                sensorName: watering.sensorName,
+                                waterings: [wateringEvent]
+
+                            }
+                        )
+                    }
+                })
+
+                console.log("Aggregated Waterings: " + JSON.stringify(aggregatedWaterings));
+                return waterings
+                // console.log("Past days watering: " + JSON.stringify(results))
+                // return results;
+
+            })
+            .catch(err => {
+                console.log("Error getWateringsLastDay: " + err);
+            })
+        return returnData;
+    },
+
     getWateringsByDate: function (cutOffDate, sensorId) {
         console.log("Get Waterings by date: " + cutOffDate)
         let returnData = db.SensorData.findAll({

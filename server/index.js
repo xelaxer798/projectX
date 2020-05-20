@@ -33,6 +33,9 @@ export default path => {
 
         autoServer.autoAlerts.processWateringAlerts();
         setInterval(autoServer.autoAlerts.processWateringAlerts, 1000 * 60);
+
+        autoServer.autoAlerts.processLastDaysWaterings()
+
     }
 
 // autoServer.updateWeatherNodes();
@@ -52,6 +55,7 @@ export default path => {
     app.use("/api/webCamImages", routers.webCamImages);
     app.use("/api/crops", routers.crops);
     app.use("/api/orders", routers.orders);
+    app.use("/api/csa", routers.csa);
 // Any non API GET routes will be directed to our React App and handled by React Router
     app.get("*", (req, res) => {
         res.sendFile(`${path}/client/index.html`);

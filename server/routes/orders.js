@@ -9,6 +9,7 @@ const router = express.Router();
 router.post("/addHarvestRequests", orders.addHarvestRequests);
 router.post("/addHarvestRequests2", orders.addHarvestRequests2);
 router.post("/runSlotAnaylsis", ordersSimulations.runSlotAnalysis);
+router.post("/runSlotAnaylsis2", ordersSimulations.runSlotAnalysis2);
 router.get("/getHarvestRequests", orders.getHarvestRequests);
 router.get("/getHydratedOrders", orders.getHydratedOrders);
 router.get("/deleteExistingRecords", orders.deleteExistingRecords);
