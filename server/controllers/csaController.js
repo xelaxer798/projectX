@@ -41,7 +41,7 @@ function createdEmaillHTML(subscription, customer, product, dateInformation) {
     let returnHtml = "";
     const locationInfo = createLocationHTML(product.metadata.pickupLocation)
     returnHtml +=  customer.name + ",<br/><br/>"
-    returnHtml +=  "Thank you for your purchase of: <strong>" + subscription.items.data[0].plan.nickname + "</strong><br/><br/>"
+    returnHtml +=  "Thank you for your purchase of: <strong>" + product.name + "</strong><br/><br/>"
     returnHtml +=  "Your pick up location is: <br/><strong>" + locationInfo.location + "</strong><br/><br/>"
     returnHtml +=  "<font color='#2e8b57'><strong>Your start date is: " + dateInformation.firstPickupDateFormatted + "</strong></font><br/><br/>"
     returnHtml +=  "Your pick up window is: <strong>" + locationInfo.hours + "</strong><br/><br/>"
