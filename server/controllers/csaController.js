@@ -149,6 +149,8 @@ const controller = {
         }
         console.log("Mail api key: " + sengrido);
 
+        res.sendStatus(200);
+
         sgMail.send(msg);
 
     }
