@@ -142,7 +142,7 @@ const controller = {
             to: customer.email,
             bcc: "info@platelinguistics.com",
 
-            from: 'info@platelinguistics.com',
+            from: 'Plate Linguistics<info@platelinguistics.com',
             subject: 'Plate Linguistics Monthly Microgreen Subscription',
             text: 'Click me ',
             html: createdEmaillHTML(subscription, customer, product, dateInformation)
