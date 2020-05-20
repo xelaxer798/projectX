@@ -40,11 +40,11 @@ function createLocationHTML(location) {
 function createdEmaillHTML(subscription, customer, product, dateInformation) {
     let returnHtml = "";
     const locationInfo = createLocationHTML(product.metadata.pickupLocation)
-    returnHtml +=  customer.name + "<br/><br/>"
-    returnHtml +=  "Thank you for your purchase of: <strong>" + subscription.items.data[0].plan.nickname + "</strong><br/>"
-    returnHtml +=  "Your pick up location is: <strong>" + locationInfo.location + "</strong><br/>"
-    returnHtml +=  "Your start date is: <strong>" + dateInformation.firstPickupDateFormatted + "</strong><br/>"
-    returnHtml +=  "Your pick up window is: <strong>" + locationInfo.hours + "</strong><br/>"
+    returnHtml +=  customer.name + ",<br/><br/>"
+    returnHtml +=  "Thank you for your purchase of: <strong>" + subscription.items.data[0].plan.nickname + "</strong><br/><br/>"
+    returnHtml +=  "Your pick up location is: <br/><strong>" + locationInfo.location + "</strong><br/><br/>"
+    returnHtml +=  "<font color='#2e8b57'><strong>Your start date is: " + dateInformation.firstPickupDateFormatted + "</strong></font><br/><br/>"
+    returnHtml +=  "Your pick up window is: <strong>" + locationInfo.hours + "</strong><br/><br/>"
     returnHtml +=  "You will be billed monthly on: <strong>" + dateInformation.billingDay + "</strong><br/><br/>"
     returnHtml +=  "We look forward to providing you most consistently robust, vibrant, flavor-drenched varieties of microgreens on a weekly basis.<br/><br/>"
     returnHtml +=  "If you have any questions or comments please contact us at info@platelinguistics.com.<br/><br/>"
@@ -53,7 +53,7 @@ function createdEmaillHTML(subscription, customer, product, dateInformation) {
 }
 
 
-function getTrialEndDate(orderDate) {
+function getTrialEndDate() {
     const SUNDAY = 0;
     const MONDAY = 1;
     const TUESDAY = 2;
@@ -62,7 +62,7 @@ function getTrialEndDate(orderDate) {
     const FRIDAY = 5;
     const SATURDAY = 6;
 
-    let dateCreated = moment.unix(orderDate);
+    let dateCreated = moment();
     let trialEndDate;
 
     let dayOfWeekCreated = dateCreated.day();
@@ -109,7 +109,7 @@ const controller = {
     handleSignUp: async function (req, res) {
         console.log("Request: " + JSON.stringify(req.body.data))
         const billingCycleAnchor = req.body.data.object.billing_cycle_anchor;
-        const dateInformation = getTrialEndDate(billingCycleAnchor)
+        const dateInformation = getTrialEndDate()
         console.log("Date information: " + JSON.stringify(dateInformation))
         const subscriptionID = req.body.data.object.items.data[0].subscription;
         const subscription = await stripe.subscriptions.update(subscriptionID, {

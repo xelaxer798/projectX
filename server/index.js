@@ -24,7 +24,7 @@ export default path => {
     // setInterval(autoServer.checkNodes, 1800000);
 
     //only process alerts if there is a sendgrid key
-    if (process.env.sendgrid) {
+    if (!process.env.sendGridTest) {
         autoServer.autoAlerts.checkAlerts();
         setInterval(autoServer.autoAlerts.checkAlerts, 1000 * 60);
 
