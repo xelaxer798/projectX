@@ -2,7 +2,7 @@ import sgMail from '@sendgrid/mail';
 import Stripe from 'stripe';
 import moment from 'moment'
 
-const stripe = new Stripe("sk_test_D0tPWuNcG558wjtJJnXBteau00vvD2qb1o")
+const stripe = new Stripe("sk_live_Jq1MfEKEOhnYoCbwHgZyoUYQ00DJdDkm8J")
 
 const sengrido = process.env.sendgrid
 sgMail.setApiKey(sengrido);
