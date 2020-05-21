@@ -42,11 +42,12 @@ function createdEmaillHTML(subscription, customer, product, dateInformation) {
     const locationInfo = createLocationHTML(product.metadata.pickupLocation)
     returnHtml +=  customer.name + ",<br/><br/>"
     returnHtml +=  "Thank you for your purchase of: <strong>" + product.name + "</strong><br/><br/>"
-    returnHtml +=  "Your pick up location is: <br/><strong>" + locationInfo.location + "</strong><br/><br/>"
+    returnHtml +=  "Your pick up location is: <br/><strong>" + locationInfo.location + "</strong><br/>"
+    returnHtml +=  "Must be picked up on day or will be donated.<br/><br/>"
     returnHtml +=  "<font color='#2e8b57'><strong>Your start date is: " + dateInformation.firstPickupDateFormatted + "</strong></font><br/><br/>"
     returnHtml +=  "Your pick up window is: <strong>" + locationInfo.hours + "</strong><br/><br/>"
     returnHtml +=  "You will be billed monthly on: <strong>" + dateInformation.billingDay + "</strong><br/><br/>"
-    returnHtml +=  "We look forward to providing you most consistently robust, vibrant, flavor-drenched varieties of microgreens on a weekly basis.<br/><br/>"
+    returnHtml +=  "We look forward to providing you the most consistent robust, vibrant, flavor-drenched varieties of microgreens on a weekly basis.<br/><br/>"
     returnHtml +=  "If you have any questions or comments please contact us at info@platelinguistics.com.<br/><br/>"
 
     return returnHtml;
