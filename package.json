@@ -8,7 +8,7 @@
     "@material-ui/core": "^1.4.0",
     "@material-ui/icons": "^2.0.0",
     "@sendgrid/mail": "^6.3.1",
-    "airtable": "^0.6.0",
+    "airtable": "^0.7.2",
     "autoprefixer": "7.1.6",
     "aws": "^0.0.3-2",
     "aws-sdk": "^2.181.0",
