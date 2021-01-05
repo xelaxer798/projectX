@@ -12,7 +12,7 @@
     "autoprefixer": "7.1.6",
     "aws": "^0.0.3-2",
     "aws-sdk": "^2.181.0",
-    "axios": "0.18.1",
+    "axios": "0.21.1",
     "babel-cli": "^6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
